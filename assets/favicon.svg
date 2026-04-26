@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Sarvesh Vishnu">
+  <rect width="64" height="64" rx="6" fill="#F7F5F0"/>
+  <rect x="6" y="6" width="52" height="52" rx="3" fill="none" stroke="#003153" stroke-width="2"/>
+  <path d="M22 24c0-3.3 2.7-6 6-6h8c3.3 0 6 2.7 6 6v0c0 3.3-2.7 6-6 6h-8c-3.3 0-6 2.7-6 6v0c0 3.3 2.7 6 6 6h8c3.3 0 6-2.7 6-6"
+        fill="none" stroke="#003153" stroke-width="4" stroke-linecap="square"/>
+  <circle cx="48" cy="48" r="2.5" fill="#003153"/>
+</svg>
