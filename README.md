@@ -1,4 +1,4 @@
-# sarveshvishnu.github.io
+# Sarvesh-Vishnu.github.io
 
 Personal portfolio — Sarvesh Vishnu Muhundu Parthiban.
 
