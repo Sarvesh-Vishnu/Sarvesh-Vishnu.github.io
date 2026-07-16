@@ -26,6 +26,12 @@
   <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
 
+  <script>
+    /* Set theme before first paint to avoid flash.
+       Default = light. localStorage 'theme' overrides. */
+    (function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}})();
+  </script>
+
   <link rel="stylesheet" href="styles.css" />
 
   <script type="application/ld+json">
@@ -59,6 +65,10 @@
         <li><a href="#writing">Writing</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <button type="button" class="theme-toggle" aria-label="Switch to dark theme" aria-pressed="false" title="Toggle theme">
+        <svg class="theme-icon icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="theme-icon icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
     </nav>
   </header>
 
@@ -273,7 +283,7 @@
 
     <section class="section writing" id="writing" aria-labelledby="writing-title">
       <header class="section-head reveal">
-        <p class="eyebrow">§ 05 — Writing &amp; listening</p>
+        <p class="eyebrow">§ 05 — Writing</p>
         <h2 id="writing-title" class="section-title">Notes, in long form.</h2>
       </header>
       <div class="writing-block reveal">
@@ -281,15 +291,6 @@
           Occasional essays on data, decisions, and the seams in between — published on Substack so they reach a few more inboxes than this site does.
         </p>
         <a class="btn btn-ghost" href="https://sarveshvishnu.substack.com/" rel="noopener">Read on Substack →</a>
-      </div>
-
-      <div class="podcast-block reveal">
-        <p class="eyebrow">A deep dive — by NotebookLM</p>
-        <p class="writing-body">Two AI hosts read everything I've ever written about my work and then talk about it for twelve minutes. It's a little strange and unreasonably fun.</p>
-        <audio controls preload="none" class="podcast-audio">
-          <source src="assets/deep-dive-podcast.mp3" type="audio/mpeg" />
-          Your browser doesn't support inline audio. <a href="assets/deep-dive-podcast.mp3">Download the episode.</a>
-        </audio>
       </div>
     </section>
 
@@ -317,6 +318,7 @@
     <style>
       .reveal { opacity: 1 !important; transform: none !important; }
       .site-header { border-bottom: 1px solid var(--line); }
+      .theme-toggle { display: none; }
     </style>
   </noscript>
 

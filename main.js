@@ -10,6 +10,24 @@
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* Theme toggle — light default, persists via localStorage.
+     Initial data-theme is set by the inline script in <head>. */
+  const toggle = document.querySelector('.theme-toggle');
+  if (toggle) {
+    const syncAria = () => {
+      const isDark = root.dataset.theme === 'dark';
+      toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+      toggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+    };
+    syncAria();
+    toggle.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch (e) { /* private mode */ }
+      syncAria();
+    });
+  }
+
   /* Header — add hairline once the page has scrolled past 8px */
   const header = document.getElementById('header');
   if (header) {

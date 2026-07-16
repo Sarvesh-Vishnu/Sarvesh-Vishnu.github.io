@@ -69,17 +69,17 @@
   --duration-slow: 600ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --canvas:        #0E1116;
-    --surface:       #161B22;
-    --ink:           #F0EFEB;
-    --ink-soft:      #B5B3AC;
-    --ink-muted:     #7A7872;
-    --line:          #2A2F38;
-    --prussian:      #6FA8D6;
-    --prussian-tint: #1A2230;
-  }
+/* Dark theme — opt-in via [data-theme="dark"] on <html>.
+   Light is the default. See main.js for the toggle. */
+:root[data-theme="dark"] {
+  --canvas:        #0E1116;
+  --surface:       #161B22;
+  --ink:           #F0EFEB;
+  --ink-soft:      #B5B3AC;
+  --ink-muted:     #7A7872;
+  --line:          #2A2F38;
+  --prussian:      #6FA8D6;
+  --prussian-tint: #1A2230;
 }
 
 @media (max-width: 640px) {
@@ -236,6 +236,29 @@ body {
   .nav-links { gap: var(--space-4); }
 }
 
+/* Theme toggle — icon-only, sits after nav-links */
+.theme-toggle {
+  width: 32px;
+  height: 32px;
+  margin-left: var(--space-6);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  color: var(--ink-soft);
+  transition: color var(--duration-fast) ease,
+              background-color var(--duration-fast) ease;
+}
+.theme-toggle:hover { color: var(--ink); background: var(--prussian-tint); }
+.theme-toggle:focus-visible { outline: 2px solid var(--prussian); outline-offset: 2px; }
+.theme-icon { display: none; }
+:root .theme-toggle .icon-moon { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+@media (max-width: 640px) {
+  .theme-toggle { margin-left: var(--space-3); }
+}
+
 /* -------------------------------------------------------------
    Hero — asymmetric, 4-col offset (design.md §9)
    ------------------------------------------------------------- */
@@ -304,7 +327,7 @@ body {
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.2 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
-@media (prefers-color-scheme: dark) { .grain { mix-blend-mode: screen; opacity: 0.03; } }
+:root[data-theme="dark"] .grain { mix-blend-mode: screen; opacity: 0.03; }
 
 /* -------------------------------------------------------------
    Sections
@@ -488,23 +511,6 @@ body {
 }
 .quote cite { font-style: normal; color: var(--ink-soft); }
 
-/* -------------------------------------------------------------
-   Podcast inline player
-   ------------------------------------------------------------- */
-.podcast-block {
-  margin-top: var(--space-16);
-  display: grid;
-  gap: var(--space-3);
-  max-width: var(--reading-max);
-  padding-top: var(--space-12);
-  border-top: 1px solid var(--line);
-}
-.podcast-audio {
-  width: 100%;
-  max-width: 480px;
-  margin-top: var(--space-3);
-}
-.podcast-audio::-webkit-media-controls-panel { background: var(--prussian-tint); }
 
 /* -------------------------------------------------------------
    Stack — mono key/value grid
@@ -603,10 +609,8 @@ body {
 }
 .btn-ghost:hover { background: var(--prussian-tint); }
 
-@media (prefers-color-scheme: dark) {
-  .btn-primary { color: var(--canvas); }
-  .btn-ghost:hover { background: var(--prussian-tint); color: var(--ink); }
-}
+:root[data-theme="dark"] .btn-primary { color: var(--canvas); }
+:root[data-theme="dark"] .btn-ghost:hover { background: var(--prussian-tint); color: var(--ink); }
 
 /* -------------------------------------------------------------
    §6  Form inputs — bottom border only
