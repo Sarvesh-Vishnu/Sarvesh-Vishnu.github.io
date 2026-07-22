@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#003153" />
+  <meta name="color-scheme" content="light dark" />
+
+  <title>Numit — a contemplative globe of shadow &amp; light — Sarvesh Vishnu</title>
+  <meta name="description" content="Numit is a hand-built WebGL globe that maps two faces of the world: crises breaking now, and the responses putting them back together. Built to counter psychic numbing." />
+
+  <link rel="canonical" href="https://sarvesh-vishnu.github.io/work/numit.html" />
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+
+  <script>
+    (function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}})();
+  </script>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body class="project-page">
+  <a href="#main" class="skip">Skip to content</a>
+
+  <header class="site-header" id="header">
+    <nav class="nav" aria-label="Primary">
+      <a href="../index.html" class="brand">sarvesh.</a>
+      <ul class="nav-links" role="list">
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#stack">Stack</a></li>
+        <li><a href="../index.html#writing">Writing</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+      <button type="button" class="theme-toggle" aria-label="Switch to dark theme" aria-pressed="false" title="Toggle theme">
+        <svg class="theme-icon icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="theme-icon icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article>
+      <header class="project-hero">
+        <p class="eyebrow reveal" data-stagger="0">§ Project 03 — 2026 · personal build</p>
+        <h1 class="reveal" data-stagger="1">A globe you can sit with.</h1>
+
+        <dl class="project-meta-grid reveal" data-stagger="2">
+          <div><dt>Client</dt><dd>Personal — solo build</dd></div>
+          <div><dt>Role</dt><dd>Design, engineering, editorial</dd></div>
+          <div><dt>Year</dt><dd>2025 – 2026</dd></div>
+          <div><dt>Stack</dt><dd>Next.js 14 · TypeScript · Three.js (WebGL) · Upstash Redis</dd></div>
+          <div><dt>Data</dt><dd>UNHCR · OCHA · Reuters · HRW · GDELT 2.0 · ACLED</dd></div>
+          <div><dt>Outcome</dt><dd>A different way to sit with the news</dd></div>
+          <div><dt>Audience</dt><dd>General web</dd></div>
+          <div><dt>Status</dt><dd>Live · essay on Substack</dd></div>
+        </dl>
+      </header>
+
+      <section class="project-body-prose">
+        <h2>The problem</h2>
+        <p>The news doesn't invite you to sit. Caring at internet scale isn't really possible, and the fleeting helplessness of watching the world burn compresses into what psychologists call <em>psychic numbing</em> — the pattern where suffering, past a certain volume, stops registering as human at all. A statistic is what's left of a person after you've stopped paying attention.</p>
+
+        <h2>Approach</h2>
+        <p>Numit is a contemplative globe that maps two faces of the world. The <em>shadow</em>: places that are breaking right now. The <em>light</em>: some of the same places being put back together. You encounter the crisis first, and the response second — because hope handed to us before we've sat with the weight of something is decorative. Hope we arrive at afterwards is different. It lands as relief.</p>
+
+        <ul>
+          <li>Hand-built WebGL globe in Three.js, not a wrapper library — every arc, every marker, every camera transition is deliberate</li>
+          <li>Two data planes: a curated set hand-checked against UNHCR, OCHA, Reuters, and Human Rights Watch; and a live stream from GDELT 2.0 and ACLED</li>
+          <li>NewsGuard-style credibility filter with a 75+ outlet threshold — an unverified story doesn't reach the surface</li>
+          <li>Representation-floor validation in CI so no crisis silently drops off the globe as news volume shifts</li>
+          <li>Transparent compositing: any person described is a disclosed composite from real reporting, never fictional</li>
+          <li>Engagement metrics aggregated through Upstash Redis — the site never watches individuals</li>
+        </ul>
+      </section>
+    </article>
+
+    <div class="project-fullbleed">
+      <figure>
+        <div class="placeholder" role="img" aria-label="The Numit globe rendered with shadow and light layers"></div>
+        <figcaption>Fig. 01 — Shadow first, light second. Same places, both readings.</figcaption>
+      </figure>
+    </div>
+
+    <section class="project-body-prose">
+      <h2>Outcome</h2>
+      <p>There isn't a conversion metric on Numit, and there was never going to be one. The success criterion is qualitative: <em>if one person leaves having chosen a place, learned a name, and done one small real thing, the whole experience has paid for itself.</em> The full essay lives on <a href="https://bluemammoth.substack.com/p/numit" rel="noopener">Substack</a>.</p>
+
+      <h2>What I'd do next</h2>
+      <p>Regional editorial rotations so the shadow layer surfaces underreported crises, not just the ones with news volume. And an offline reading mode for places with unstable connectivity — the site should still work where the news does.</p>
+    </section>
+
+    <nav class="project-next" aria-label="Next project">
+      <span class="label">Next — § 04</span>
+      <a href="pinnacle-fertility.html">Patient sentiment NLP at 50K-record scale</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="foot-line">© 2026 Sarvesh Vishnu Muhundu Parthiban</p>
+      <p class="foot-line foot-meta">Built with HTML, CSS, and restraint.</p>
+    </div>
+  </footer>
+
+  <noscript>
+    <style>
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .site-header { border-bottom: 1px solid var(--line); }
+      .theme-toggle { display: none; }
+    </style>
+  </noscript>
+
+  <script src="../main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#003153" />
+  <meta name="color-scheme" content="light dark" />
+
+  <title>Patient Sentiment NLP at Scale — Pinnacle Fertility — Sarvesh Vishnu</title>
+  <meta name="description" content="Duke MQM capstone with Pinnacle Fertility: NLP sentiment analysis over 50K+ patient records across 12 facilities, plus a forward-looking predictive layer." />
+
+  <link rel="canonical" href="https://sarvesh-vishnu.github.io/work/pinnacle-fertility.html" />
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+
+  <script>
+    (function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}})();
+  </script>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body class="project-page">
+  <a href="#main" class="skip">Skip to content</a>
+
+  <header class="site-header" id="header">
+    <nav class="nav" aria-label="Primary">
+      <a href="../index.html" class="brand">sarvesh.</a>
+      <ul class="nav-links" role="list">
+        <li><a href="../index.html#work">Work</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#stack">Stack</a></li>
+        <li><a href="../index.html#writing">Writing</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+      <button type="button" class="theme-toggle" aria-label="Switch to dark theme" aria-pressed="false" title="Toggle theme">
+        <svg class="theme-icon icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="theme-icon icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article>
+      <header class="project-hero">
+        <p class="eyebrow reveal" data-stagger="0">§ Project 04 — 2024</p>
+        <h1 class="reveal" data-stagger="1">Reading patient experience at 50K-record scale.</h1>
+
+        <dl class="project-meta-grid reveal" data-stagger="2">
+          <div><dt>Client</dt><dd>Pinnacle Fertility (Scottsdale, AZ)</dd></div>
+          <div><dt>Role</dt><dd>Data Scientist — Duke MQM Capstone</dd></div>
+          <div><dt>Year</dt><dd>Mar – May 2024</dd></div>
+          <div><dt>Stack</dt><dd>Python · NLP · Classification · Tableau</dd></div>
+          <div><dt>Data</dt><dd>50K+ patient records · 12 facilities</dd></div>
+          <div><dt>Outcome</dt><dd>Drivers of satisfaction · forward-looking sentiment layer</dd></div>
+          <div><dt>Audience</dt><dd>Healthcare operations leadership</dd></div>
+          <div><dt>Status</dt><dd>Delivered</dd></div>
+        </dl>
+      </header>
+
+      <section class="project-body-prose">
+        <h2>The problem</h2>
+        <p>Pinnacle operates twelve fertility facilities, and the patient-experience signal was drowning in unstructured feedback. Surveys, notes, and comments piled up faster than anyone could read them — with no way to say, at scale, <em>what's the operational issue that keeps hurting satisfaction, and where</em>.</p>
+
+        <h2>Approach</h2>
+        <p>I built the NLP layer end-to-end: cleaned and tokenized 50K+ patient records, trained sentiment models with facility-level and touchpoint-level cuts, and added a predictive component so satisfaction wasn't only measured after the fact. The goal wasn't a smarter dashboard — it was moving the team from lagging indicators to leading ones.</p>
+
+        <ul>
+          <li>Ingested and cleaned 50K+ patient records across 12 facilities into a consistent schema</li>
+          <li>Ran sentiment classification with facility-level and interaction-type breakdowns</li>
+          <li>Extracted drivers — the operational issues that materially move satisfaction, not the noise</li>
+          <li>Trained a predictive layer to flag interactions likely to go wrong before they did</li>
+          <li>Left the team with a framework for personalized care interventions, not just a report</li>
+        </ul>
+      </section>
+    </article>
+
+    <div class="project-fullbleed">
+      <figure>
+        <div class="placeholder" role="img" aria-label="Composite of facility-level satisfaction drivers visualization"></div>
+        <figcaption>Fig. 01 — Driver ranking across facilities, prioritized by lift-if-fixed.</figcaption>
+      </figure>
+    </div>
+
+    <section class="project-body-prose">
+      <h2>Outcome</h2>
+      <p>The team walked away with a facility-level ranking of what actually drives satisfaction, and a way to flag interactions at risk of going wrong before they did. That's the difference between operational lagging indicators — "we lost that patient last month" — and operational leading ones: "this current interaction looks like it's going sideways; here's what usually helps."</p>
+
+      <h2>What I'd do next</h2>
+      <p>An A/B testing loop. Pair each sentiment prediction with a specific intervention and measure whether the intervention actually moves the outcome — not just whether it correlates with better sentiment. That's the only way to close the loop from insight to action.</p>
+    </section>
+
+    <nav class="project-next" aria-label="Next project">
+      <span class="label">Next — § 05</span>
+      <a href="nicholas-audience.html">Audience analytics for executive environmental education</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="foot-line">© 2026 Sarvesh Vishnu Muhundu Parthiban</p>
+      <p class="foot-line foot-meta">Built with HTML, CSS, and restraint.</p>
+    </div>
+  </footer>
+
+  <noscript>
+    <style>
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .site-header { border-bottom: 1px solid var(--line); }
+      .theme-toggle { display: none; }
+    </style>
+  </noscript>
+
+  <script src="../main.js" defer></script>
+</body>
+</html>

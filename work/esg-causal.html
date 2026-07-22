@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#003153" />
   <meta name="color-scheme" content="light dark" />
 
-  <title>Predicting Water Main Failure — Sarvesh Vishnu</title>
-  <meta name="description" content="A machine-learning system that flags water-main assets 6–12 months before failure, integrating 20+ years of CMMS data." />
+  <title>Causal Impact of ESG on Financial Performance — Sarvesh Vishnu</title>
+  <meta name="description" content="Independent research using propensity score matching, difference-in-difference, and fixed-effects to estimate the causal impact of ESG posture on S&amp;P 500 financial performance." />
 
-  <link rel="canonical" href="https://sarvesh-vishnu.github.io/work/project-template.html" />
+  <link rel="canonical" href="https://sarvesh-vishnu.github.io/work/esg-causal.html" />
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
 
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
@@ -47,79 +47,55 @@
   <main id="main">
     <article>
       <header class="project-hero">
-        <p class="eyebrow reveal" data-stagger="0">§ Project 02 — 2025</p>
-        <h1 class="reveal" data-stagger="1">Predicting water main failure 6–12 months out.</h1>
+        <p class="eyebrow reveal" data-stagger="0">§ Project 06 — 2024</p>
+        <h1 class="reveal" data-stagger="1">Correlation, minus the confound.</h1>
 
         <dl class="project-meta-grid reveal" data-stagger="2">
-          <div>
-            <dt>Client</dt>
-            <dd>Western Virginia Water Authority</dd>
-          </div>
-          <div>
-            <dt>Role</dt>
-            <dd>Data Scientist (independent IC)</dd>
-          </div>
-          <div>
-            <dt>Year</dt>
-            <dd>Jan – Jul 2025</dd>
-          </div>
-          <div>
-            <dt>Stack</dt>
-            <dd>Python · scikit-learn · XGBoost · ArcGIS · PowerBI</dd>
-          </div>
-          <div>
-            <dt>Data</dt>
-            <dd>20+ yrs CMMS · environmental · operational</dd>
-          </div>
-          <div>
-            <dt>Outcome</dt>
-            <dd>~$150K directed value</dd>
-          </div>
-          <div>
-            <dt>Audience</dt>
-            <dd>Engineering · GIS · Executive</dd>
-          </div>
-          <div>
-            <dt>Status</dt>
-            <dd>Deployed · 5-yr capital plan input</dd>
-          </div>
+          <div><dt>Client</dt><dd>Independent research</dd></div>
+          <div><dt>Role</dt><dd>Primary researcher</dd></div>
+          <div><dt>Year</dt><dd>2024</dd></div>
+          <div><dt>Stack</dt><dd>R · Excel · propensity score matching · DiD · fixed effects</dd></div>
+          <div><dt>Data</dt><dd>S&amp;P 500 · ESG ratings · financial performance</dd></div>
+          <div><dt>Outcome</dt><dd>Causal estimates that survive selection</dd></div>
+          <div><dt>Audience</dt><dd>Academic / practitioner</dd></div>
+          <div><dt>Status</dt><dd>Complete</dd></div>
         </dl>
       </header>
 
       <section class="project-body-prose">
         <h2>The problem</h2>
-        <p>Western Virginia's water system is aging. Replacing every pipe is fiscally impossible; reacting to failures is operationally painful and expensive. The Authority needed a way to point its capital plan at the assets most likely to fail next — without inventing a budget it didn't have.</p>
+        <p>Most of the literature on ESG and financial performance is a graveyard of correlational claims. Firms that score high on ESG also tend to be larger, more profitable, and concentrated in specific sectors. The interesting question isn't <em>do high-ESG firms perform better?</em> — it's <em>does becoming better on ESG cause better financial performance?</em> You can't answer that with a scatter plot.</p>
 
         <h2>Approach</h2>
-        <p>I integrated three streams the team had never joined before: twenty-plus years of CMMS maintenance history, environmental factors (soil, freeze cycles, traffic load), and operational telemetry. I trained a gradient-boosted model to score every active main on its probability of failure within a 6–12 month window, then surfaced the top-risk assets through a dashboard the engineering team could act on.</p>
+        <p>Standard causal inference toolkit, applied carefully. Propensity score matching to construct plausible counterfactuals, difference-in-difference for firms that shifted ESG posture, and firm + year fixed effects to strip out time-invariant confounders. Every specification choice documented, and every robustness check reported — not just the ones that supported the headline.</p>
 
         <ul>
-          <li>Joined CMMS, GIS, and environmental data into a single feature store</li>
-          <li>Trained an XGBoost classifier with time-series cross-validation</li>
-          <li>Calibrated probabilities so risk scores were directly comparable across asset classes</li>
-          <li>Shipped a PowerBI surface tied to live CMMS so the model output never went stale</li>
+          <li>Matched treated firms to controls on size, sector, and pre-treatment financials</li>
+          <li>Estimated DiD with firm and year fixed effects</li>
+          <li>Ran the analysis under multiple specifications and reported the range, not a point estimate</li>
+          <li>Documented every choice so the analysis is reproducible end-to-end</li>
         </ul>
       </section>
     </article>
 
     <div class="project-fullbleed">
       <figure>
-        <div class="placeholder" role="img" aria-label="Risk-scored map of the distribution network"></div>
-        <figcaption>Fig. 01 — Risk-scored asset map, top-decile in Prussian.</figcaption>
+        <div class="placeholder" role="img" aria-label="Composite of matched-pairs distribution and DiD estimate ranges"></div>
+        <figcaption>Fig. 01 — Matched-pairs balance and DiD estimates across specifications.</figcaption>
       </figure>
     </div>
 
     <section class="project-body-prose">
       <h2>Outcome</h2>
-      <p>The first ranked list directed proactive replacement of high-risk mains and added approximately $150K in value through avoided emergency repairs and better-sequenced capital work. The dashboard now feeds the Authority's 5-year capital plan and gives engineering, GIS, HR, and administration a shared view of asset health.</p>
+      <p>A causal estimate defensible under scrutiny. It's a smaller number than the correlational studies typically report — which is exactly what you'd expect once you're accounting for selection. The output isn't a headline; it's a range with its assumptions attached, which is what a decision-maker actually needs.</p>
 
       <h2>What I'd do next</h2>
-      <p>Two things. First, fold in real-time pressure-sensor data so the model sees acute precursors, not just slow degradation. Second, expose the model's reasoning to operators with feature attributions per asset, so the recommendation is auditable in the field — trust matters more than F1 once a system is live.</p>
+      <p>Decompose the effect by ESG pillar — environmental, social, governance. The average masks a lot; the mechanism matters more than the topline. And extend to a longer post-treatment window to see whether the effect compounds, decays, or reverses.</p>
     </section>
 
     <nav class="project-next" aria-label="Next project">
-      <span class="label">Next — § 03</span>
-      <a href="project-template.html">Patient Sentiment NLP at Scale</a>
+      <span class="label">Next — § 07</span>
+      <a href="blue-cross.html">Adoption pipelines for Blue Cross of India</a>
     </nav>
   </main>
 

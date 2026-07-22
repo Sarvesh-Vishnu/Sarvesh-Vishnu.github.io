@@ -2,14 +2,43 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sarvesh-vishnu.github.io/</loc>
-    <lastmod>2026-04-25</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://sarvesh-vishnu.github.io/work/project-template.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://sarvesh-vishnu.github.io/work/cooper-surgical.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://sarvesh-vishnu.github.io/work/wv-water.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://sarvesh-vishnu.github.io/work/numit.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://sarvesh-vishnu.github.io/work/pinnacle-fertility.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarvesh-vishnu.github.io/work/nicholas-audience.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarvesh-vishnu.github.io/work/esg-causal.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sarvesh-vishnu.github.io/work/blue-cross.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <priority>0.8</priority>
   </url>
 </urlset>
