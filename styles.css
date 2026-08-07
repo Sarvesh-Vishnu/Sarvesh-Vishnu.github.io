@@ -684,29 +684,64 @@ body {
   text-wrap: balance;
 }
 
-.project-meta-grid {
-  margin-top: var(--space-12);
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-6) var(--gutter);
-  border-top: 1px solid var(--line);
-  padding-top: var(--space-6);
+/* Byline — who, what role, when. One line, mono, never a grid.
+   Replaces the old 8-cell meta grid (design.md §14.5). */
+.project-byline {
+  margin-top: var(--space-6);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.7;
+  color: var(--ink-muted);
+  max-width: 60ch;
 }
-.project-meta-grid > div { display: grid; gap: var(--space-1); }
-.project-meta-grid dt {
+.project-byline a {
+  color: var(--prussian);
+  border-bottom: 1px solid currentColor;
+  transition: border-bottom-width var(--duration-fast) ease;
+}
+.project-byline a:hover { border-bottom-width: 2px; }
+
+/* Result strip — the quantified outcome, weighted like it matters.
+   Omitted entirely on projects with no honest metric. */
+.project-results {
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-8) var(--gutter);
+}
+.project-results > div {
+  display: flex;
+  flex-direction: column-reverse; /* dd above dt; DOM keeps dt first */
+  gap: var(--space-2);
+}
+.project-results dd {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+}
+.project-results dt {
   font-family: var(--font-mono);
   font-size: var(--text-2xs);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--ink-muted);
 }
-.project-meta-grid dd {
+.project-tools {
+  margin-top: var(--space-8);
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  color: var(--ink);
+  font-size: var(--text-2xs);
+  color: var(--ink-muted);
+  max-width: 60ch;
 }
-@media (max-width: 768px) {
-  .project-meta-grid { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 640px) {
+  .project-results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 .project-body-prose {

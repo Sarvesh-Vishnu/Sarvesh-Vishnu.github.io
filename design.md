@@ -181,7 +181,10 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 - Click: detail page
 
 ### Project detail page
-- Hero: eyebrow, display title, mono key/value meta grid (4 col desktop / 2 col tablet)
+- Hero: section index eyebrow, display title, one-line mono byline
+- Result strip: 2–3 outcome figures in display type over mono labels (§14.5).
+  **Omitted entirely when the project has no honest metric** — never padded.
+- Tools line: mono, muted, below the strip
 - Body: 65ch reading column
 - Full-bleed image break with mono caption
 - "Next project" hairline link at the bottom
@@ -350,3 +353,22 @@ LinkedIn, where the reader can weigh them in context and verify the source.
 a landing page, and quoted praise on a self-published site carries little
 evidential weight — the author chose the quotes. Restraint here is also a
 credibility argument.
+
+### 14.5 — Byline + result strip replaces the meta grid
+*Changes: §6 project detail page.*
+
+The 8-cell key/value grid (Client / Role / Year / Stack / Data / Outcome /
+Audience / Status) is replaced by a one-line mono byline plus an optional strip
+of 2–3 outcome figures set in display type.
+
+**Reason.** Three failures. Half the cells carried no information — "Status:
+Complete", "Audience: General web" existed to fill a grid. "Client" was the
+wrong vocabulary for personal builds, independent research, and pro-bono work,
+forcing everything into client-services language. And the result — the single
+most persuasive fact on the page — was weighted identically to "Audience".
+
+**The strip is not mandatory.** Projects without an honest metric (Numit, whose
+premise is that it has no conversion metric; the ESG study, whose answer is a
+range) get the byline and go straight to prose. The absence is information: it
+tells the reader which work had measurable outcomes. Never invent a figure to
+fill the pattern.
