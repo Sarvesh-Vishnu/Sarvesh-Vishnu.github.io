@@ -362,6 +362,105 @@ body {
 @media (max-width: 768px) { .section-head .section-title { grid-column: 1 / -1; } }
 
 /* -------------------------------------------------------------
+   Timeline — engagements over time (design.md §14.7)
+   A duration chart: bar length = how long, x-position = when.
+   Pure CSS, no JS; bars are % offsets driven by --s / --w.
+   ------------------------------------------------------------- */
+.timeline {
+  margin: 0 0 var(--space-24);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--line);
+}
+.timeline figcaption { margin-bottom: var(--space-8); }
+
+.tl-rows { display: flex; flex-direction: column; }
+
+.tl-row {
+  display: grid;
+  grid-template-columns: 28px 150px 1fr auto;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-2) 0;
+  color: var(--ink);
+  transition: color var(--duration-fast) ease;
+}
+.tl-idx {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--ink-muted);
+}
+.tl-name {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tl-track {
+  position: relative;
+  height: 8px;
+  /* faint baseline grid so bars read against a measured field */
+  background-image: repeating-linear-gradient(
+    to right, var(--line) 0 1px, transparent 1px 20%);
+}
+.tl-bar {
+  position: absolute;
+  top: 1px;
+  height: 6px;
+  left: var(--s);
+  width: var(--w);
+  min-width: 6px;
+  background: var(--prussian);
+  border-radius: 1px;
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: tl-grow var(--duration-slow) var(--ease-out) forwards;
+}
+.tl-when {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--ink-muted);
+  justify-self: end;
+  white-space: nowrap;
+}
+.tl-row:hover { color: var(--prussian); }
+.tl-row:hover .tl-bar { background: var(--prussian-deep); }
+
+@keyframes tl-grow { to { transform: scaleX(1); } }
+
+.tl-axis {
+  margin-top: var(--space-3);
+  padding-left: calc(28px + 150px + var(--space-4) * 2);
+}
+.tl-years {
+  position: relative;
+  display: block;
+  height: 1.4em;
+  border-top: 1px solid var(--line);
+}
+.tl-years i {
+  position: absolute;
+  left: var(--x);
+  top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-style: normal;
+  color: var(--ink-muted);
+  transform: translateX(-50%);
+}
+.tl-years i:first-child { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-bar { animation: none; transform: scaleX(1); }
+}
+@media (max-width: 640px) {
+  .tl-row { grid-template-columns: 24px 1fr auto; }
+  .tl-track { display: none; }
+  .tl-axis { display: none; }
+}
+
+/* -------------------------------------------------------------
    §6  Project list — signature pattern
    ------------------------------------------------------------- */
 .project-list { display: flex; flex-direction: column; }
@@ -732,6 +831,11 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--ink-muted);
+}
+/* Crosshair over figures — the chart idiom for "inspect a value".
+   Native keyword: no JS, no lag, survives high-contrast. design.md §14.6 */
+@media (pointer: fine) {
+  .project-results { cursor: crosshair; }
 }
 .project-tools {
   margin-top: var(--space-8);

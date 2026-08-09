@@ -372,3 +372,31 @@ premise is that it has no conversion metric; the ESG study, whose answer is a
 range) get the byline and go straight to prose. The absence is information: it
 tells the reader which work had measurable outcomes. Never invent a figure to
 fill the pattern.
+
+### 14.6 — Crosshair cursor over data figures
+*Extends: §7 motion, §8.*
+
+Result-strip figures carry `cursor: crosshair`, guarded by `@media (pointer:
+fine)` so touch is untouched.
+
+**Reason.** In every charting tool a crosshair means "you are inspecting a
+value" — the idiom belongs to a data scientist's page. It is a native cursor
+keyword: no JavaScript, no follower-dot lag, and it survives Windows
+high-contrast mode where a custom `url()` cursor would vanish. Follower dots and
+`cursor: none` are rejected — they hide the true pointer (an accessibility
+regression) and read as generic. The crosshair passes §7's test ("guide
+attention, never entertain"); a lagging blob does not.
+
+### 14.7 — Career timeline on the home page
+*Extends: §5 page structure (opens Selected work).*
+
+A pure-CSS duration chart above the project list: one row per engagement, bar
+length = duration, x-position = when, against a faint year grid with a labeled
+axis. Bars are Prussian; rows link to their project pages.
+
+**Reason.** It is a *timeline*, not a *time series* — the data is real dates the
+subject owns, with no invented y-axis. A genuine time-series chart needs a
+measured value over time and therefore real project data; those belong in the
+project-page full-bleed slots, not fabricated here. Below `--bp-sm` the track and
+axis are hidden and rows fall back to name + year, since sub-pixel bars don't
+read on a phone.
