@@ -151,13 +151,14 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 ### Page structure
 1. Header — fixed, 64px, transparent; hairline border on scroll
 2. Hero — full viewport, asymmetric; name + role + tagline
-3. Selected work — list-driven (not cards)
-4. About — narrow column, editorial feel
-5. Skills / Stack — mono-aligned list
-6. Recognition — mono key/value rows
-7. Writing — single outbound CTA
-8. Contact — large, single CTA
-9. Footer — minimal mono captions
+3. Trajectory — combined-capability curve, the overture (§14.7)
+4. Selected work — list-driven (not cards)
+5. About — narrow column, editorial feel
+6. Skills / Stack — mono-aligned list
+7. Recognition — mono key/value rows
+8. Writing — single outbound CTA
+9. Contact — large, single CTA
+10. Footer — minimal mono captions
 
 ---
 
@@ -387,16 +388,30 @@ high-contrast mode where a custom `url()` cursor would vanish. Follower dots and
 regression) and read as generic. The crosshair passes §7's test ("guide
 attention, never entertain"); a lagging blob does not.
 
-### 14.7 — Career timeline on the home page
-*Extends: §5 page structure (opens Selected work).*
+### 14.7 — Trajectory section (combined-capability curve)
+*Adds: §5 page structure — new §01 "Trajectory", before Selected work.
+Supersedes the duration-timeline idea that briefly lived inside Selected work.*
 
-A pure-CSS duration chart above the project list: one row per engagement, bar
-length = duration, x-position = when, against a faint year grid with a labeled
-axis. Bars are Prussian; rows link to their project pages.
+An overture section between the hero and the project list: an inline-SVG curve
+whose **x-axis is real dated milestones** (2019 Foundations → 2026 Commercial +
+executive) and whose **y-axis is "combined capability", explicitly framed as a
+thesis rather than a measured score.** One Prussian line over a flat `prussian-tint`
+area, milestone dots with drop-lines to a baseline, and a dashed projection
+reaching up-right to signal "ongoing". A dated text legend sits below.
 
-**Reason.** It is a *timeline*, not a *time series* — the data is real dates the
-subject owns, with no invented y-axis. A genuine time-series chart needs a
-measured value over time and therefore real project data; those belong in the
-project-page full-bleed slots, not fabricated here. Below `--bp-sm` the track and
-axis are hidden and rows fall back to name + year, since sub-pixel bars don't
-read on a phone.
+**Reason — and the honesty guardrail.** The subject asked for a "growth /
+exponential" curve of their skills. A literal skill-level y-axis is unfalsifiable
+and reads as self-flattering. The defensible version keeps every x-value a real,
+dated fact and makes the y-axis a *named thesis* — capability compounding because
+domains combine (data × business × strategy × domain). The page says so outright
+in `.tj-cap`: "the rising curve is the argument, not a measured score." Solid line
+= what happened; dashed = extrapolation, per standard data-viz convention. This is
+the same rule as §14.5: never present a shaped claim as a measured one.
+
+The section is placed before Selected work so the arc ("who I am, where I'm from")
+frames the projects rather than mixing with them. The line-draw animation only
+runs under `:root.js` + no reduced-motion; without JS or with reduced motion the
+line renders whole. Below `--bp-sm` the in-SVG labels hide and the text legend
+carries the milestones. A genuine *time series* (a measured value over time) still
+belongs in the project-page full-bleed slots, built from real project data — not
+here.
