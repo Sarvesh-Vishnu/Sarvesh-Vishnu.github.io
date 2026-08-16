@@ -388,30 +388,22 @@ high-contrast mode where a custom `url()` cursor would vanish. Follower dots and
 regression) and read as generic. The crosshair passes §7's test ("guide
 attention, never entertain"); a lagging blob does not.
 
-### 14.7 — Trajectory section (combined-capability curve)
-*Adds: §5 page structure — new §01 "Trajectory", before Selected work.
-Supersedes the duration-timeline idea that briefly lived inside Selected work.*
+### 14.7 — Timeline section (career spine)
+*Adds: §5 page structure — §01 "Timeline", before Selected work.*
 
-An overture section between the hero and the project list: an inline-SVG curve
-whose **x-axis is real dated milestones** (2019 Foundations → 2026 Commercial +
-executive) and whose **y-axis is "combined capability", explicitly framed as a
-thesis rather than a measured score.** One Prussian line over a flat `prussian-tint`
-area, milestone dots with drop-lines to a baseline, and a dashed projection
-reaching up-right to signal "ongoing". A dated text legend sits below.
+An overture section between the hero and the project list: a vertical timeline of
+real, dated milestones (2019 Foundations → 2025 → Commercial &amp; executive), a
+Prussian rail with dots, mono years, and one-line descriptions. Pure CSS, no JS,
+responsive by default.
 
-**Reason — and the honesty guardrail.** The subject asked for a "growth /
-exponential" curve of their skills. A literal skill-level y-axis is unfalsifiable
-and reads as self-flattering. The defensible version keeps every x-value a real,
-dated fact and makes the y-axis a *named thesis* — capability compounding because
-domains combine (data × business × strategy × domain). The page says so outright
-in `.tj-cap`: "the rising curve is the argument, not a measured score." Solid line
-= what happened; dashed = extrapolation, per standard data-viz convention. This is
-the same rule as §14.5: never present a shaped claim as a measured one.
+**History.** This slot first held a duration-bar chart, then a compounding
+"combined-capability" curve (an inline-SVG line whose y-axis was a named thesis,
+not a measured score). Both are retired. The curve was defensible but the subject
+preferred a plain timeline — no y-axis to defend at all — so the honest floor is
+simply: real dates, real facts, no invented quantity. That is the strongest
+position of the three.
 
-The section is placed before Selected work so the arc ("who I am, where I'm from")
-frames the projects rather than mixing with them. The line-draw animation only
-runs under `:root.js` + no reduced-motion; without JS or with reduced motion the
-line renders whole. Below `--bp-sm` the in-SVG labels hide and the text legend
-carries the milestones. A genuine *time series* (a measured value over time) still
-belongs in the project-page full-bleed slots, built from real project data — not
-here.
+The section sits before Selected work so the arc ("who I am, where I'm from")
+frames the projects rather than mixing with them. A genuine *time series* (a
+measured value over time) still belongs in a project-page slot, built from real
+project data — never fabricated here.

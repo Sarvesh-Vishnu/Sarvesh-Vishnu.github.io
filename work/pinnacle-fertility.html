@@ -48,26 +48,26 @@
     <article>
       <header class="project-hero">
         <p class="eyebrow reveal" data-stagger="0">§ Project 04</p>
-        <h1 class="reveal" data-stagger="1">Reading patient experience at 50K-record scale.</h1>
+        <h1 class="reveal" data-stagger="1">Reading patient experience at scale.</h1>
         <p class="project-byline reveal" data-stagger="2">Pinnacle Fertility · Data Scientist, Duke MQM capstone · Mar – May 2024</p>
 
         <dl class="project-results reveal" data-stagger="3">
-          <div><dt>patient records</dt><dd>50K+</dd></div>
-          <div><dt>facilities covered</dt><dd>12</dd></div>
+          <div><dt>patient records</dt><dd>100K+</dd></div>
+          <div><dt>facilities covered</dt><dd>12+</dd></div>
         </dl>
 
         <p class="project-tools reveal" data-stagger="4">Python · NLP · Classification · Tableau</p>
       </header>
 
       <section class="project-body-prose">
-        <h2>The problem</h2>
-        <p>Pinnacle operates twelve fertility facilities, and the patient-experience signal was drowning in unstructured feedback. Surveys, notes, and comments piled up faster than anyone could read them — with no way to say, at scale, <em>what's the operational issue that keeps hurting satisfaction, and where</em>.</p>
+        <h2>Objective</h2>
+        <p>Pinnacle operates twelve fertility facilities, and the patient-experience signal was hidden in unstructured feedback. Surveys, notes, and comments piled up faster than they could be processed — with no clear way to say, at scale, <em>what was truly supporting or hurting patient satisfaction, and where</em>.</p>
 
         <h2>Approach</h2>
-        <p>I built the NLP layer end-to-end: cleaned and tokenized 50K+ patient records, trained sentiment models with facility-level and touchpoint-level cuts, and added a predictive component so satisfaction wasn't only measured after the fact. The goal wasn't a smarter dashboard — it was moving the team from lagging indicators to leading ones.</p>
+        <p>I built the NLP layer end-to-end: cleaned and tokenized 100K+ patient records, trained sentiment models with facility-level and touchpoint-level cuts, and added a predictive component so satisfaction wasn't only measured after the fact. The goal wasn't a smarter dashboard — it was moving the team from lagging indicators to leading ones.</p>
 
         <ul>
-          <li>Ingested and cleaned 50K+ patient records across 12 facilities into a consistent schema</li>
+          <li>Ingested and cleaned patient records across 12 facilities into a consistent schema</li>
           <li>Ran sentiment classification with facility-level and interaction-type breakdowns</li>
           <li>Extracted drivers — the operational issues that materially move satisfaction, not the noise</li>
           <li>Trained a predictive layer to flag interactions likely to go wrong before they did</li>
@@ -76,16 +76,9 @@
       </section>
     </article>
 
-    <div class="project-fullbleed">
-      <figure>
-        <div class="placeholder" role="img" aria-label="Composite of facility-level satisfaction drivers visualization"></div>
-        <figcaption>Fig. 01 — Driver ranking across facilities, prioritized by lift-if-fixed.</figcaption>
-      </figure>
-    </div>
-
     <section class="project-body-prose">
       <h2>Outcome</h2>
-      <p>The team walked away with a facility-level ranking of what actually drives satisfaction, and a way to flag interactions at risk of going wrong before they did. That's the difference between operational lagging indicators — "we lost that patient last month" — and operational leading ones: "this current interaction looks like it's going sideways; here's what usually helps."</p>
+      <p>The team walked away with a facility-level ranking of what actually drives satisfaction, and a way to flag interactions at risk of going wrong before they did — moving from operational lagging indicators to operational leading ones.</p>
 
       <h2>What I'd do next</h2>
       <p>An A/B testing loop. Pair each sentiment prediction with a specific intervention and measure whether the intervention actually moves the outcome — not just whether it correlates with better sentiment. That's the only way to close the loop from insight to action.</p>

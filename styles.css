@@ -362,88 +362,70 @@ body {
 @media (max-width: 768px) { .section-head .section-title { grid-column: 1 / -1; } }
 
 /* -------------------------------------------------------------
-   Trajectory — combined-capability curve (design.md §14.7)
-   Real dated milestones on x; y is compounding capability, framed
-   as a thesis, not a measured score. Inline SVG, one Prussian line.
+   Timeline — vertical career spine (design.md §14.7)
+   Real dated milestones, no fabricated axis. Prussian rail + dots.
+   Pure CSS, responsive by default.
    ------------------------------------------------------------- */
-.tj-chart {
-  width: 100%;
-  overflow: visible;
-}
-.tj-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.tj-fill   { fill: var(--prussian-tint); }
-.tj-baseline { stroke: var(--line); stroke-width: 1; }
-.tj-drop   { stroke: var(--line); stroke-width: 1; }
-.tj-line   { fill: none; stroke: var(--prussian); stroke-width: 2.5;
-             stroke-linecap: round; stroke-linejoin: round; }
-.tj-proj   { fill: none; stroke: var(--prussian); stroke-width: 2;
-             stroke-dasharray: 3 4; opacity: 0.7; }
-.tj-arrow  { fill: none; stroke: var(--prussian); stroke-width: 2;
-             stroke-linecap: round; stroke-linejoin: round; }
-.tj-dot    { fill: var(--prussian); }
-.tj-domain { fill: var(--ink); font-family: var(--font-sans);
-             font-size: 14px; font-weight: 500; }
-.tj-year   { fill: var(--ink-muted); font-family: var(--font-mono);
-             font-size: 12px; letter-spacing: 0.06em; }
-.tj-ylabel { fill: var(--ink-muted); font-family: var(--font-mono);
-             font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
-
-/* Line-draw: default fully drawn (no-JS, reduced-motion see it whole);
-   only enhance when JS is present and motion is welcome. */
-:root.js .reveal .tj-line { stroke-dasharray: 1300; stroke-dashoffset: 1300; }
-:root.js .reveal.is-visible .tj-line {
-  animation: tj-draw 1.3s var(--ease-out) forwards;
-}
-@keyframes tj-draw { to { stroke-dashoffset: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  :root.js .reveal .tj-line,
-  :root.js .reveal.is-visible .tj-line {
-    stroke-dasharray: none; stroke-dashoffset: 0; animation: none;
-  }
-}
-
-/* Legend — richer, dated milestones. The mobile-first text view. */
-.tj-legend {
-  margin-top: var(--space-12);
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4) var(--space-8);
-}
-.tj-legend li {
-  display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: var(--space-3);
-  align-items: baseline;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--line);
-}
-.tj-lg-year {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  color: var(--ink-muted);
-}
-.tj-lg-text { font-size: var(--text-sm); color: var(--ink-soft); }
-.tj-lg-text strong { font-weight: 500; color: var(--ink); }
-
-.tj-cap {
+.timeline {
   margin-top: var(--space-8);
-  max-width: 65ch;
+  max-width: 72ch;
+}
+.tm {
+  display: grid;
+  grid-template-columns: 18px 72px 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+.tm-rail {
+  position: relative;
+  align-self: stretch;
+}
+/* the vertical line runs through the dot column */
+.tm-rail::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+  transform: translateX(-50%);
+}
+/* the dot, punched out of the rail with a canvas ring */
+.tm-rail::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0.72em;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--prussian);
+  border: 2px solid var(--canvas);
+  transform: translate(-50%, -50%);
+}
+/* rail stops at the first and last dots rather than overhanging */
+.tm:first-child .tm-rail::before { top: 0.72em; }
+.tm:last-child  .tm-rail::before { bottom: auto; height: 0.72em; }
+
+.tm-year {
   font-family: var(--font-mono);
   font-size: var(--text-2xs);
-  line-height: 1.7;
   color: var(--ink-muted);
+  padding: 0.5em 0 var(--space-8);
+  white-space: nowrap;
 }
+.tm-body {
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  padding: 0 0 var(--space-8);
+  max-width: 60ch;
+}
+.tm-body strong { font-weight: 500; color: var(--ink); }
 
-/* On phones the SVG labels get too dense; drop them and let the
-   legend carry the milestones. Curve, fill, and axis stay. */
 @media (max-width: 640px) {
-  .tj-domain, .tj-year, .tj-ylabel { display: none; }
-  .tj-legend { grid-template-columns: 1fr; }
+  .tm { grid-template-columns: 16px 60px 1fr; gap: var(--space-3); }
 }
 
 /* -------------------------------------------------------------
