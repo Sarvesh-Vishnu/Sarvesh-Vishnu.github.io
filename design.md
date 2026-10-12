@@ -150,15 +150,16 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 
 ### Page structure
 1. Header — fixed, 64px, transparent; hairline border on scroll
-2. Hero — full viewport, asymmetric; name + role + tagline
-3. Trajectory — combined-capability curve, the overture (§14.7)
-4. Selected work — list-driven (not cards)
-5. About — narrow column, editorial feel
-6. Skills / Stack — mono-aligned list
-7. Recognition — mono key/value rows
-8. Writing — single outbound CTA
-9. Contact — large, single CTA
-10. Footer — minimal mono captions
+2. Hero — full viewport, asymmetric; name + role + tagline + one row of proof links (§14.8)
+3. Timeline — dated career spine, the overture (§14.7)
+4. Professional work — list-driven (not cards); employer and client work, no code
+5. Independent work — hairline rows with screenshot, claim, proof line, live/code links (§14.8)
+6. About — narrow column, editorial feel
+7. Skills / Stack — mono-aligned list
+8. Recognition — mono key/value rows
+9. Writing — On Paper (primary) + Substack
+10. Contact — LinkedIn, email, GitHub, résumé
+11. Footer — minimal mono captions
 
 ---
 
@@ -407,3 +408,39 @@ The section sits before Selected work so the arc ("who I am, where I'm from")
 frames the projects rather than mixing with them. A genuine *time series* (a
 measured value over time) still belongs in a project-page slot, built from real
 project data — never fabricated here.
+
+### 14.8 — Independent work, proof links, and the end of "Earlier work"
+*Adds: §5 sections 5 (Independent work) and the hero proof-link row.
+Changes: "Selected work" is renamed "Professional work"; Numit moves from it to
+Independent work; the "Earlier work" rows collapse to one muted line.*
+
+The audience is a hiring reviewer giving the page about a minute. Employer work
+can never show code, so the independent builds have to carry the verifiable
+evidence — and before this section existed, none of them were linked at all.
+
+**The row pattern.** Hairline rows, not cards (§5 still holds): a 16:10
+screenshot of the real, live product; a mono kicker; the name; one sentence of
+claim; then a **proof line** — mono, behind a 2px Prussian rule — that states
+only facts checkable at the link (test counts, eval scores, named data
+sources). Then text links: Live ↗, Code ↗, Slides ↗, Case study →. A project
+gets a Code link only when its repository is public; no dead or "coming soon"
+links. The screenshot link is `tabindex="-1"` and `aria-hidden`, so keyboard
+and screen-reader users meet each destination once, through its text link.
+Images are 960×600 WebP, lazy-loaded with explicit dimensions (no layout shift);
+all five together weigh ~135 KB.
+
+**Order.** Follows the Product-DS-led positioning: Foresight (forecasting and
+backtesting rigor), Nakshaa (retrieval evaluation), Pukhuri (public data), Haq
+(on-device LLM with hallucination control), Numit (data journalism).
+
+**Honesty notes carried on the page.** Pukhuri's free hosting sleeps after 48
+hours idle, so its row says the first load can take ~30 seconds rather than
+letting a reviewer think it is broken.
+
+**Hero proof links.** GitHub · LinkedIn · Email · Résumé, directly under the
+role line: a reviewer reaches code or contact in one click from the top.
+
+**Earlier work.** Four coursework/side items had no link, code, or result to
+inspect. At this bar, rows without evidence dilute the rows with it, so they
+are now one muted line — breadth stays visible, without competing.
+

@@ -520,32 +520,112 @@ body {
 }
 
 /* -------------------------------------------------------------
-   Earlier work — muted academic strand
+   Earlier work — one muted line, no rows (design.md §14.8)
    ------------------------------------------------------------- */
-.earlier-head {
-  margin-top: var(--space-16);
-  margin-bottom: var(--space-2);
+.earlier-line {
+  margin-top: var(--space-12);
+  max-width: var(--reading-max);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  line-height: 1.7;
 }
-.project-list.earlier .project-row { border-top-color: var(--line); }
-.project-list.earlier .project-name { color: var(--ink-soft); }
-.project-list.earlier .project-link.is-static {
-  cursor: default;
+.earlier-line .eyebrow { margin-right: var(--space-3); }
+
+/* -------------------------------------------------------------
+   Independent work — shipped builds, each with its evidence
+   (design.md §14.8). Hairline rows, not cards: a screenshot,
+   then the claim, then a Prussian-ruled line of proof.
+   ------------------------------------------------------------- */
+.ind-list { display: flex; flex-direction: column; }
+.ind-row {
   display: grid;
-  grid-template-columns: 56px 1fr auto;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--space-12);
+  align-items: start;
+  padding: var(--space-12) 0;
+  border-top: 1px solid var(--line);
+}
+.ind-row:last-child { border-bottom: 1px solid var(--line); }
+.ind-shot {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--surface);
+  transition: border-color var(--duration-fast) ease;
+}
+a.ind-shot:hover { border-color: var(--prussian); }
+.ind-shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; }
+.ind-kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+}
+.ind-name {
+  margin-top: var(--space-2);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.ind-desc {
+  margin-top: var(--space-4);
+  max-width: 54ch;
+  font-size: var(--text-base);
+  color: var(--ink-soft);
+}
+/* the proof line — Prussian as punctuation, per §2 */
+.ind-rigor {
+  margin-top: var(--space-6);
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--prussian);
+  max-width: 60ch;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.7;
+  color: var(--ink);
+}
+.ind-links {
+  margin-top: var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-6);
-  align-items: baseline;
-  padding: var(--space-8) var(--space-4) var(--space-8) var(--space-6);
 }
-.project-list.earlier .project-link.is-static:hover { transform: none; }
-.project-list.earlier .project-link.is-static::before { content: none; }
-@media (max-width: 640px) {
-  .project-list.earlier .project-link.is-static {
-    grid-template-columns: 36px 1fr;
-    grid-template-rows: auto auto;
-    padding: var(--space-6) var(--space-2);
-  }
-  .project-list.earlier .project-year { grid-column: 2; grid-row: 2; margin-top: var(--space-1); }
+.ind-links a {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--prussian);
+  border-bottom: 1px solid currentColor;
+  transition: border-bottom-width var(--duration-fast) ease;
 }
+.ind-links a:hover { border-bottom-width: 2px; }
+.ind-note {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+}
+@media (max-width: 768px) {
+  .ind-row { grid-template-columns: 1fr; gap: var(--space-6); padding: var(--space-8) 0; }
+}
+
+/* Hero proof links: code and contact one click from the top */
+.hero-links {
+  margin-top: var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+}
+.hero-links a {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--prussian);
+  border-bottom: 1px solid currentColor;
+  transition: border-bottom-width var(--duration-fast) ease;
+}
+.hero-links a:hover { border-bottom-width: 2px; }
 
 /* -------------------------------------------------------------
    About — narrow editorial
@@ -595,6 +675,7 @@ body {
   color: var(--ink-soft);
 }
 .writing-block .btn { justify-self: start; }
+.writing-actions { display: flex; flex-wrap: wrap; gap: var(--space-4); }
 
 /* -------------------------------------------------------------
    Contact
