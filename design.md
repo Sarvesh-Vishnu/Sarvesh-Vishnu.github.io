@@ -150,10 +150,12 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 
 ### Page structure
 1. Header — fixed, 64px, transparent; hairline border on scroll
-2. Hero — full viewport, asymmetric; name + role + tagline + one row of proof links (§14.8)
+2. Hero — full viewport, asymmetric; name + role + tagline + one row of proof links (§14.8);
+   below it, the signal: a real time series with a live forecast (§14.9)
 3. Timeline — dated career spine, the overture (§14.7)
 4. Professional work — list-driven (not cards); employer and client work, no code
-5. Independent work — hairline rows with screenshot, claim, proof line, live/code links (§14.8)
+5. Independent work — hairline rows with screenshot, claim, proof line, live/code links (§14.8),
+   then the skills ticker (§14.9)
 6. About — narrow column, editorial feel
 7. Skills / Stack — mono-aligned list
 8. Recognition — mono key/value rows
@@ -231,6 +233,8 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 
 **Respect `prefers-reduced-motion: reduce`** — disable all transforms, keep opacity changes only.
 
+*The GSAP/Lenis layer, the hero signal and what each effect is for: §14.9.*
+
 ---
 
 ## 8. Iconography
@@ -282,9 +286,14 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 /
 ├── index.html
 ├── styles.css              # tokens + base + components
-├── main.js                 # theme toggle, scroll reveal, reduced motion
+├── main.js                 # theme toggle, signal readout, fallback reveal, reduced motion
+├── motion.js               # GSAP + Lenis layer (§14.9); progressive enhancement only
 ├── work/                   # project detail pages
+├── data/                   # source data for the signal (ERA5 via OWID, CC BY)
+├── scripts/build_signal.py # fits + backtests the signal, writes it into index.html
 ├── assets/
+│   ├── vendor/             # gsap, ScrollTrigger, SplitText, lenis — pinned
+│   ├── data/signal.json    # values behind the signal's hover readout
 │   ├── og-image.png
 │   ├── favicon.svg
 │   └── resume.pdf
@@ -444,3 +453,80 @@ role line: a reviewer reaches code or contact in one click from the top.
 inspect. At this bar, rows without evidence dilute the rows with it, so they
 are now one muted line — breadth stays visible, without competing.
 
+
+### 14.9 — Motion system v2: GSAP + Lenis, and the signal
+*Extends: §7 motion (when motion is on, ScrollTrigger replaces §7's "IntersectionObserver,
+never scroll listeners" rule), §5 (hero signal, skills ticker), §11, §12.*
+
+The page gains a deliberate motion layer. §7's test still governs every effect: it must
+point at real content or real data, or it does not ship.
+
+**Libraries — vendored, pinned, no build step.** GSAP 3.15.0 core + ScrollTrigger +
+SplitText (all free since Webflow's acquisition) and Lenis 1.3.27 (MIT), served from
+`assets/vendor/`; no runtime CDN. About 55 KB gzipped together, all `defer`. lenis.css is
+inlined into styles.css. Project pages skip SplitText (they have no section titles).
+
+**Considered and rejected.**
+- *Vanta.js.* A three.js (r134) animated background: ~120 KB gzipped, no reduced-motion
+  handling, and its looks (birds, waves, fog, net) are recognisably stock. It also breaks
+  §13 (no animated backgrounds). The instinct, a hero that feels alive, is kept, but met
+  with real data: the signal below.
+- *React Bits as a dependency.* It is React-only, and its licence (MIT + Commons Clause)
+  is not plain MIT. Its best patterns are rebuilt in vanilla GSAP instead: SplitText line
+  reveal, DecryptedText, CountUp, ScrollVelocity, Magnet.
+
+**The signal (hero data layer).** Under the hero text, full content width: India's
+monthly mean surface temperature (Copernicus ERA5 via Our World in Data, CC BY 4.0), the
+last 15 years drawn, then a 24-month forecast with an 80% interval and a sparse year
+axis. `scripts/build_signal.py` fits a linear trend + 3 annual harmonics on 30 years with
+AR(1) errors, and runs a rolling-origin backtest first (5 origins × 12 months vs
+seasonal-naive); the caption prints only what that backtest returns (Oct 2026: 36% lower
+MAE, 80% interval held 78% of the time) plus the full-record warming figure (+0.8 °C,
+2016–25 vs 1951–80). On `pointer: fine`, hovering reads any month from
+`assets/data/signal.json`. It draws once, left to right, when it first enters the
+viewport, history first and then the forecast fan, and never loops. The caption reads
+"forecast made Oct 2026 — check back": a falsifiable claim on the front page, which is the
+point. To refresh, rerun the script; it rewrites the block between the `signal:start` /
+`signal:end` markers and the JSON. Narrow screens show the recent end, with a fade on the
+cut edge.
+
+*Why this series:* it is public, Indian, and seasonal enough that a forecast with an honest
+interval reads at a glance. It is the page demonstrating forecasting, calibration and
+backtesting, the skills the Foresight row claims, rather than asserting them.
+
+**What moves (`motion.js`).**
+
+| Element | Effect | Pattern rebuilt |
+|---|---|---|
+| Hero text | CSS-only staggered fade-up, 80ms steps (no script) | §7 original |
+| Signal | clip-path wipe 2.2s; forecast fades in as the line reaches today | — |
+| Section titles | lines rise out of a mask, once | SplitText |
+| Section eyebrows, project kickers | mono glyphs resolve left→right in 0.8s, then revert to plain text | DecryptedText |
+| Timeline | rail fills with scroll (scrub); each dot lights when reached | — |
+| Independent-work screenshots | wipe up, image settles 1.12→1 | — |
+| Result figures (project pages) | count up from 0 once; ranges ("6–12mo") and single digits stay as written | CountUp |
+| Skills ticker (after Independent work) | drifts; speeds with scroll velocity, reverses on scroll-up; paused off-screen | ScrollVelocity |
+| Buttons | small magnetic pull toward the cursor (`pointer: fine`) | Magnet |
+| Scrolling | Lenis smooth scroll; in-page links glide to a −72px header offset; skip link left native | — |
+
+**Guarantees.**
+- *LCP.* The hero name is never hidden or animated (`.hero-title` / project `h1` carry no
+  `.reveal`), and the rest of the hero enters on a CSS keyframe that starts on first
+  paint. No script sits on the LCP path.
+- *Reduced motion.* An inline `<head>` script sets `.motion` only when the reader has not
+  asked for reduced motion; without it motion.js exits and Lenis is never created. The
+  hero keyframes are switched off under the same media query.
+- *Failure.* main.js drops `.motion` and clears any inline styles if GSAP did not load,
+  if motion.js throws (`motion:fail` event), or if it has not set `motion-ready` within
+  3s. Nothing can stay hidden.
+- *No JS.* Renders statically, as before.
+- *Assistive tech.* While scrambling, a label's real text sits in an `sr-only` span and
+  the visual copy is `aria-hidden`; afterwards the label is plain text again. The ticker
+  is `aria-hidden`: it restates skills that Stack and the project rows already name.
+
+**Measured (Oct 2026, local, Lighthouse 12.8).** Desktop: 100 / 100 / 100 / 100, LCP 0.5s.
+Mobile (simulated throttling): Performance 94–95, 100 on the other three, LCP ~2.9s.
+That matches `main` before this change (95–96, LCP 2.7–2.9s), so the motion layer costs
+nothing measurable. The remaining mobile LCP comes from the two render-blocking
+third-party font stylesheets. Self-hosting the fonts is the next lever for §11's 1.2s
+target, which mobile has never met.
