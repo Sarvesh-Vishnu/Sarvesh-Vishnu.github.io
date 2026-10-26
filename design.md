@@ -150,18 +150,16 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 
 ### Page structure
 1. Header — fixed, 64px, transparent; hairline border on scroll
-2. Hero — full viewport, asymmetric; name + role + tagline + one row of proof links (§14.8);
-   below it, the signal: a real time series with a live forecast (§14.9)
-3. Timeline — dated career spine, the overture (§14.7)
-4. Professional work — list-driven (not cards); employer and client work, no code
-5. Independent work — hairline rows with screenshot, claim, proof line, live/code links (§14.8),
-   then the skills ticker (§14.9)
-6. About — narrow column, editorial feel
-7. Skills / Stack — mono-aligned list
-8. Recognition — mono key/value rows
-9. Writing — On Paper (primary) + Substack
-10. Contact — LinkedIn, email, GitHub, résumé
-11. Footer — minimal mono captions
+2. Hero — full viewport, asymmetric; name + role + tagline + one row of proof links (§14.8).
+   Static: nothing in it moves (§14.9)
+3. The path here — two threads, technical and business, that merge (§14.11)
+4. Work — one section, best work only (§14.10), as a 2×2 grid of figure-led tiles (§14.12)
+5. About — narrow column, editorial feel
+6. Skills / Stack — mono-aligned list
+7. Recognition — mono key/value rows
+8. Writing — On Paper (primary) + Substack
+9. Contact — "Let's talk." + LinkedIn, email, GitHub, résumé
+10. Footer — minimal mono captions
 
 ---
 
@@ -286,14 +284,11 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 /
 ├── index.html
 ├── styles.css              # tokens + base + components
-├── main.js                 # theme toggle, signal readout, fallback reveal, reduced motion
-├── motion.js               # GSAP + Lenis layer (§14.9); progressive enhancement only
-├── work/                   # project detail pages
-├── data/                   # source data for the signal (ERA5 via OWID, CC BY)
-├── scripts/build_signal.py # fits + backtests the signal, writes it into index.html
+├── main.js                 # theme toggle, header, fallback reveal, reduced motion
+├── motion.js               # Lenis + GSAP layer (§14.9); progressive enhancement only
+├── work/                   # project detail pages (four, §14.10)
 ├── assets/
 │   ├── vendor/             # gsap, ScrollTrigger, SplitText, lenis — pinned
-│   ├── data/signal.json    # values behind the signal's hover readout
 │   ├── og-image.png
 │   ├── favicon.svg
 │   └── resume.pdf
@@ -399,6 +394,8 @@ regression) and read as generic. The crosshair passes §7's test ("guide
 attention, never entertain"); a lagging blob does not.
 
 ### 14.7 — Timeline section (career spine)
+*Superseded by §14.11 (two threads).*
+
 *Adds: §5 page structure — §01 "Timeline", before Selected work.*
 
 An overture section between the hero and the project list: a vertical timeline of
@@ -419,6 +416,9 @@ measured value over time) still belongs in a project-page slot, built from real
 project data — never fabricated here.
 
 ### 14.8 — Independent work, proof links, and the end of "Earlier work"
+*Superseded in part by §14.10: the separate Independent work section and the
+"Earlier" line are gone; the hero proof links stand.*
+
 *Adds: §5 sections 5 (Independent work) and the hero proof-link row.
 Changes: "Selected work" is renamed "Professional work"; Numit moves from it to
 Independent work; the "Earlier work" rows collapse to one muted line.*
@@ -454,79 +454,123 @@ inspect. At this bar, rows without evidence dilute the rows with it, so they
 are now one muted line — breadth stays visible, without competing.
 
 
-### 14.9 — Motion system v2: GSAP + Lenis, and the signal
-*Extends: §7 motion (when motion is on, ScrollTrigger replaces §7's "IntersectionObserver,
-never scroll listeners" rule), §5 (hero signal, skills ticker), §11, §12.*
+### 14.9 — Motion system v2: GSAP + Lenis, spent in one place
+*Extends: §7 motion. On the home page, when motion is on, ScrollTrigger replaces
+§7's "IntersectionObserver, never scroll listeners" rule. Also §11, §12.*
 
-The page gains a deliberate motion layer. §7's test still governs every effect: it must
-point at real content or real data, or it does not ship.
+§7's test governs every effect: it must point at real content, or it does not ship.
+The motion budget is spent in one place, the path (§14.11). Everything else is a
+quiet reveal, and the hero never moves.
 
-**Libraries — vendored, pinned, no build step.** GSAP 3.15.0 core + ScrollTrigger +
-SplitText (all free since Webflow's acquisition) and Lenis 1.3.27 (MIT), served from
-`assets/vendor/`; no runtime CDN. About 55 KB gzipped together, all `defer`. lenis.css is
-inlined into styles.css. Project pages skip SplitText (they have no section titles).
+**Libraries, vendored and pinned, with no build step.** GSAP 3.15.0 core +
+ScrollTrigger + SplitText (all free since Webflow's acquisition) and Lenis 1.3.27
+(MIT, licence header kept), served from `assets/vendor/` with no runtime CDN; all
+`defer`. lenis.css is inlined into styles.css. Project pages load Lenis only
+(`autoRaf`), not GSAP.
 
-**Considered and rejected.**
-- *Vanta.js.* A three.js (r134) animated background: ~120 KB gzipped, no reduced-motion
-  handling, and its looks (birds, waves, fog, net) are recognisably stock. It also breaks
-  §13 (no animated backgrounds). The instinct, a hero that feels alive, is kept, but met
-  with real data: the signal below.
-- *React Bits as a dependency.* It is React-only, and its licence (MIT + Commons Clause)
-  is not plain MIT. Its best patterns are rebuilt in vanilla GSAP instead: SplitText line
-  reveal, DecryptedText, CountUp, ScrollVelocity, Magnet.
+**What moves.**
 
-**The signal (hero data layer).** Under the hero text, full content width: India's
-monthly mean surface temperature (Copernicus ERA5 via Our World in Data, CC BY 4.0), the
-last 15 years drawn, then a 24-month forecast with an 80% interval and a sparse year
-axis. `scripts/build_signal.py` fits a linear trend + 3 annual harmonics on 30 years with
-AR(1) errors, and runs a rolling-origin backtest first (5 origins × 12 months vs
-seasonal-naive); the caption prints only what that backtest returns (Oct 2026: 36% lower
-MAE, 80% interval held 78% of the time) plus the full-record warming figure (+0.8 °C,
-2016–25 vs 1951–80). On `pointer: fine`, hovering reads any month from
-`assets/data/signal.json`. It draws once, left to right, when it first enters the
-viewport, history first and then the forecast fan, and never loops. The caption reads
-"forecast made Oct 2026 — check back": a falsifiable claim on the front page, which is the
-point. To refresh, rerun the script; it rewrites the block between the `signal:start` /
-`signal:end` markers and the JSON. Narrow screens show the recent end, with a fade on the
-cut edge.
+| Element | Effect |
+|---|---|
+| The path (§14.11) | both threads draw with scroll (scrubbed, so they follow you both ways); dots light as the line reaches them; the merge curves meet; today's dot sends out one ring, once |
+| Section titles | lines rise out of a mask, once (SplitText) |
+| Rows marked `.reveal` | batched fade-up as they enter |
+| Scrolling | Lenis smooth scroll; in-page links glide to a −72px header offset; skip link left native |
 
-*Why this series:* it is public, Indian, and seasonal enough that a forecast with an honest
-interval reads at a glance. It is the page demonstrating forecasting, calibration and
-backtesting, the skills the Foresight row claims, rather than asserting them.
-
-**What moves (`motion.js`).**
-
-| Element | Effect | Pattern rebuilt |
-|---|---|---|
-| Hero text | CSS-only staggered fade-up, 80ms steps (no script) | §7 original |
-| Signal | clip-path wipe 2.2s; forecast fades in as the line reaches today | — |
-| Section titles | lines rise out of a mask, once | SplitText |
-| Section eyebrows, project kickers | mono glyphs resolve left→right in 0.8s, then revert to plain text | DecryptedText |
-| Timeline | rail fills with scroll (scrub); each dot lights when reached | — |
-| Independent-work screenshots | wipe up, image settles 1.12→1 | — |
-| Result figures (project pages) | count up from 0 once; ranges ("6–12mo") and single digits stay as written | CountUp |
-| Skills ticker (after Independent work) | drifts; speeds with scroll velocity, reverses on scroll-up; paused off-screen | ScrollVelocity |
-| Buttons | small magnetic pull toward the cursor (`pointer: fine`) | Magnet |
-| Scrolling | Lenis smooth scroll; in-page links glide to a −72px header offset; skip link left native | — |
+**What does not, and why.**
+- *Hero.* Static. The name, role and tagline are the first read; any entrance makes
+  a reviewer wait, and the hero text sits on the LCP path.
+- *Considered, built, and cut.* A hero "signal" (India's monthly temperature with a
+  backtested 24-month forecast): rigorous, but it said nothing about the work. A
+  skills ticker that sped up with scroll: unverifiable keywords as decoration.
+  Decrypting labels, count-up figures, magnetic buttons: each added movement and no
+  meaning. Removed rather than tuned.
+- *Vanta.js.* Rejected: ~120 KB gzipped, three.js r134, no reduced-motion handling,
+  recognisably stock looks, and it breaks §13 (no animated backgrounds).
+- *React Bits.* Not a dependency (React-only, MIT + Commons Clause). The one pattern
+  kept, SplitText line reveal, is plain GSAP.
 
 **Guarantees.**
-- *LCP.* The hero name is never hidden or animated (`.hero-title` / project `h1` carry no
-  `.reveal`), and the rest of the hero enters on a CSS keyframe that starts on first
-  paint. No script sits on the LCP path.
-- *Reduced motion.* An inline `<head>` script sets `.motion` only when the reader has not
-  asked for reduced motion; without it motion.js exits and Lenis is never created. The
-  hero keyframes are switched off under the same media query.
-- *Failure.* main.js drops `.motion` and clears any inline styles if GSAP did not load,
-  if motion.js throws (`motion:fail` event), or if it has not set `motion-ready` within
-  3s. Nothing can stay hidden.
-- *No JS.* Renders statically, as before.
-- *Assistive tech.* While scrambling, a label's real text sits in an `sr-only` span and
-  the visual copy is `aria-hidden`; afterwards the label is plain text again. The ticker
-  is `aria-hidden`: it restates skills that Stack and the project rows already name.
+- *Reduced motion.* An inline `<head>` script sets `.motion` only when the reader has
+  not asked for reduced motion; without it motion.js exits, Lenis is never created,
+  and the path renders fully drawn.
+- *Failure.* motion.js marks `.motion-gsap` when it takes over. main.js clears that
+  class and every inline style it set if motion.js throws (`motion:fail`) or has not
+  set `motion-ready` within 3s. Nothing can stay hidden or undrawn.
+- *No JS.* The path is complete in CSS (lines, dots, merge); reveals are forced
+  visible by `<noscript>` styles.
 
-**Measured (Oct 2026, local, Lighthouse 12.8).** Desktop: 100 / 100 / 100 / 100, LCP 0.5s.
-Mobile (simulated throttling): Performance 94–95, 100 on the other three, LCP ~2.9s.
-That matches `main` before this change (95–96, LCP 2.7–2.9s), so the motion layer costs
-nothing measurable. The remaining mobile LCP comes from the two render-blocking
-third-party font stylesheets. Self-hosting the fonts is the next lever for §11's 1.2s
-target, which mobile has never met.
+### 14.10 — One work list, best work only
+*Changes: §5. "Professional work" and "Independent work" become one section,
+"§ 02 — Work / Selected work."*
+
+The page now carries only work that clears the bar a top-tier DS reviewer sets. A
+thinner page of strong rows beats a fuller page where weaker rows dilute the strong
+ones. Two section names ("Projects I've recently shipped", "Shipped, with the
+evidence attached") also read as a claim each; one neutral heading lets the rows
+speak.
+
+**In:** Cooper Surgical (AOP analytics: quota across 75+ territory managers, ensemble
+forecasting for 25+ product lines), Western Virginia Water Authority (failure
+prediction on 20 years of CMMS data, ~$150K value), Pinnacle Fertility (NLP on 100K+
+patient records), Numit (live, independent). One tile pattern for all four (§14.12);
+Numit is marked "Independent build" in its meta line.
+
+**Out, and why:** Nicholas School audience analytics (solid numbers, but reads as
+marketing rather than DS at this bar; still named on the path); ESG causal study (no
+result or code on its page); Blue Cross (2022, pro bono, ~5% lift); the "Earlier"
+line; and, at the owner's call, Foresight, Nakshaa, Pukhuri and Haq until they reach
+the bar set for this page. Their pages and screenshots are removed from the site (history
+keeps them).
+
+### 14.11 — The path here: two threads, one practice
+*Supersedes: §14.7.*
+
+The career spine is drawn as two lanes that merge. **Technical** (filled dots): SRM's
+CS / AI & ML degree, Siemens. **Business** (hollow dots): Deloitte Strategy &
+Analytics, Duke Fuqua. The technical lane runs on beside the business one; both
+curve into a single, heavier line, and every role since sits on it (ringed dots):
+Pinnacle and the Nicholas School, Western Virginia Water, Cooper Surgical. The two
+lanes are named in words on their rows (Technical / Business), so the encoding never
+rests on shape alone; the merged line goes unlabelled on purpose: the picture and the
+title say it.
+
+**Why this picture.** The positioning, a data scientist who is also fluent in
+strategy, is the Product-DS pitch. The merge says it in one look, and it is an
+honest diagram: real dates, real roles, no invented quantity (the lesson of §14.7).
+
+**Mechanics.** Lanes sit at fixed fractions of a 64px rail (48px under 640px):
+technical 10/48, business 38/48, merged 24/48. The merge is an SVG drawn on the same
+48-unit grid, stretched to the rail with `non-scaling-stroke`, so the curves meet the
+lanes at any width. Each line is a hairline track with a Prussian fill whose length
+is `--p` (1 when static). One accent, monochrome encoding by position and dot shape.
+
+### 14.12 — Work as figure-led tiles
+*Changes: §6's hairline project list (home page only) becomes a 2×2 grid of tiles; one
+column under 768px. Project pages are unchanged.*
+
+The owner asked for a more visual preview. Three of the four entries are client work,
+so their pictures cannot be screenshots. Each instead gets a **method figure**: a
+small, paper-style schematic of how the work was done, drawn in the page's own ink and
+Prussian, tagged "Schematic" on the tile.
+
+- **Cooper Surgical:** history, then four model forecasts (ARIMA, Prophet, SARIMAX,
+  Boosting) fanning out, with the ensemble in Prussian through their spread.
+- **Western Virginia Water:** cumulative failure probability over 18 months for
+  several assets; the flagged one (Prussian) crosses the replacement threshold inside
+  the shaded 6–12-month window, which is the project's lead time.
+- **Pinnacle Fertility:** diverging sentiment bars for 12 facilities (negative in
+  Prussian, positive in neutral), one facility emphasised.
+- **Numit:** the live product's real screenshot, tagged "Live product".
+
+**Honesty rule.** The shapes illustrate the method; none of the values are client data,
+and the tag says so. Real figures from the work (75+, 25+, $150K, 6–12 months, 100K+,
+12 facilities) appear only where the case study states them.
+
+**Mechanics.** Inline SVG, 400×250 viewBox (16:10, the same as the tile and the
+screenshot), so the figures theme with the tokens and cost no requests. Mono labels are
+10 user units; secondary labels (`.fig-minor`) hide under 640px, where they would fall
+below ~9px. On hover, the Prussian line of the figure redraws once (CSS only; off under
+reduced motion). The art comes from a deterministic generator (fixed seeds), so a
+redraw gives identical figures.
+

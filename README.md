@@ -16,18 +16,8 @@ npx serve . -l 4321
 - HTML5 + CSS custom properties, no build step
 - JetBrains Mono (Google Fonts) + General Sans (Fontshare)
 - Motion: GSAP 3.15 (ScrollTrigger, SplitText) + Lenis 1.3.27, vendored and pinned in
-  `assets/vendor/`, loaded as progressive enhancement (`motion.js`)
+  `assets/vendor/`, loaded as progressive enhancement (`motion.js`); project pages load Lenis only
 - Manual light/dark toggle; `prefers-reduced-motion` honored (no motion layer at all)
-
-## The hero signal
-
-The chart under the hero is real: India's monthly mean temperature (Copernicus ERA5 via
-Our World in Data, CC BY 4.0) with a 24-month forecast. The model is backtested before
-any number reaches the caption. To refresh it with new data:
-
-```bash
-python3 scripts/build_signal.py   # needs numpy; rewrites the signal block + assets/data/signal.json
-```
 
 ## Structure
 
@@ -35,12 +25,11 @@ python3 scripts/build_signal.py   # needs numpy; rewrites the signal block + ass
 .
 ├── index.html              # single-page portfolio
 ├── styles.css              # all tokens + components
-├── main.js                 # theme toggle, header, signal readout, fallback reveal
-├── motion.js               # GSAP + Lenis layer
+├── main.js                 # theme toggle, header, fallback reveal
+├── motion.js               # Lenis + GSAP layer
 ├── work/                   # project pages
-├── data/                   # signal source data
-├── scripts/build_signal.py # signal model + backtest
-├── assets/                 # favicon, résumé, screenshots, vendor/, data/
+├── scripts/figures.py      # regenerates the schematic work-grid figures in index.html
+├── assets/                 # favicon, OG image, résumé, vendor/
 ├── sitemap.xml
 ├── robots.txt
 └── .nojekyll               # disables Jekyll on GH Pages
