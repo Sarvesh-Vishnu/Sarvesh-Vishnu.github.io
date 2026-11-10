@@ -17,6 +17,8 @@ npx serve . -l 4321
 - JetBrains Mono (Google Fonts) + General Sans (Fontshare)
 - Motion: GSAP 3.15 (ScrollTrigger, SplitText) + Lenis 1.3.27, vendored and pinned in
   `assets/vendor/`, loaded as progressive enhancement (`motion.js`); project pages load Lenis only
+- Figures are working models (`lab.js`): forecasters, a ranked list and a sampling
+  experiment that run in the browser on synthetic data; tested with `node --test`
 - Manual light/dark toggle; `prefers-reduced-motion` honored (no motion layer at all)
 
 ## Structure
@@ -28,7 +30,9 @@ npx serve . -l 4321
 ├── main.js                 # theme toggle, header, fallback reveal
 ├── motion.js               # Lenis + GSAP layer
 ├── work/                   # project pages
-├── scripts/figures.py      # regenerates the schematic work-grid figures in index.html
+├── lab.js                  # the working models behind the figures
+├── tests/lab.test.cjs      # node --test tests/lab.test.cjs
+├── scripts/figures.cjs     # node scripts/figures.cjs: static fallbacks for the figures
 ├── assets/                 # favicon, OG image, résumé, vendor/
 ├── sitemap.xml
 ├── robots.txt

@@ -152,8 +152,9 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 1. Header — fixed, 64px, transparent; hairline border on scroll
 2. Hero — full viewport, asymmetric; name + role + tagline + one row of proof links (§14.8).
    Static: nothing in it moves (§14.9)
-3. The path here — two threads, technical and business, that merge (§14.11)
-4. Work — one section, best work only (§14.10), as a 2×2 grid of figure-led tiles (§14.12)
+3. Work — one section, best work only (§14.10): a 2×2 grid of tiles whose figures are
+   working models (§14.12, §14.13). It leads because it is the strongest thing here
+4. The path here — two threads, technical and business, that merge (§14.11)
 5. About — narrow column, editorial feel
 6. Skills / Stack — mono-aligned list
 7. Recognition — mono key/value rows
@@ -286,6 +287,9 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 ├── styles.css              # tokens + base + components
 ├── main.js                 # theme toggle, header, fallback reveal, reduced motion
 ├── motion.js               # Lenis + GSAP layer (§14.9); progressive enhancement only
+├── lab.js                  # the models behind the figures (§14.13): pure core + renderers + DOM
+├── tests/lab.test.cjs      # node --test: the models, the sentences, the renderers
+├── scripts/figures.cjs     # writes the static fallbacks from lab.js into the pages
 ├── work/                   # project detail pages (four, §14.10)
 ├── assets/
 │   ├── vendor/             # gsap, ScrollTrigger, SplitText, lenis — pinned
@@ -546,6 +550,9 @@ lanes at any width. Each line is a hairline track with a Prussian fill whose len
 is `--p` (1 when static). One accent, monochrome encoding by position and dot shape.
 
 ### 14.12 — Work as figure-led tiles
+*The static schematics described here are superseded by the working models of §14.13;
+the tile pattern, the honesty rule and the 2×2 grid stand.*
+
 *Changes: §6's hairline project list (home page only) becomes a 2×2 grid of tiles; one
 column under 768px. Project pages are unchanged.*
 
@@ -573,4 +580,63 @@ screenshot), so the figures theme with the tokens and cost no requests. Mono lab
 below ~9px. On hover, the Prussian line of the figure redraws once (CSS only; off under
 reduced motion). The art comes from a deterministic generator (fixed seeds), so a
 redraw gives identical figures.
+
+### 14.13 — Figures that answer back
+*Extends: §14.12 (tiles), §6 (project pages), §7. Adds `lab.js`.*
+
+Designer portfolios win attention with craft, because craft is their work. A data
+scientist's craft is the analysis, so the page lets the reader operate it. This is the
+explorable-explanation tradition (Bret Victor, Distill, Ciechanowski): reactive figures
+with the author doing their share, never a sandbox with no guidance.
+
+**Three instruments, one per client project.** Each restates a line the case study
+already makes, on synthetic data, with real arithmetic in the browser.
+
+| Project | Instrument | The reader moves | What it shows |
+|---|---|---|---|
+| Cooper Surgical | The committee | the month forecasting starts; which members sit | four forecasters (seasonal naive, Holt-Winters, harmonic regression, Theta) refit on the past only; their mean is never the worst, and is better on average than any member |
+| WV Water | The list | the replacement budget | failures prevented by the model's ranking, by oldest-first, and by chance |
+| Pinnacle | The sample | comments read per facility; a redraw | when a facility ranking is luck and when it is signal (Wilson intervals; rank stability over 300 redraws) |
+
+**Two scales of the same figure.**
+- *Home tile:* the figure follows the pointer across it (or, with no pointer, the tile's
+  trip up the screen), and the tile's tag becomes a live readout. Clicking still opens
+  the case study.
+- *Case study:* the instrument leads the page, inside the first screen. Real form
+  controls (range, checkbox, button), direct dragging on the figure, and two sentences
+  that are rewritten from the model's output on every change: what you are looking at
+  now, and what holds across every setting.
+- A tile's figure grows into its instrument through a cross-document view transition
+  (CSS only; browsers without it just navigate; off under reduced motion).
+
+**Honesty rules.**
+- Every instrument carries a note: the data is synthetic, what the production method
+  was, and how the in-browser version differs. Real project figures appear only where
+  the case study states them.
+- No sentence is written by hand around a number. `sayCommittee`, `sayList` and
+  `saySample` build the text from what the model returned, and tests assert the text
+  contains exactly those numbers.
+- Nothing is tuned to flatter. The committee claim that is guaranteed (never worse than
+  its average member) is stated as arithmetic; the counts that are not guaranteed are
+  whatever the backtest returns.
+
+**Architecture (`lab.js`, no dependencies).** Pure model functions with a seeded
+generator, then pure renderers `(state, {w, h, full}) -> SVG string`, then a thin DOM
+layer. Figures render at real pixel size, so mono labels are one size on every screen;
+under 620px the labels leave the plot (a legend for the committee, in-plot labels for
+the list). `tests/lab.test.cjs` covers the models (including a no-leakage test: the
+forecasters must give identical output when the future is corrupted), the sentences and
+the renderers. `scripts/figures.cjs` uses the same renderers to write the static
+fallbacks, so readers without JavaScript get a complete figure and a true sentence.
+
+**Accessibility.** The instrument is fully operable from the keyboard through its form
+controls; the sentence is an `aria-live` region; the figure itself is decorative to
+assistive tech because the sentence carries its content. Pointer-following on tiles is
+the reader's own movement, so it stays on under reduced motion; scroll-following does
+not.
+
+**Also in this change.** Work now precedes The path here. The share card
+(`og-image.png`) is redrawn with the correct title and the committee figure, its URL is
+absolute, and case studies carry share tags. Native controls follow the page theme
+(`color-scheme`), not the operating system.
 
