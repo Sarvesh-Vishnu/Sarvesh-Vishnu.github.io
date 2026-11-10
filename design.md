@@ -148,19 +148,15 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 --bp-md: 768px    --bp-xl: 1280px
 ```
 
-### Page structure
+### Page structure (v3, §14.14)
 1. Header — fixed, 64px, transparent; hairline border on scroll
-2. Hero — full viewport, asymmetric; name + role + tagline + one row of proof links (§14.8).
-   Static: nothing in it moves (§14.9)
-3. Work — one section, best work only (§14.10): a 2×2 grid of tiles whose figures are
-   working models (§14.12, §14.13). It leads because it is the strongest thing here
-4. The path here — two threads, technical and business, that merge (§14.11)
-5. About — narrow column, editorial feel
-6. Skills / Stack — mono-aligned list
-7. Recognition — mono key/value rows
-8. Writing — On Paper (primary) + Substack
-9. Contact — "Let's talk." + LinkedIn, email, GitHub, résumé
-10. Footer — minimal mono captions
+2. Hero — masthead (the name), the thesis as the display line, a sentence with one
+   draggable number and the figure it drives, then the proof links
+3. Work — 2×2 grid of tiles whose figures are working models (§14.12, §14.13)
+4. The path here — two threads that merge (§14.11), with a short bio beside it
+5. At a glance — one ledger: role, toolkit, education, writing
+6. Contact — "Let's talk." + LinkedIn, email, GitHub, résumé
+7. Footer — minimal mono captions
 
 ---
 
@@ -639,4 +635,34 @@ not.
 (`og-image.png`) is redrawn with the correct title and the committee figure, its URL is
 absolute, and case studies carry share tags. Native controls follow the page theme
 (`color-scheme`), not the operating system.
+
+### 14.14 — v3: thesis first, four movements, one voice
+*Changes: §5 structure, §3 display weights, §6 project prose, §9 hero. The version
+before this is tagged `v2.0`.*
+
+v2 put working models behind the projects but kept a conventional shell: a name for a
+hero and seven numbered sections, three of them résumé filler. v3 rebuilds the shell
+around the same idea.
+
+**Hero.** The name becomes a masthead (still the `h1`). The display line is the thesis,
+"I build models that end in a decision.", set light and full-measure. Under it is a
+sentence in which one number is a slider (`role="slider"`, drag or arrow keys): change
+the replacement budget and the other numbers and the strip figure follow. It is the
+smallest possible explorable explanation, in the first screen, and it comes from a real
+project (the list, §14.13). Once, shortly after load, the number moves out and back on
+its own to show that it can; it never repeats and is skipped under reduced motion. The
+"Drag the number" hint only appears when the script is running.
+
+**Four movements instead of seven sections.** Work; The path here, with three short
+paragraphs of the bio beside it (sticky on wide screens); At a glance, a single ledger
+that absorbs Stack, Recognition and Writing; Contact. Cut: the two long bio paragraphs
+that repeated the path and the work, and the Deloitte and IBM certificates.
+
+**One voice.** Display type is light throughout: section titles drop from 600 to 400,
+case-study titles to 400, and "Let's talk." is set at display size in 300 so the page
+ends the way it began. Emphasis comes from size and from Prussian, not from weight.
+
+**Case-study prose.** From 900px up, section names (Objective, Approach, Outcome, What
+I'd do next) sit in the left margin as mono side-heads and the text keeps its reading
+measure beside them, like a paper. Pure CSS grid; below 900px they stack as before.
 

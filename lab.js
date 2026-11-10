@@ -389,7 +389,8 @@
     const d = mains();
     const r = list(st.k);
     const wide = full && w >= NARROW;
-    const padL = full ? LIST_PAD[0] : 18, padR = wide ? LIST_PAD[1] : 18, padT = full ? 30 : 32, padB = full ? 38 : 20;
+    const slim = !full && o.slim;                        // hero strip: no tag to clear, edge to edge
+    const padL = full ? LIST_PAD[0] : slim ? 2 : 18, padR = wide ? LIST_PAD[1] : slim ? 8 : 18, padT = full ? 30 : slim ? 12 : 32, padB = full ? 38 : slim ? 8 : 20;
     const X = (k) => padL + (k / L.MAXK) * (w - padL - padR);
     const top = Math.max(d.cumModel[L.MAXK], 1);
     const Y = (v) => h - padB - (v / top) * (h - padT - padB);
@@ -702,7 +703,80 @@
     rootEl.classList.add('is-live');
   }
 
+  /* The hero sentence (design.md §14.14). One number in it is a slider: drag it, or
+     use the arrow keys, and the other numbers and the figure follow. */
+  function mountHero(rootEl) {
+    const scrub = rootEl.querySelector('.scrub');
+    const fig = rootEl.querySelector('.hero-fig');
+    const outs = {};
+    rootEl.querySelectorAll('[data-out]').forEach((el) => { outs[el.dataset.out] = el; });
+    const st = { k: L.DEFAULT };
+    let w = 0, h = 0, raf = 0, touched = false;
+    const draw = () => {
+      raf = 0;
+      const r = list(st.k);
+      scrub.textContent = r.k;
+      scrub.setAttribute('aria-valuenow', r.k);
+      scrub.setAttribute('aria-valuetext', `${r.k} mains replaced: the model's list prevents ${r.model} of ${r.failures} failures, oldest first prevents ${r.oldest}`);
+      if (outs.model) outs.model.textContent = r.model;
+      if (outs.oldest) outs.oldest.textContent = r.oldest;
+      if (outs.failures) outs.failures.textContent = r.failures;
+      if (w) fig.innerHTML = renderList(st, { w, h, full: false, slim: true });
+    };
+    const set = (k) => { st.k = clamp(Math.round(k), 0, L.MAXK); if (!raf) raf = requestAnimationFrame(draw); };
+
+    // drag the number sideways
+    let drag = null;
+    scrub.addEventListener('pointerdown', (e) => {
+      drag = { x: e.clientX, k: st.k }; touched = true;
+      scrub.setPointerCapture(e.pointerId);
+      rootEl.classList.add('is-scrubbing');
+      e.preventDefault();
+    });
+    scrub.addEventListener('pointermove', (e) => { if (drag) set(drag.k + (e.clientX - drag.x) / 4); });
+    const stop = () => { drag = null; rootEl.classList.remove('is-scrubbing'); };
+    scrub.addEventListener('pointerup', stop);
+    scrub.addEventListener('pointercancel', stop);
+    scrub.addEventListener('keydown', (e) => {
+      const step = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1, PageUp: 10, PageDown: -10 }[e.key];
+      if (step) { set(st.k + step); touched = true; e.preventDefault(); }
+      else if (e.key === 'Home') { set(0); e.preventDefault(); }
+      else if (e.key === 'End') { set(L.MAXK); e.preventDefault(); }
+    });
+
+    // or move across the figure
+    const fromFig = (e) => { const b = fig.getBoundingClientRect(); touched = true; set(((e.clientX - b.left - 2) / (b.width - 10)) * L.MAXK); };
+    let figDrag = false;
+    fig.addEventListener('pointerdown', (e) => { figDrag = true; fig.setPointerCapture(e.pointerId); fromFig(e); });
+    fig.addEventListener('pointermove', (e) => { if (figDrag || e.pointerType === 'mouse') fromFig(e); });
+    fig.addEventListener('pointerup', () => { figDrag = false; });
+    fig.addEventListener('pointercancel', () => { figDrag = false; });
+
+    new ResizeObserver(() => {
+      const b = fig.getBoundingClientRect();
+      w = Math.round(b.width); h = Math.round(b.height);
+      if (!raf) raf = requestAnimationFrame(draw);
+    }).observe(fig);
+
+    // Once, shortly after load, the number moves on its own to show that it can.
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setTimeout(() => {
+        if (touched) return;
+        const t0 = performance.now(), from = st.k, D = 1500, SWING = 22;
+        const tick = (t) => {
+          if (touched) return;
+          const u = Math.min(1, (t - t0) / D);
+          set(from + SWING * Math.sin(Math.PI * u));       // out and back
+          if (u < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }, 1100);
+    }
+    rootEl.classList.add('is-live');
+  }
+
   function init() {
+    document.querySelectorAll('.hero-lab').forEach(mountHero);
     document.querySelectorAll('.tile-fig[data-lab]').forEach(mountTile);
     document.querySelectorAll('.lab[data-lab]').forEach(mountFull);
   }

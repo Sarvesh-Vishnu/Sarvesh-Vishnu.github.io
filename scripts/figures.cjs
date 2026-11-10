@@ -25,6 +25,12 @@ for (const [marker, kind] of Object.entries(tiles)) {
   const k = Lab.KINDS[kind];
   index = between(index, `fig:${marker}`, fluid(k.render(k.state(), TILE)), 'index.html');
 }
+// home page: the hero sentence and its strip (present from v3 on)
+if (index.includes('<!-- hero:fig -->')) {
+  const r = Lab.list(Lab.L.DEFAULT);
+  index = between(index, 'hero:fig', fluid(Lab.renderList({ k: r.k }, { w: 1152, h: 120, full: false, slim: true })), 'index.html');
+  for (const key of ['k', 'model', 'oldest', 'failures']) index = between(index, `hero:${key}`, String(r[key]), 'index.html');
+}
 fs.writeFileSync(path.join(ROOT, 'index.html'), index);
 
 // case studies: the full instrument, its field (list only) and both sentences

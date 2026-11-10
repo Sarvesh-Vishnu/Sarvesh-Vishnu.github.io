@@ -159,12 +159,12 @@ body {
 .section-title {
   font-family: var(--font-sans);
   font-size: clamp(var(--text-3xl), 6vw, var(--text-6xl));
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.025em;
+  font-weight: 400;                                     /* one light voice for display type (§14.14) */
+  line-height: 1.02;
+  letter-spacing: -0.035em;
   color: var(--ink);
   margin-top: var(--space-6);
-  max-width: 16ch;
+  max-width: 18ch;
   text-wrap: balance;
 }
 
@@ -280,7 +280,7 @@ body {
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
-  padding: calc(var(--header-h) + var(--space-24)) var(--gutter) var(--space-24);
+  padding: calc(var(--header-h) + var(--space-16)) var(--gutter) var(--space-16);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -299,38 +299,89 @@ body {
 @media (max-width: 1024px) { .hero-inner > * { grid-column: 3 / -1; } }
 @media (max-width: 768px)  { .hero-inner > * { grid-column: 1 / -1; } }
 
-.hero-title {
+/* v3 hero (design.md §14.14): the name is a masthead, the thesis is the display line,
+   and under it sits a sentence the reader can operate. */
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-4);
   font-family: var(--font-sans);
-  font-weight: 300;
-  font-size: clamp(var(--text-5xl), 13vw, var(--text-9xl));
-  line-height: 0.95;
-  letter-spacing: -0.035em;
+  font-size: var(--text-lg);
+  font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--ink);
-  margin-top: var(--space-8);
-  margin-bottom: var(--space-12);
 }
-
-.hero-sub {
-  font-size: var(--text-xl);
-  line-height: 1.4;
-  color: var(--ink-soft);
-  max-width: 36ch;
-  font-weight: 400;
-}
-
-.hero-meta {
-  margin-top: var(--space-16);
+.masthead span {
   font-family: var(--font-mono);
   font-size: var(--text-2xs);
-  color: var(--ink-muted);
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  display: flex;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  align-items: center;
+  color: var(--ink-muted);
 }
-.dot { color: var(--prussian); }
+.hero-inner > .thesis {
+  grid-column: 1 / -1;                                   /* the one line that takes the full measure */
+  margin: var(--space-6) 0 var(--space-8);
+  max-width: 13ch;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: clamp(var(--text-4xl), 9.2vw, var(--text-9xl));
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.hero-inner > .hero-lab { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; row-gap: var(--space-6); }
+.hero-lab > * { grid-column: 4 / -1; }
+.hero-lab > .hero-fig { grid-column: 1 / -1; }
+@media (max-width: 1024px) { .hero-lab > * { grid-column: 3 / -1; } }
+@media (max-width: 768px)  { .hero-lab > * { grid-column: 1 / -1; } }
+.hero-say {
+  max-width: 33em;
+  font-size: clamp(var(--text-lg), 2vw, var(--text-2xl));
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.hero-say b { font-weight: 500; color: var(--ink); }
+/* the number that is a slider */
+.scrub {
+  display: inline-block;
+  min-width: 2.1ch;
+  padding: 0 0.12em;
+  text-align: center;
+  font-weight: 500;
+  color: var(--prussian);
+  border-bottom: 2px dotted var(--prussian);
+  cursor: ew-resize;
+  touch-action: none;
+  -webkit-user-select: none;
+          user-select: none;
+  transition: background-color var(--duration-fast) ease;
+}
+.scrub:hover, .is-scrubbing .scrub { background: var(--prussian-tint); }
+.scrub:focus-visible { outline: 2px solid var(--prussian); outline-offset: 3px; }
+.is-scrubbing, .is-scrubbing * { cursor: ew-resize !important; }
+.hero-fig {
+  height: 120px;
+  border-bottom: 1px solid var(--line);
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+.hero-fig svg { display: block; width: 100%; height: 100%; }
+.hero-fig svg * { vector-effect: non-scaling-stroke; }
+.hero-hint {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  line-height: 1.7;
+  color: var(--ink-muted);
+}
+.hero-hint a { color: var(--prussian); border-bottom: 1px solid currentColor; }
+.hint-live { display: none; color: var(--prussian); margin-right: var(--space-2); }
+.hero-lab.is-live .hint-live { display: inline; }      /* only promise dragging when it works */
+.hero .hero-links { margin-top: var(--space-4); }
 
 /* §9 — subtle grain overlay */
 .grain {
@@ -389,6 +440,18 @@ body {
   --lane-m: 50%;
   margin-top: var(--space-8);
   max-width: 76ch;
+}
+.path-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--space-12) var(--space-16);
+  align-items: start;
+}
+.path-grid .threads { margin-top: 0; }
+.path-bio { position: sticky; top: calc(var(--header-h) + var(--space-8)); font-size: var(--text-base); }
+@media (max-width: 960px) {
+  .path-grid { grid-template-columns: 1fr; }
+  .path-bio { position: static; }
 }
 .th, .th-merge {
   display: grid;
@@ -668,27 +731,21 @@ body {
   .stack-row { grid-template-columns: 1fr; gap: var(--space-2); }
 }
 
-/* -------------------------------------------------------------
-   Writing
-   ------------------------------------------------------------- */
-.writing-block {
-  display: grid;
-  gap: var(--space-8);
-  max-width: var(--reading-max);
+.stack-row dd a {
+  color: var(--prussian);
+  border-bottom: 1px solid currentColor;
+  transition: border-bottom-width var(--duration-fast) ease;
 }
-.writing-body {
-  font-size: var(--text-lg);
-  color: var(--ink-soft);
-}
-.writing-block .btn { justify-self: start; }
-.writing-actions { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+.stack-row dd a:hover { border-bottom-width: 2px; }
 
 /* -------------------------------------------------------------
    Contact
    ------------------------------------------------------------- */
 .contact-title {
-  font-size: clamp(var(--text-3xl), 6vw, var(--text-4xl));
-  max-width: 14ch;
+  font-size: clamp(var(--text-5xl), 11vw, var(--text-9xl));   /* answers the thesis at the other end */
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  max-width: none;
 }
 .contact-actions {
   display: flex;
@@ -827,7 +884,7 @@ body {
 
 .project-hero h1 {
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: 400;
   font-size: clamp(var(--text-3xl), 6.5vw, var(--text-7xl));
   line-height: 1;
   letter-spacing: -0.03em;
@@ -911,13 +968,38 @@ body {
 .project-body-prose h2 {
   font-family: var(--font-sans);
   font-size: var(--text-2xl);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.05;
   color: var(--ink);
   margin: var(--space-16) 0 var(--space-4);
 }
 .project-body-prose h2:first-child { margin-top: 0; }
+/* v3 (§14.14): on wide screens the section names sit in the margin, like a paper's
+   side-heads, and the text keeps its reading measure beside them. */
+@media (min-width: 900px) {
+  .project-body-prose {
+    max-width: var(--content-max);
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    column-gap: var(--gutter);
+  }
+  .project-body-prose > h2 {
+    grid-column: 1;
+    margin: 0;
+    padding-top: 0.5em;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    line-height: 1.6;
+    color: var(--ink-muted);
+  }
+  .project-body-prose > :not(h2) { grid-column: 2; max-width: var(--reading-max); }
+  .project-body-prose > h2:not(:first-child),
+  .project-body-prose > h2:not(:first-child) + * { margin-top: var(--space-16); }
+}
 .project-body-prose p + p { margin-top: var(--space-6); }
 .project-body-prose ul {
   list-style: none;
@@ -1057,7 +1139,7 @@ html.lenis, html.lenis body { height: auto; }
 .lab-title {
   margin-top: var(--space-3);
   font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.025em;
   line-height: 1.1;
   color: var(--ink);
