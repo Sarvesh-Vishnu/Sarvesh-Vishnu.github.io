@@ -327,22 +327,23 @@
      strip underneath shows the whole series and where the window sits. */
   const WIN = 30;
   const NARROW = 620;                                   // below this, labels leave the plot
-  function committeeGeom(w, h, full) {
+  function committeeGeom(w, h, full, slim, tagRoom) {
     const wide = full && w >= NARROW;
-    const padL = full ? 14 : 16, padR = wide ? 192 : 16, padT = full ? 18 : 32;
+    const padL = full ? 14 : slim ? 2 : 16, padR = wide ? 192 : slim ? 2 : 16, padT = (full ? 18 : slim ? 10 : 32) + (tagRoom || 0);
     const strip = full ? 52 : 0;                          // overview strip, with its gap
-    const plotB = h - strip - (full ? 24 : 20);
+    const plotB = h - strip - (full ? 24 : slim ? 6 : 20);
     return { wide, padL, padR, padT, plotB, stripT: h - strip + 14, stripB: h - 6, pxPerMonth: (w - padL - padR) / (WIN + C.H - 1) };
   }
   function renderCommittee(st, o) {
     const { w, h, full } = o;
-    const g = committeeGeom(w, h, full);
+    const g = committeeGeom(w, h, full, !full && o.slim, o.tagRoom);
     const y = series();
     const c = committee(st.origin, st.active);
     const n = c.origin;
     const X = (t) => g.padL + (t - (n - WIN)) * g.pxPerMonth;
     const mid = mean(y.slice(n - 12, n)) + 3;             // follow the level, not the wiggles
-    const lo = mid - 36, hi = mid + 40;
+    const tight = !full && o.slim;                        // the hero strip is short: give the line more of it
+    const lo = mid - (tight ? 27 : 36), hi = mid + (tight ? 29 : 40);
     const Y = (v) => g.padT + ((hi - clamp(v, lo, hi)) / (hi - lo)) * (g.plotB - g.padT);
     const hist = [], fut = [];
     for (let t = n - WIN; t < n; t++) hist.push([X(t), Y(y[t])]);
@@ -448,8 +449,8 @@
   function renderSample(st, o) {
     const { w, h, full } = o;
     const r = sample(st.n, st.draw);
-    const padL = full ? 44 : 18, padR = full ? 20 : 18, padT = full ? 24 : 34, padB = full ? 34 : 18;
-    const lo = 0.02, hi = 0.6;
+    const padL = full ? 44 : 18, padR = full ? 20 : 18, padT = (full ? 24 : 34) + (o.tagRoom || 0), padB = full ? 34 : 18;
+    const lo = 0.03, hi = 0.52;
     const X = (v) => padL + ((clamp(v, lo, hi) - lo) / (hi - lo)) * (w - padL - padR);
     const rh = (h - padT - padB) / S.F;
     let s = open(w, h);
@@ -516,6 +517,18 @@
     return { now, always, tag: `n = ${nn} · ${r.apart} of ${S.F} apart` };
   }
 
+  /** What the hero sentence says for a given starting month (design.md §14.15). */
+  function heroParts(origin) {
+    const c = committee(origin);
+    const bt = backtest();
+    return {
+      origin: c.origin, label: c.label,
+      best: pct(c.best.err), worst: pct(c.worst.err), err: pct(c.err),
+      origins: bt.origins,
+      verdict: bt.isWorst === 0 ? 'never the worst of them' : `the worst of them in ${bt.isWorst}`,
+    };
+  }
+
   const KINDS = {
     committee: {
       state: () => ({ origin: C.DEFAULT, active: [true, true, true, true] }),
@@ -555,7 +568,9 @@
     const draw = () => {
       raf = 0;
       if (!w) return;
-      holder.innerHTML = kind.render(st, { w, h, full: false });
+      // a stage this large can carry the labelled figure; the tag keeps a clear corner
+      const big = w >= 720;
+      holder.innerHTML = kind.render(st, { w, h, full: big, tagRoom: big ? 30 : 0 });
       if (tag) tag.textContent = kind.say(st).tag;
     };
     const queue = () => { if (!raf) raf = requestAnimationFrame(draw); };
@@ -703,54 +718,56 @@
     rootEl.classList.add('is-live');
   }
 
-  /* The hero sentence (design.md §14.14). One number in it is a slider: drag it, or
-     use the arrow keys, and the other numbers and the figure follow. */
+  /* The hero sentence (design.md §14.14, §14.15). One word in it, the starting month,
+     is a slider: drag it or use the arrow keys, and the numbers and the strip follow. */
   function mountHero(rootEl) {
     const scrub = rootEl.querySelector('.scrub');
     const fig = rootEl.querySelector('.hero-fig');
     const outs = {};
     rootEl.querySelectorAll('[data-out]').forEach((el) => { outs[el.dataset.out] = el; });
-    const st = { k: L.DEFAULT };
+    const st = { origin: C.DEFAULT, active: [true, true, true, true] };
     let w = 0, h = 0, raf = 0, touched = false;
     const draw = () => {
       raf = 0;
-      const r = list(st.k);
-      scrub.textContent = r.k;
-      scrub.setAttribute('aria-valuenow', r.k);
-      scrub.setAttribute('aria-valuetext', `${r.k} mains replaced: the model's list prevents ${r.model} of ${r.failures} failures, oldest first prevents ${r.oldest}`);
-      if (outs.model) outs.model.textContent = r.model;
-      if (outs.oldest) outs.oldest.textContent = r.oldest;
-      if (outs.failures) outs.failures.textContent = r.failures;
-      if (w) fig.innerHTML = renderList(st, { w, h, full: false, slim: true });
+      const r = heroParts(st.origin);
+      scrub.textContent = r.label;
+      scrub.setAttribute('aria-valuenow', r.origin);
+      scrub.setAttribute('aria-valuetext', `${r.label}: the four models miss by ${r.best} to ${r.worst}, their average by ${r.err}`);
+      ['best', 'worst', 'err', 'origins', 'verdict'].forEach((k) => { if (outs[k]) outs[k].textContent = r[k]; });
+      if (w) fig.innerHTML = renderCommittee(st, { w, h, full: false, slim: true });
     };
-    const set = (k) => { st.k = clamp(Math.round(k), 0, L.MAXK); if (!raf) raf = requestAnimationFrame(draw); };
+    const set = (n) => { st.origin = clamp(Math.round(n), C.FIRST, C.LAST); if (!raf) raf = requestAnimationFrame(draw); };
 
-    // drag the number sideways
+    // drag the month sideways
     let drag = null;
     scrub.addEventListener('pointerdown', (e) => {
-      drag = { x: e.clientX, k: st.k }; touched = true;
+      drag = { x: e.clientX, n: st.origin }; touched = true;
       scrub.setPointerCapture(e.pointerId);
       rootEl.classList.add('is-scrubbing');
       e.preventDefault();
     });
-    scrub.addEventListener('pointermove', (e) => { if (drag) set(drag.k + (e.clientX - drag.x) / 4); });
+    scrub.addEventListener('pointermove', (e) => { if (drag) set(drag.n + (e.clientX - drag.x) / 7); });
     const stop = () => { drag = null; rootEl.classList.remove('is-scrubbing'); };
     scrub.addEventListener('pointerup', stop);
     scrub.addEventListener('pointercancel', stop);
     scrub.addEventListener('keydown', (e) => {
-      const step = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1, PageUp: 10, PageDown: -10 }[e.key];
-      if (step) { set(st.k + step); touched = true; e.preventDefault(); }
-      else if (e.key === 'Home') { set(0); e.preventDefault(); }
-      else if (e.key === 'End') { set(L.MAXK); e.preventDefault(); }
+      const step = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1, PageUp: 12, PageDown: -12 }[e.key];
+      if (step) { set(st.origin + step); touched = true; e.preventDefault(); }
+      else if (e.key === 'Home') { set(C.FIRST); touched = true; e.preventDefault(); }
+      else if (e.key === 'End') { set(C.LAST); touched = true; e.preventDefault(); }
     });
 
-    // or move across the figure
-    const fromFig = (e) => { const b = fig.getBoundingClientRect(); touched = true; set(((e.clientX - b.left - 2) / (b.width - 10)) * L.MAXK); };
-    let figDrag = false;
-    fig.addEventListener('pointerdown', (e) => { figDrag = true; fig.setPointerCapture(e.pointerId); fromFig(e); });
-    fig.addEventListener('pointermove', (e) => { if (figDrag || e.pointerType === 'mouse') fromFig(e); });
-    fig.addEventListener('pointerup', () => { figDrag = false; });
-    fig.addEventListener('pointercancel', () => { figDrag = false; });
+    // or pull the history under the strip
+    let figDrag = null;
+    fig.addEventListener('pointerdown', (e) => { figDrag = { x: e.clientX, n: st.origin }; touched = true; fig.setPointerCapture(e.pointerId); });
+    fig.addEventListener('pointermove', (e) => {
+      if (!figDrag) return;
+      const g = committeeGeom(w, h, false, true);
+      set(figDrag.n - (e.clientX - figDrag.x) / g.pxPerMonth);
+    });
+    const figStop = () => { figDrag = null; };
+    fig.addEventListener('pointerup', figStop);
+    fig.addEventListener('pointercancel', figStop);
 
     new ResizeObserver(() => {
       const b = fig.getBoundingClientRect();
@@ -758,11 +775,11 @@
       if (!raf) raf = requestAnimationFrame(draw);
     }).observe(fig);
 
-    // Once, shortly after load, the number moves on its own to show that it can.
+    // Once, shortly after load, the month moves on its own to show that it can.
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setTimeout(() => {
         if (touched) return;
-        const t0 = performance.now(), from = st.k, D = 1500, SWING = 22;
+        const t0 = performance.now(), from = st.origin, D = 1600, SWING = 7;
         const tick = (t) => {
           if (touched) return;
           const u = Math.min(1, (t - t0) / D);
@@ -787,7 +804,7 @@
 
   return {
     rng, ols, wape, wilson, series, monthLabel, MODELS, C, L, S,
-    committee, backtest, mains, list, facilities, sample, nFromUnit, unitFromN,
+    committee, backtest, heroParts, mains, list, facilities, sample, nFromUnit, unitFromN,
     renderCommittee, renderList, renderField, renderSample,
     sayCommittee, sayList, saySample, KINDS,
   };

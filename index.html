@@ -6,14 +6,14 @@
   <meta name="theme-color" content="#003153" />
   <meta name="color-scheme" content="light dark" />
 
-  <title>Sarvesh Vishnu — Data Scientist</title>
-  <meta name="description" content="Data scientist building machine learning and analytical solutions across Med Tech, public infrastructure, and technology. Selected work, stack, and contact." />
+  <title>Sarvesh Vishnu, Senior Data Scientist</title>
+  <meta name="description" content="Senior data scientist. Models that end in a decision: commercial analytics and forecasting, natural language processing, and work you can operate in the browser." />
   <meta name="author" content="Sarvesh Vishnu Muhundu Parthiban" />
 
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://sarvesh-vishnu.github.io/" />
-  <meta property="og:title" content="Sarvesh Vishnu — Data Scientist" />
-  <meta property="og:description" content="Data scientist building machine learning and analytical solutions across Med Tech, public infrastructure, and technology." />
+  <meta property="og:title" content="Sarvesh Vishnu, Senior Data Scientist" />
+  <meta property="og:description" content="Models that end in a decision: commercial analytics and forecasting, natural language processing, and work you can operate in the browser." />
   <meta property="og:image" content="https://sarvesh-vishnu.github.io/assets/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -32,8 +32,10 @@
     /* Set theme before first paint to avoid flash.
        Default = light. localStorage 'theme' overrides. */
     (function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}})();
-    /* Motion flag before first paint: hides only what motion.js will animate in.
-       main.js removes it if the libraries fail to load, so nothing stays hidden. */
+    /* `js` gates everything that waits for a script to reveal it, so without scripts the
+       page is simply visible. If main.js has not reported in after 4s, the gate comes off. */
+    document.documentElement.classList.add('js');
+    setTimeout(function(){var c=document.documentElement.classList;if(!c.contains('ready'))c.remove('js');},4000);
     if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion');
   </script>
 
@@ -44,7 +46,7 @@
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Sarvesh Vishnu Muhundu Parthiban",
-    "jobTitle": "Data Scientist",
+    "jobTitle": "Senior Data Scientist",
     "url": "https://sarvesh-vishnu.github.io/",
     "sameAs": [
       "https://linkedin.com/in/sarveshvishnu/",
@@ -80,19 +82,20 @@
     <section class="hero" id="top" aria-labelledby="hero-title">
       <div class="grain" aria-hidden="true"></div>
       <div class="hero-inner">
-        <h1 id="hero-title" class="masthead">Sarvesh Vishnu <span>Data scientist · strategy, business analytics</span></h1>
+        <h1 id="hero-title" class="masthead">Sarvesh Vishnu <span>Senior data scientist · strategy and market insights</span></h1>
         <p class="thesis">I build models that end in a decision.</p>
         <div class="hero-lab">
           <p class="hero-say">
-            With budget to replace
-            <span class="scrub" role="slider" tabindex="0" aria-label="Replacement budget, in water mains" aria-valuemin="0" aria-valuemax="120" aria-valuenow="40"><!-- hero:k -->40<!-- /hero:k --></span>
-            of 400 water mains, a model’s ranked list prevents
-            <b data-out="model"><!-- hero:model -->10<!-- /hero:model --></b> of the
-            <b data-out="failures"><!-- hero:failures -->25<!-- /hero:failures --></b> failures on the way.
-            Replacing the oldest first prevents <b data-out="oldest"><!-- hero:oldest -->3<!-- /hero:oldest --></b>.
+            Forecast the next year from
+            <span class="scrub" role="slider" tabindex="0" aria-label="Month the forecast starts from" aria-valuemin="36" aria-valuemax="84" aria-valuenow="62"><!-- hero:label -->Mar 2023<!-- /hero:label --></span>
+            with four models and they miss by <b data-out="best"><!-- hero:best -->1.9%<!-- /hero:best --></b>
+            to <b data-out="worst"><!-- hero:worst -->4.6%<!-- /hero:worst --></b>.
+            Their average misses by <b data-out="err"><!-- hero:err -->2.1%<!-- /hero:err --></b>, and over
+            <span data-out="origins"><!-- hero:origins -->49<!-- /hero:origins --></span> starting months it was
+            <span data-out="verdict"><!-- hero:verdict -->never the worst of them<!-- /hero:verdict --></span>.
           </p>
-          <div class="hero-fig" aria-hidden="true"><!-- hero:fig --><svg viewBox="0 0 1152 120" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-grid" x1="2" y1="112" x2="1144" y2="112"/><path class="fig-band" d="M2.0,112.0 L11.5,106.1 L21.0,100.2 L30.6,94.4 L40.1,88.5 L49.6,82.6 L59.1,82.6 L68.6,82.6 L78.1,82.6 L87.6,76.7 L97.2,70.8 L106.7,70.8 L116.2,70.8 L125.7,70.8 L135.2,70.8 L144.8,64.9 L154.3,64.9 L163.8,64.9 L173.3,64.9 L182.8,64.9 L192.3,64.9 L201.8,64.9 L211.4,64.9 L220.9,64.9 L230.4,64.9 L239.9,64.9 L249.4,64.9 L258.9,64.9 L268.5,64.9 L278.0,64.9 L287.5,64.9 L297.0,64.9 L306.5,59.1 L316.1,53.2 L325.6,53.2 L335.1,53.2 L344.6,53.2 L354.1,53.2 L363.6,53.2 L373.2,53.2 L382.7,53.2 L382.7,97.3 L2.0,112.0 Z"/><path class="fig-ink fig-model" d="M2.0,112.0 L1144.0,67.9"/><path class="fig-ink" d="M2.0,112.0 L11.5,112.0 L21.0,112.0 L30.6,112.0 L40.1,112.0 L49.6,112.0 L59.1,112.0 L68.6,112.0 L78.1,112.0 L87.6,112.0 L97.2,112.0 L106.7,112.0 L116.2,112.0 L125.7,112.0 L135.2,112.0 L144.8,112.0 L154.3,112.0 L163.8,106.1 L173.3,106.1 L182.8,106.1 L192.3,106.1 L201.8,106.1 L211.4,106.1 L220.9,100.2 L230.4,100.2 L239.9,100.2 L249.4,100.2 L258.9,100.2 L268.5,100.2 L278.0,100.2 L287.5,100.2 L297.0,100.2 L306.5,100.2 L316.1,100.2 L325.6,100.2 L335.1,100.2 L344.6,100.2 L354.1,100.2 L363.6,100.2 L373.2,94.4 L382.7,94.4 L392.2,88.5 L401.7,88.5 L411.2,88.5 L420.7,82.6 L430.3,82.6 L439.8,82.6 L449.3,82.6 L458.8,82.6 L468.3,82.6 L477.8,82.6 L487.3,82.6 L496.9,76.7 L506.4,70.8 L515.9,64.9 L525.4,64.9 L534.9,59.1 L544.4,59.1 L554.0,59.1 L563.5,59.1 L573.0,59.1 L582.5,59.1 L592.0,59.1 L601.6,59.1 L611.1,59.1 L620.6,59.1 L630.1,59.1 L639.6,59.1 L649.1,59.1 L658.6,59.1 L668.2,59.1 L677.7,59.1 L687.2,59.1 L696.7,59.1 L706.2,59.1 L715.8,59.1 L725.3,59.1 L734.8,59.1 L744.3,59.1 L753.8,59.1 L763.3,59.1 L772.9,59.1 L782.4,59.1 L791.9,59.1 L801.4,59.1 L810.9,59.1 L820.4,59.1 L829.9,59.1 L839.5,59.1 L849.0,59.1 L858.5,59.1 L868.0,59.1 L877.5,59.1 L887.1,59.1 L896.6,59.1 L906.1,59.1 L915.6,59.1 L925.1,53.2 L934.6,53.2 L944.1,47.3 L953.7,47.3 L963.2,47.3 L972.7,47.3 L982.2,47.3 L991.7,47.3 L1001.3,47.3 L1010.8,47.3 L1020.3,47.3 L1029.8,47.3 L1039.3,47.3 L1048.8,47.3 L1058.4,47.3 L1067.9,47.3 L1077.4,41.4 L1086.9,41.4 L1096.4,41.4 L1105.9,41.4 L1115.5,41.4 L1125.0,41.4 L1134.5,41.4 L1144.0,41.4"/><path class="fig-acc" d="M2.0,112.0 L11.5,106.1 L21.0,100.2 L30.6,94.4 L40.1,88.5 L49.6,82.6 L59.1,82.6 L68.6,82.6 L78.1,82.6 L87.6,76.7 L97.2,70.8 L106.7,70.8 L116.2,70.8 L125.7,70.8 L135.2,70.8 L144.8,64.9 L154.3,64.9 L163.8,64.9 L173.3,64.9 L182.8,64.9 L192.3,64.9 L201.8,64.9 L211.4,64.9 L220.9,64.9 L230.4,64.9 L239.9,64.9 L249.4,64.9 L258.9,64.9 L268.5,64.9 L278.0,64.9 L287.5,64.9 L297.0,64.9 L306.5,59.1 L316.1,53.2 L325.6,53.2 L335.1,53.2 L344.6,53.2 L354.1,53.2 L363.6,53.2 L373.2,53.2 L382.7,53.2 L392.2,53.2 L401.7,53.2 L411.2,53.2 L420.7,53.2 L430.3,53.2 L439.8,47.3 L449.3,41.4 L458.8,41.4 L468.3,41.4 L477.8,41.4 L487.3,35.5 L496.9,35.5 L506.4,35.5 L515.9,35.5 L525.4,35.5 L534.9,35.5 L544.4,35.5 L554.0,35.5 L563.5,35.5 L573.0,35.5 L582.5,35.5 L592.0,35.5 L601.6,35.5 L611.1,35.5 L620.6,35.5 L630.1,35.5 L639.6,35.5 L649.1,35.5 L658.6,35.5 L668.2,35.5 L677.7,35.5 L687.2,35.5 L696.7,35.5 L706.2,35.5 L715.8,35.5 L725.3,35.5 L734.8,35.5 L744.3,35.5 L753.8,35.5 L763.3,35.5 L772.9,35.5 L782.4,35.5 L791.9,35.5 L801.4,35.5 L810.9,35.5 L820.4,29.6 L829.9,29.6 L839.5,29.6 L849.0,23.8 L858.5,23.8 L868.0,23.8 L877.5,23.8 L887.1,23.8 L896.6,23.8 L906.1,23.8 L915.6,23.8 L925.1,23.8 L934.6,23.8 L944.1,23.8 L953.7,23.8 L963.2,23.8 L972.7,23.8 L982.2,23.8 L991.7,23.8 L1001.3,23.8 L1010.8,23.8 L1020.3,23.8 L1029.8,23.8 L1039.3,23.8 L1048.8,17.9 L1058.4,17.9 L1067.9,17.9 L1077.4,17.9 L1086.9,17.9 L1096.4,17.9 L1105.9,17.9 L1115.5,12.0 L1125.0,12.0 L1134.5,12.0 L1144.0,12.0"/><line class="fig-now" x1="382.7" y1="4" x2="382.7" y2="112"/><circle class="fig-dot fig-dot-ink" cx="382.7" cy="94.4" r="3.5"/><circle class="fig-dot" cx="382.7" cy="53.2" r="4.5"/></svg><!-- /hero:fig --></div>
-          <p class="hero-hint"><span class="hint-live">Drag the number.</span> Synthetic mains; the method is from the <a href="work/wv-water.html">Western Virginia Water project</a>.</p>
+          <div class="hero-fig" aria-hidden="true"><!-- hero:fig --><svg viewBox="0 0 1152 150" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-grid" x1="2" y1="144" x2="1150" y2="144"/><line class="fig-now" x1="828.0" y1="4" x2="828.0" y2="144"/><path class="fig-ink" d="M2.0,121.8 L30.0,144.0 L58.0,144.0 L86.0,144.0 L114.0,141.5 L142.0,111.7 L170.0,111.0 L198.0,109.6 L226.0,109.0 L254.0,99.0 L282.0,88.9 L310.0,75.7 L338.0,116.4 L366.0,104.1 L394.0,128.3 L422.0,138.9 L450.0,123.2 L478.0,98.7 L506.0,89.6 L534.0,82.6 L562.0,77.4 L590.0,59.4 L618.0,66.3 L646.0,61.4 L674.0,80.7 L702.0,106.9 L730.0,127.1 L758.0,111.6 L786.0,98.1 L814.0,77.7"/><path class="fig-ink fig-future" d="M814.0,77.7 L842.0,71.8 L870.0,69.8 L898.0,77.2 L926.0,63.4 L954.0,51.7 L982.0,48.9 L1010.0,74.9 L1038.0,99.7 L1066.0,102.8 L1094.0,113.3 L1122.0,96.3 L1150.0,76.3"/><path class="fig-ink fig-model" d="M814.0,77.7 L842.0,89.6 L870.0,82.6 L898.0,77.4 L926.0,59.4 L954.0,66.3 L982.0,61.4 L1010.0,80.7 L1038.0,106.9 L1066.0,127.1 L1094.0,111.6 L1122.0,98.1 L1150.0,77.7"/><path class="fig-ink fig-model" d="M814.0,77.7 L842.0,67.5 L870.0,66.5 L898.0,63.1 L926.0,57.0 L954.0,49.5 L982.0,38.9 L1010.0,55.9 L1038.0,78.6 L1066.0,88.5 L1094.0,79.9 L1122.0,73.3 L1150.0,50.4"/><path class="fig-ink fig-model" d="M814.0,77.7 L842.0,61.3 L870.0,60.8 L898.0,61.1 L926.0,54.7 L954.0,44.6 L982.0,42.0 L1010.0,54.0 L1038.0,74.8 L1066.0,89.5 L1094.0,86.5 L1122.0,68.0 L1150.0,47.4"/><path class="fig-ink fig-model" d="M814.0,77.7 L842.0,68.4 L870.0,73.6 L898.0,74.0 L926.0,66.9 L954.0,62.3 L982.0,49.4 L1010.0,70.0 L1038.0,83.3 L1066.0,103.7 L1094.0,100.7 L1122.0,87.8 L1150.0,63.7"/><path class="fig-acc" d="M814.0,77.7 L842.0,71.7 L870.0,70.9 L898.0,68.9 L926.0,59.5 L954.0,55.7 L982.0,47.9 L1010.0,65.1 L1038.0,85.9 L1066.0,102.2 L1094.0,94.7 L1122.0,81.8 L1150.0,59.8"/></svg><!-- /hero:fig --></div>
+          <p class="hero-hint"><span class="hint-live">Drag the month.</span> A synthetic series; the method is from the <a href="work/commercial-analytics.html">commercial analytics work</a>.</p>
         </div>
         <p class="hero-links">
           <a href="https://github.com/Sarvesh-Vishnu" rel="noopener">GitHub</a>
@@ -105,63 +108,82 @@
 
     <section class="section work" id="work" aria-labelledby="work-title">
       <header class="section-head reveal">
-        <p class="eyebrow">§ 01 — Work</p>
+        <p class="eyebrow">Work</p>
         <h2 id="work-title" class="section-title">Selected work.</h2>
-        <p class="section-note">The first three figures are working models. They follow your pointer, or your scroll. Open one to operate it.</p>
+        <p class="section-note">The work figures are running models. They follow your pointer, or your scroll. Open one to operate it.</p>
       </header>
 
-      <ol class="work-grid" role="list">
-        <li class="work-tile reveal">
-          <a href="work/cooper-surgical.html" class="tile-link">
-            <span class="tile-fig" aria-hidden="true" data-lab="committee">
-              <!-- fig:cooper --><svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-grid" x1="16" y1="230" x2="384" y2="230"/><line class="fig-now" x1="280.8" y1="26" x2="280.8" y2="230"/><path class="fig-ink" d="M16.0,182.4 L25.0,208.1 L34.0,223.8 L42.9,217.1 L51.9,203.8 L60.9,171.4 L69.9,170.6 L78.8,169.1 L87.8,168.5 L96.8,157.6 L105.8,146.6 L114.7,132.2 L123.7,176.6 L132.7,163.2 L141.7,189.4 L150.6,201.0 L159.6,183.9 L168.6,157.2 L177.6,147.3 L186.5,139.7 L195.5,134.1 L204.5,114.4 L213.5,122.0 L222.4,116.6 L231.4,137.6 L240.4,166.1 L249.4,188.2 L258.3,171.3 L267.3,156.6 L276.3,134.4"/><path class="fig-ink fig-future" d="M276.3,134.4 L285.3,127.9 L294.2,125.7 L303.2,133.8 L312.2,118.8 L321.2,106.1 L330.1,103.1 L339.1,131.3 L348.1,158.3 L357.1,161.7 L366.0,173.1 L375.0,154.7 L384.0,132.9"/><path class="fig-ink fig-model" d="M276.3,134.4 L285.3,147.3 L294.2,139.7 L303.2,134.1 L312.2,114.4 L321.2,122.0 L330.1,116.6 L339.1,137.6 L348.1,166.1 L357.1,188.2 L366.0,171.3 L375.0,156.6 L384.0,134.4"/><path class="fig-ink fig-model" d="M276.3,134.4 L285.3,123.3 L294.2,122.1 L303.2,118.5 L312.2,111.8 L321.2,103.7 L330.1,92.1 L339.1,110.6 L348.1,135.3 L357.1,146.2 L366.0,136.7 L375.0,129.6 L384.0,104.6"/><path class="fig-ink fig-model" d="M276.3,134.4 L285.3,116.5 L294.2,115.9 L303.2,116.3 L312.2,109.3 L321.2,98.3 L330.1,95.5 L339.1,108.5 L348.1,131.3 L357.1,147.2 L366.0,144.0 L375.0,123.8 L384.0,101.4"/><path class="fig-ink fig-model" d="M276.3,134.4 L285.3,124.2 L294.2,129.9 L303.2,130.3 L312.2,122.6 L321.2,117.6 L330.1,103.5 L339.1,126.0 L348.1,140.4 L357.1,162.6 L366.0,159.5 L375.0,145.3 L384.0,119.1"/><path class="fig-acc" d="M276.3,134.4 L285.3,127.8 L294.2,126.9 L303.2,124.8 L312.2,114.5 L321.2,110.4 L330.1,101.9 L339.1,120.7 L348.1,143.3 L357.1,161.1 L366.0,152.9 L375.0,138.8 L384.0,114.9"/></svg><!-- /fig:cooper -->
-              <span class="tile-tag">Schematic</span>
-            </span>
-            <span class="tile-head"><span class="project-index">01</span><span class="project-year">2025</span></span>
-            <span class="project-name">Commercial Excellence &amp; Strategy</span>
-            <span class="project-meta">Cooper Surgical · AOP · Quota · Forecasting · Python, SQL, Azure, PowerBI</span>
-          </a>
-        </li>
-        <li class="work-tile reveal">
-          <a href="work/wv-water.html" class="tile-link">
-            <span class="tile-fig" aria-hidden="true" data-lab="list">
-              <!-- fig:wv --><svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-grid" x1="18" y1="230" x2="382" y2="230"/><path class="fig-band" d="M18.0,230.0 L21.0,218.4 L24.1,206.7 L27.1,195.1 L30.1,183.4 L33.2,171.8 L36.2,171.8 L39.2,171.8 L42.3,171.8 L45.3,160.1 L48.3,148.5 L51.4,148.5 L54.4,148.5 L57.4,148.5 L60.5,148.5 L63.5,136.8 L66.5,136.8 L69.6,136.8 L72.6,136.8 L75.6,136.8 L78.7,136.8 L81.7,136.8 L84.7,136.8 L87.8,136.8 L90.8,136.8 L93.8,136.8 L96.9,136.8 L99.9,136.8 L102.9,136.8 L106.0,136.8 L109.0,136.8 L112.0,136.8 L115.1,125.2 L118.1,113.5 L121.1,113.5 L124.2,113.5 L127.2,113.5 L130.2,113.5 L133.3,113.5 L136.3,113.5 L139.3,113.5 L139.3,200.9 L18.0,230.0 Z"/><path class="fig-ink fig-model" d="M18.0,230.0 L382.0,142.6"/><path class="fig-ink" d="M18.0,230.0 L21.0,230.0 L24.1,230.0 L27.1,230.0 L30.1,230.0 L33.2,230.0 L36.2,230.0 L39.2,230.0 L42.3,230.0 L45.3,230.0 L48.3,230.0 L51.4,230.0 L54.4,230.0 L57.4,230.0 L60.5,230.0 L63.5,230.0 L66.5,230.0 L69.6,218.4 L72.6,218.4 L75.6,218.4 L78.7,218.4 L81.7,218.4 L84.7,218.4 L87.8,206.7 L90.8,206.7 L93.8,206.7 L96.9,206.7 L99.9,206.7 L102.9,206.7 L106.0,206.7 L109.0,206.7 L112.0,206.7 L115.1,206.7 L118.1,206.7 L121.1,206.7 L124.2,206.7 L127.2,206.7 L130.2,206.7 L133.3,206.7 L136.3,195.1 L139.3,195.1 L142.4,183.4 L145.4,183.4 L148.4,183.4 L151.5,171.8 L154.5,171.8 L157.5,171.8 L160.6,171.8 L163.6,171.8 L166.6,171.8 L169.7,171.8 L172.7,171.8 L175.7,160.1 L178.8,148.5 L181.8,136.8 L184.8,136.8 L187.9,125.2 L190.9,125.2 L193.9,125.2 L197.0,125.2 L200.0,125.2 L203.0,125.2 L206.1,125.2 L209.1,125.2 L212.1,125.2 L215.2,125.2 L218.2,125.2 L221.2,125.2 L224.3,125.2 L227.3,125.2 L230.3,125.2 L233.4,125.2 L236.4,125.2 L239.4,125.2 L242.5,125.2 L245.5,125.2 L248.5,125.2 L251.6,125.2 L254.6,125.2 L257.6,125.2 L260.7,125.2 L263.7,125.2 L266.7,125.2 L269.8,125.2 L272.8,125.2 L275.8,125.2 L278.9,125.2 L281.9,125.2 L284.9,125.2 L288.0,125.2 L291.0,125.2 L294.0,125.2 L297.1,125.2 L300.1,125.2 L303.1,125.2 L306.2,125.2 L309.2,125.2 L312.2,113.5 L315.3,113.5 L318.3,101.9 L321.3,101.9 L324.4,101.9 L327.4,101.9 L330.4,101.9 L333.5,101.9 L336.5,101.9 L339.5,101.9 L342.6,101.9 L345.6,101.9 L348.6,101.9 L351.7,101.9 L354.7,101.9 L357.7,101.9 L360.8,90.2 L363.8,90.2 L366.8,90.2 L369.9,90.2 L372.9,90.2 L375.9,90.2 L379.0,90.2 L382.0,90.2"/><path class="fig-acc" d="M18.0,230.0 L21.0,218.4 L24.1,206.7 L27.1,195.1 L30.1,183.4 L33.2,171.8 L36.2,171.8 L39.2,171.8 L42.3,171.8 L45.3,160.1 L48.3,148.5 L51.4,148.5 L54.4,148.5 L57.4,148.5 L60.5,148.5 L63.5,136.8 L66.5,136.8 L69.6,136.8 L72.6,136.8 L75.6,136.8 L78.7,136.8 L81.7,136.8 L84.7,136.8 L87.8,136.8 L90.8,136.8 L93.8,136.8 L96.9,136.8 L99.9,136.8 L102.9,136.8 L106.0,136.8 L109.0,136.8 L112.0,136.8 L115.1,125.2 L118.1,113.5 L121.1,113.5 L124.2,113.5 L127.2,113.5 L130.2,113.5 L133.3,113.5 L136.3,113.5 L139.3,113.5 L142.4,113.5 L145.4,113.5 L148.4,113.5 L151.5,113.5 L154.5,113.5 L157.5,101.9 L160.6,90.2 L163.6,90.2 L166.6,90.2 L169.7,90.2 L172.7,78.6 L175.7,78.6 L178.8,78.6 L181.8,78.6 L184.8,78.6 L187.9,78.6 L190.9,78.6 L193.9,78.6 L197.0,78.6 L200.0,78.6 L203.0,78.6 L206.1,78.6 L209.1,78.6 L212.1,78.6 L215.2,78.6 L218.2,78.6 L221.2,78.6 L224.3,78.6 L227.3,78.6 L230.3,78.6 L233.4,78.6 L236.4,78.6 L239.4,78.6 L242.5,78.6 L245.5,78.6 L248.5,78.6 L251.6,78.6 L254.6,78.6 L257.6,78.6 L260.7,78.6 L263.7,78.6 L266.7,78.6 L269.8,78.6 L272.8,78.6 L275.8,78.6 L278.9,66.9 L281.9,66.9 L284.9,66.9 L288.0,55.3 L291.0,55.3 L294.0,55.3 L297.1,55.3 L300.1,55.3 L303.1,55.3 L306.2,55.3 L309.2,55.3 L312.2,55.3 L315.3,55.3 L318.3,55.3 L321.3,55.3 L324.4,55.3 L327.4,55.3 L330.4,55.3 L333.5,55.3 L336.5,55.3 L339.5,55.3 L342.6,55.3 L345.6,55.3 L348.6,55.3 L351.7,43.6 L354.7,43.6 L357.7,43.6 L360.8,43.6 L363.8,43.6 L366.8,43.6 L369.9,43.6 L372.9,32.0 L375.9,32.0 L379.0,32.0 L382.0,32.0"/><line class="fig-now" x1="139.3" y1="24" x2="139.3" y2="230"/><circle class="fig-dot fig-dot-ink" cx="139.3" cy="195.1" r="3.5"/><circle class="fig-dot" cx="139.3" cy="113.5" r="4.5"/></svg><!-- /fig:wv -->
-              <span class="tile-tag">Schematic</span>
-            </span>
-            <span class="tile-head"><span class="project-index">02</span><span class="project-year">2025</span></span>
-            <span class="project-name">Predicting Water-Asset Failure</span>
-            <span class="project-meta">Western Virginia Water Authority · ML on 20 yrs of CMMS data · $150K value</span>
-          </a>
-        </li>
-        <li class="work-tile reveal">
-          <a href="work/pinnacle-fertility.html" class="tile-link">
-            <span class="tile-fig" aria-hidden="true" data-lab="sample">
-              <!-- fig:pinnacle --><svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-axis" x1="164.1" y1="28" x2="164.1" y2="232"/><line class="fig-ci fig-ci-on" x1="192.3" y1="42.3" x2="299.7" y2="42.3"/><circle class="fig-pt fig-pt-on fig-pt-top" cx="243.6" cy="42.3" r="4.5"/><line class="fig-ci fig-ci-on" x1="174.9" y1="58.8" x2="280.5" y2="58.8"/><circle class="fig-pt fig-pt-on" cx="224.8" cy="58.8" r="3.5"/><line class="fig-ci" x1="160.4" y1="75.3" x2="264.1" y2="75.3"/><circle class="fig-pt" cx="208.8" cy="75.3" r="3.5"/><line class="fig-ci" x1="151.2" y1="91.8" x2="253.5" y2="91.8"/><circle class="fig-pt" cx="198.6" cy="91.8" r="3.5"/><line class="fig-ci" x1="145.8" y1="108.3" x2="247.2" y2="108.3"/><circle class="fig-pt" cx="192.5" cy="108.3" r="3.5"/><line class="fig-ci" x1="132.8" y1="124.8" x2="231.9" y2="124.8"/><circle class="fig-pt" cx="178.0" cy="124.8" r="3.5"/><line class="fig-ci" x1="129.3" y1="141.3" x2="227.7" y2="141.3"/><circle class="fig-pt" cx="174.0" cy="141.3" r="3.5"/><line class="fig-ci" x1="115.4" y1="157.8" x2="210.8" y2="157.8"/><circle class="fig-pt" cx="158.1" cy="157.8" r="3.5"/><line class="fig-ci" x1="84.1" y1="174.3" x2="170.8" y2="174.3"/><circle class="fig-pt" cx="121.3" cy="174.3" r="3.5"/><line class="fig-ci fig-ci-on" x1="69.4" y1="190.8" x2="150.8" y2="190.8"/><circle class="fig-pt fig-pt-on" cx="103.4" cy="190.8" r="3.5"/><line class="fig-ci fig-ci-on" x1="69.0" y1="207.3" x2="150.2" y2="207.3"/><circle class="fig-pt fig-pt-on" cx="102.9" cy="207.3" r="3.5"/><line class="fig-ci fig-ci-on" x1="38.4" y1="223.8" x2="104.4" y2="223.8"/><circle class="fig-pt fig-pt-on" cx="63.5" cy="223.8" r="3.5"/></svg><!-- /fig:pinnacle -->
-              <span class="tile-tag">Schematic</span>
-            </span>
-            <span class="tile-head"><span class="project-index">03</span><span class="project-year">2024</span></span>
-            <span class="project-name">Patient Sentiment NLP at Scale</span>
-            <span class="project-meta">Pinnacle Fertility · Duke Fuqua capstone · 100K+ records, 12+ facilities</span>
-          </a>
-        </li>
-        <li class="work-tile reveal">
-          <a href="work/numit.html" class="tile-link">
-            <span class="tile-fig" aria-hidden="true">
-              <img src="assets/work/numit.webp" alt="" width="960" height="600" loading="lazy" decoding="async" />
-              <span class="tile-tag">Live product</span>
-            </span>
-            <span class="tile-head"><span class="project-index">04</span><span class="project-year">2026</span></span>
-            <span class="project-name">Numit: Mapping Crisis and Repair</span>
-            <span class="project-meta">Independent build · Three.js globe · UNHCR, OCHA, GDELT, ACLED · Live</span>
-          </a>
-        </li>
-      </ol>
+      <div class="reel reveal" data-reel>
+        <div class="reel-bar">
+          <div class="reel-index">
+            <p class="reel-group"><span class="reel-kind">Work</span>
+              <a class="reel-jump" href="#p-commercial" aria-current="true">Commercial analytics</a>
+              <a class="reel-jump" href="#p-nlp">Language at scale</a>
+            </p>
+            <p class="reel-group"><span class="reel-kind">Personal</span>
+              <a class="reel-jump" href="#p-numit">Numit</a>
+            </p>
+          </div>
+          <div class="reel-nav">
+            <button type="button" class="reel-btn" data-step="-1" aria-label="Previous project">←</button>
+            <span class="reel-count" aria-live="polite"><b>1</b> / 3</span>
+            <button type="button" class="reel-btn" data-step="1" aria-label="Next project">→</button>
+          </div>
+        </div>
 
+        <ol class="reel-track" role="list" tabindex="0" aria-label="Projects: two from work, one personal">
+          <li class="slide" id="p-commercial" data-kind="work">
+            <a href="work/commercial-analytics.html" class="slide-link">
+              <span class="tile-fig slide-stage" aria-hidden="true" data-lab="committee">
+                <!-- fig:commercial --><svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-grid" x1="16" y1="340" x2="624" y2="340"/><line class="fig-now" x1="453.5" y1="26" x2="453.5" y2="340"/><path class="fig-ink" d="M16.0,266.0 L30.8,305.9 L45.7,330.4 L60.5,319.9 L75.3,299.3 L90.1,248.9 L105.0,247.6 L119.8,245.3 L134.6,244.3 L149.5,227.3 L164.3,210.3 L179.1,187.9 L194.0,256.9 L208.8,236.0 L223.6,276.9 L238.4,294.8 L253.3,268.3 L268.1,226.8 L282.9,211.4 L297.8,199.5 L312.6,190.8 L327.4,160.2 L342.2,171.9 L357.1,163.6 L371.9,196.3 L386.7,240.7 L401.6,274.9 L416.4,248.6 L431.2,225.8 L446.0,191.3"/><path class="fig-ink fig-future" d="M446.0,191.3 L460.9,181.2 L475.7,177.8 L490.5,190.4 L505.4,167.0 L520.2,147.3 L535.0,142.5 L549.9,186.5 L564.7,228.4 L579.5,233.8 L594.3,251.5 L609.2,222.8 L624.0,188.9"/><path class="fig-ink fig-model" d="M446.0,191.3 L460.9,211.4 L475.7,199.5 L490.5,190.8 L505.4,160.2 L520.2,171.9 L535.0,163.6 L549.9,196.3 L564.7,240.7 L579.5,274.9 L594.3,248.6 L609.2,225.8 L624.0,191.3"/><path class="fig-ink fig-model" d="M446.0,191.3 L460.9,174.0 L475.7,172.2 L490.5,166.5 L505.4,156.1 L520.2,143.5 L535.0,125.5 L549.9,154.3 L564.7,192.7 L579.5,209.6 L594.3,194.9 L609.2,183.9 L624.0,144.9"/><path class="fig-ink fig-model" d="M446.0,191.3 L460.9,163.4 L475.7,162.6 L490.5,163.2 L505.4,152.3 L520.2,135.2 L535.0,130.7 L549.9,151.0 L564.7,186.4 L579.5,211.3 L594.3,206.2 L609.2,174.8 L624.0,139.9"/><path class="fig-ink fig-model" d="M446.0,191.3 L460.9,175.4 L475.7,184.3 L490.5,184.9 L505.4,173.0 L520.2,165.1 L535.0,143.2 L549.9,178.2 L564.7,200.7 L579.5,235.2 L594.3,230.3 L609.2,208.3 L624.0,167.5"/><path class="fig-acc" d="M446.0,191.3 L460.9,181.1 L475.7,179.7 L490.5,176.4 L505.4,160.4 L520.2,153.9 L535.0,140.8 L549.9,170.0 L564.7,205.1 L579.5,232.8 L594.3,220.0 L609.2,198.2 L624.0,160.9"/></svg><!-- /fig:commercial -->
+                <span class="tile-tag">Schematic</span>
+              </span>
+              <span class="slide-text">
+                <span class="slide-kind">Work · Cooper Surgical</span>
+                <span class="project-name">Commercial operations and analytics</span>
+                <span class="slide-desc">The planning analytics behind a medical-device sales organisation: quota for 75+ territory managers, committee forecasts for 25+ product lines, and a LangGraph research companion that briefs the strategy team with every figure linked to its source.</span>
+                <span class="project-meta">Python · SQL · Azure · PowerBI · LangGraph</span>
+                <span class="slide-open">Open the case study →</span>
+              </span>
+            </a>
+          </li>
+          <li class="slide" id="p-nlp" data-kind="work">
+            <a href="work/nlp.html" class="slide-link">
+              <span class="tile-fig slide-stage" aria-hidden="true" data-lab="sample">
+                <!-- fig:nlp --><svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-axis" x1="292.7" y1="28" x2="292.7" y2="342"/><line class="fig-ci fig-ci-on" x1="348.0" y1="46.8" x2="558.9" y2="46.8"/><circle class="fig-pt fig-pt-on fig-pt-top" cx="448.8" cy="46.8" r="4.5"/><line class="fig-ci fig-ci-on" x1="313.9" y1="72.5" x2="521.2" y2="72.5"/><circle class="fig-pt fig-pt-on" cx="411.8" cy="72.5" r="3.5"/><line class="fig-ci" x1="285.4" y1="98.2" x2="489.0" y2="98.2"/><circle class="fig-pt" cx="380.5" cy="98.2" r="3.5"/><line class="fig-ci" x1="267.2" y1="123.8" x2="468.2" y2="123.8"/><circle class="fig-pt" cx="360.3" cy="123.8" r="3.5"/><line class="fig-ci" x1="256.6" y1="149.5" x2="455.8" y2="149.5"/><circle class="fig-pt" cx="348.5" cy="149.5" r="3.5"/><line class="fig-ci" x1="231.2" y1="175.2" x2="425.9" y2="175.2"/><circle class="fig-pt" cx="319.9" cy="175.2" r="3.5"/><line class="fig-ci" x1="224.2" y1="200.8" x2="417.5" y2="200.8"/><circle class="fig-pt" cx="312.0" cy="200.8" r="3.5"/><line class="fig-ci" x1="197.0" y1="226.5" x2="384.4" y2="226.5"/><circle class="fig-pt" cx="280.9" cy="226.5" r="3.5"/><line class="fig-ci" x1="135.6" y1="252.2" x2="305.7" y2="252.2"/><circle class="fig-pt" cx="208.6" cy="252.2" r="3.5"/><line class="fig-ci fig-ci-on" x1="106.7" y1="277.8" x2="266.5" y2="277.8"/><circle class="fig-pt fig-pt-on" cx="173.4" cy="277.8" r="3.5"/><line class="fig-ci fig-ci-on" x1="105.9" y1="303.5" x2="265.3" y2="303.5"/><circle class="fig-pt fig-pt-on" cx="172.4" cy="303.5" r="3.5"/><line class="fig-ci fig-ci-on" x1="45.8" y1="329.2" x2="175.4" y2="329.2"/><circle class="fig-pt fig-pt-on" cx="95.0" cy="329.2" r="3.5"/></svg><!-- /fig:nlp -->
+                <span class="tile-tag">Schematic</span>
+              </span>
+              <span class="slide-text">
+                <span class="slide-kind">Work · Pinnacle Fertility and Siemens</span>
+                <span class="project-name">Natural language processing</span>
+                <span class="slide-desc">Reading what people write, at scale: sentiment and its drivers across 100K+ patient records and 12 facilities at Pinnacle Fertility, and a control-system NLP proof of concept at Siemens.</span>
+                <span class="project-meta">Python · NLP · Classification · Tableau</span>
+                <span class="slide-open">Open the case study →</span>
+              </span>
+            </a>
+          </li>
+          <li class="slide" id="p-numit" data-kind="personal">
+            <a href="work/numit.html" class="slide-link">
+              <span class="tile-fig slide-stage" aria-hidden="true">
+                <img src="assets/work/numit.webp" alt="" width="960" height="600" loading="lazy" decoding="async" />
+                <span class="tile-tag">Live product</span>
+              </span>
+              <span class="slide-text">
+                <span class="slide-kind">Personal project</span>
+                <span class="project-name">Numit</span>
+                <span class="slide-desc">A contemplative globe of where the world is breaking and where it is being put back together, built against psychic numbing. Every event is hand-checked against its source.</span>
+                <span class="project-meta">Three.js · Next.js · UNHCR, OCHA, Reuters, HRW</span>
+                <span class="slide-open">Open the case study →</span>
+              </span>
+            </a>
+          </li>
+        </ol>
+      </div>
     </section>
 
     <section class="section path" id="path" aria-labelledby="path-title">
       <header class="section-head reveal">
-        <p class="eyebrow">§ 02 — The path here</p>
+        <p class="eyebrow">The path here</p>
         <h2 id="path-title" class="section-title">Two threads, one practice.</h2>
       </header>
 
@@ -170,22 +192,22 @@
         <li class="th th-t th-start reveal">
           <span class="th-rail" aria-hidden="true"><i class="ln ln-t"></i><b class="dot"></b></span>
           <span class="th-when">2018–22<em>Technical</em></span>
-          <span class="th-body"><strong>Foundations</strong> — B.E. in Computer Science with an AI &amp; ML specialization at SRM.</span>
+          <span class="th-body"><strong>Foundations.</strong> B.E. in Computer Science with an AI &amp; ML specialization at SRM.</span>
         </li>
         <li class="th th-t reveal">
           <span class="th-rail" aria-hidden="true"><i class="ln ln-t"></i><b class="dot"></b></span>
           <span class="th-when">2021<em>Technical</em></span>
-          <span class="th-body"><strong>Applied ML</strong> — a control-system NLP proof of concept and dashboards at Siemens.</span>
+          <span class="th-body"><strong>Applied ML.</strong> A control-system NLP proof of concept and dashboards at Siemens.</span>
         </li>
         <li class="th th-b th-bstart reveal">
           <span class="th-rail" aria-hidden="true"><i class="ln ln-t"></i><i class="ln ln-b"></i><b class="dot"></b></span>
           <span class="th-when">2023<em>Business</em></span>
-          <span class="th-body"><strong>Strategy</strong> — consulting at Deloitte Strategy &amp; Analytics.</span>
+          <span class="th-body"><strong>Strategy.</strong> Consulting at Deloitte Strategy &amp; Analytics.</span>
         </li>
         <li class="th th-b reveal">
           <span class="th-rail" aria-hidden="true"><i class="ln ln-t"></i><i class="ln ln-b"></i><b class="dot"></b></span>
           <span class="th-when">2023–24<em>Business</em></span>
-          <span class="th-body"><strong>Business analytics</strong> — MS Quantitative Management at Duke Fuqua, Strategy track.</span>
+          <span class="th-body"><strong>Business analytics.</strong> MS Quantitative Management at Duke Fuqua, Strategy track.</span>
         </li>
         <li class="th-merge">
           <span class="th-rail" aria-hidden="true">
@@ -200,17 +222,17 @@
         <li class="th th-m reveal">
           <span class="th-rail" aria-hidden="true"><i class="ln ln-m"></i><b class="dot"></b></span>
           <span class="th-when">2024</span>
-          <span class="th-body"><strong>Domain breadth</strong> — NLP capstone with Pinnacle Fertility; marketing analytics at Duke's Nicholas School.</span>
+          <span class="th-body"><strong>Domain breadth.</strong> NLP capstone with Pinnacle Fertility; marketing analytics at Duke's Nicholas School.</span>
         </li>
         <li class="th th-m reveal">
           <span class="th-rail" aria-hidden="true"><i class="ln ln-m"></i><b class="dot"></b></span>
           <span class="th-when">2025</span>
-          <span class="th-body"><strong>ML in production</strong> — asset-failure prediction for the Western Virginia Water Authority.</span>
+          <span class="th-body"><strong>ML in production.</strong> Asset-failure prediction for the Western Virginia Water Authority.</span>
         </li>
         <li class="th th-m th-end reveal">
           <span class="th-rail" aria-hidden="true"><i class="ln ln-m"></i><b class="dot"></b></span>
           <span class="th-when">2025 →</span>
-          <span class="th-body"><strong>Commercial &amp; executive</strong> — Data Scientist, Strategy &amp; Market Insights at Cooper Surgical.</span>
+          <span class="th-body"><strong>Commercial &amp; executive.</strong> Senior Data Scientist, Strategy &amp; Market Insights at Cooper Surgical.</span>
         </li>
       </ol>
       <div class="path-bio prose reveal">
@@ -223,13 +245,13 @@
 
     <section class="section glance" id="glance" aria-labelledby="glance-title">
       <header class="section-head reveal">
-        <p class="eyebrow">§ 03 — At a glance</p>
+        <p class="eyebrow">At a glance</p>
         <h2 id="glance-title" class="section-title">The short version.</h2>
       </header>
       <dl class="stack-grid">
         <div class="stack-row reveal">
           <dt>Now</dt>
-          <dd>Data Scientist, Strategy &amp; Market Insights at Cooper Surgical</dd>
+          <dd>Senior Data Scientist, Strategy &amp; Market Insights at Cooper Surgical</dd>
         </div>
         <div class="stack-row reveal">
           <dt>Languages</dt>
@@ -264,7 +286,7 @@
 
     <section class="section contact" id="contact" aria-labelledby="contact-title">
       <header class="section-head reveal">
-        <p class="eyebrow">§ 04 — Contact</p>
+        <p class="eyebrow">Contact</p>
         <h2 id="contact-title" class="section-title contact-title">Let's talk.</h2>
       </header>
       <div class="contact-actions reveal">

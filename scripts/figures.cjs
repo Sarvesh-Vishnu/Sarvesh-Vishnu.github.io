@@ -17,25 +17,25 @@ const between = (html, name, body, file) => {
 };
 const fluid = (svg) => svg.replace(/ width="\d+" height="\d+"/, '');   // let CSS size the static copy
 
-// home page: the three tile figures
-const TILE = { w: 400, h: 250, full: false };
-const tiles = { cooper: 'committee', wv: 'list', pinnacle: 'sample' };
+// home page: the work figures
+const TILE = { w: 640, h: 360, full: false };
+const tiles = { commercial: 'committee', nlp: 'sample' };
 let index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 for (const [marker, kind] of Object.entries(tiles)) {
   const k = Lab.KINDS[kind];
   index = between(index, `fig:${marker}`, fluid(k.render(k.state(), TILE)), 'index.html');
 }
-// home page: the hero sentence and its strip (present from v3 on)
-if (index.includes('<!-- hero:fig -->')) {
-  const r = Lab.list(Lab.L.DEFAULT);
-  index = between(index, 'hero:fig', fluid(Lab.renderList({ k: r.k }, { w: 1152, h: 120, full: false, slim: true })), 'index.html');
-  for (const key of ['k', 'model', 'oldest', 'failures']) index = between(index, `hero:${key}`, String(r[key]), 'index.html');
+// home page: the hero sentence and its strip
+{
+  const r = Lab.heroParts(Lab.C.DEFAULT);
+  index = between(index, 'hero:fig', fluid(Lab.renderCommittee({ origin: r.origin, active: [true, true, true, true] }, { w: 1152, h: 150, full: false, slim: true })), 'index.html');
+  for (const key of ['label', 'best', 'worst', 'err', 'origins', 'verdict']) index = between(index, `hero:${key}`, String(r[key]), 'index.html');
 }
 fs.writeFileSync(path.join(ROOT, 'index.html'), index);
 
 // case studies: the full instrument, its field (list only) and both sentences
 const FULL = { w: 760, h: 350, full: true };
-const pages = { 'cooper-surgical': 'committee', 'wv-water': 'list', 'pinnacle-fertility': 'sample' };
+const pages = { 'commercial-analytics': 'committee', nlp: 'sample' };
 for (const [page, kind] of Object.entries(pages)) {
   const file = path.join(ROOT, 'work', `${page}.html`);
   const k = Lab.KINDS[kind];
@@ -48,4 +48,4 @@ for (const [page, kind] of Object.entries(pages)) {
   if (kind === 'list') html = between(html, 'lab:field', fluid(Lab.renderField(st, { w: 760 })), page);
   fs.writeFileSync(file, html);
 }
-console.log('figures written: 3 tiles, 3 case studies');
+console.log('figures written: hero, 2 work figures, 2 case studies');

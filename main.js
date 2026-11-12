@@ -6,7 +6,7 @@
   'use strict';
 
   const root = document.documentElement;
-  root.classList.add('js');
+  root.classList.add('js', 'ready');                     // `ready` tells the <head> timer the script arrived
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -43,6 +43,45 @@
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
   }
+
+  /* The reel (design.md §14.15): a native scroll-snap row. This only adds the buttons,
+     the index and the counter; swiping, scrolling and tabbing work without it. */
+  document.querySelectorAll('[data-reel]').forEach((reel) => {
+    const track = reel.querySelector('.reel-track');
+    const slides = Array.from(track.children);
+    const jumps = Array.from(reel.querySelectorAll('.reel-jump'));
+    const prev = reel.querySelector('[data-step="-1"]');
+    const next = reel.querySelector('[data-step="1"]');
+    const count = reel.querySelector('.reel-count b');
+    let current = 0;
+    const show = (i) => {
+      current = i;
+      jumps.forEach((j, k) => { if (k === i) j.setAttribute('aria-current', 'true'); else j.removeAttribute('aria-current'); });
+      if (count) count.textContent = i + 1;
+      if (prev) prev.disabled = i === 0;
+      if (next) next.disabled = i === slides.length - 1;
+    };
+    const go = (i) => {
+      const k = Math.max(0, Math.min(slides.length - 1, i));
+      track.scrollTo({ left: slides[k].offsetLeft, behavior: reduceMotion ? 'auto' : 'smooth' });
+      show(k);                                           // answer at once; the observer confirms
+    };
+    if ('IntersectionObserver' in window) {
+      const seen = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) show(slides.indexOf(e.target)); });
+      }, { root: track, threshold: 0.6 });
+      slides.forEach((sl) => seen.observe(sl));
+    }
+    jumps.forEach((j, k) => j.addEventListener('click', (e) => { e.preventDefault(); go(k); }));
+    if (prev) prev.addEventListener('click', () => go(current - 1));
+    if (next) next.addEventListener('click', () => go(current + 1));
+    track.addEventListener('keydown', (e) => {
+      if (e.target !== track) return;                    // leave keys alone inside a slide
+      if (e.key === 'ArrowRight') { go(current + 1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { go(current - 1); e.preventDefault(); }
+    });
+    show(0);
+  });
 
   /* Motion handoff. When GSAP is present and motion is welcome, motion.js owns the
      reveals and marks the page `motion-gsap`. If it throws, or hasn't signalled

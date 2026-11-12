@@ -148,11 +148,12 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 --bp-md: 768px    --bp-xl: 1280px
 ```
 
-### Page structure (v3, §14.14)
+### Page structure (v4, §14.15)
 1. Header — fixed, 64px, transparent; hairline border on scroll
-2. Hero — masthead (the name), the thesis as the display line, a sentence with one
-   draggable number and the figure it drives, then the proof links
-3. Work — 2×2 grid of tiles whose figures are working models (§14.12, §14.13)
+2. Hero — masthead (name and title), the thesis as the display line, a sentence with
+   one draggable word and the figure it drives, then the proof links
+3. Work — a reel of three projects, one large slide at a time: two from work, one
+   personal, told apart by the index and each slide's kind line
 4. The path here — two threads that merge (§14.11), with a short bio beside it
 5. At a glance — one ledger: role, toolkit, education, writing
 6. Contact — "Let's talk." + LinkedIn, email, GitHub, résumé
@@ -665,4 +666,60 @@ ends the way it began. Emphasis comes from size and from Prussian, not from weig
 **Case-study prose.** From 900px up, section names (Objective, Approach, Outcome, What
 I'd do next) sit in the left margin as mono side-heads and the text keeps its reading
 measure beside them, like a paper. Pure CSS grid; below 900px they stack as before.
+
+### 14.15 — v4: three projects in a reel, and the first pass with the house skill
+*Changes: §5, §14.12 (the 2×2 grid is replaced), §14.13 (which instruments are
+mounted), §14.14 (hero sentence). Built on v3. (2026-11-12)*
+
+**Three projects.** Two from work, one personal:
+- *Commercial operations and analytics* (Cooper Surgical): the planning analytics,
+  plus the LangGraph research companion, described by method only.
+- *Natural language processing* (Pinnacle Fertility and Siemens).
+- *Numit* (personal).
+
+The Western Virginia Water tile and page are removed for now; the role stays on the
+path. Old addresses (`cooper-surgical.html`, `pinnacle-fertility.html`,
+`wv-water.html`) are redirect stubs. The list model stays in `lab.js`, tested, unmounted.
+
+**The reel.** The owner asked for a larger, more visual display "like a carousel".
+One slide at a time at up to 1040px, each led by a 16:9 stage: the working model for
+work projects (rendered with its labels at this size), the live product for Numit.
+It is a native scroll-snap row, so swipe, trackpad, scroll and Tab work with no
+script; the script adds the index, the arrows and the counter. The next slide always
+shows its edge. Nothing advances by itself.
+
+**Work and personal, told apart three ways.** The index groups the names under
+"Work" and "Personal"; each slide has a kind line ("Work · Cooper Surgical",
+"Personal project"); and the mark beside it reuses the path's vocabulary, filled for
+work and hollow for personal.
+
+**Hero sentence.** Now driven by the committee model, since the water project left:
+"Forecast the next year from [month] with four models and they miss by X to Y. Their
+average misses by Z, and over N starting months it was never the worst of them." The
+month is the slider. Every number, and the closing clause, comes from `heroParts()`.
+
+**Title.** Senior Data Scientist, everywhere it appears (masthead, path, ledger,
+page title, structured data, share card).
+
+**Copy.** New lines on the home page and the two added case-study sections (the
+research companion; Siemens) are drafts for the owner to edit. The companion is
+described at the level of method and public sources: no internal name, no outputs.
+
+**Found by the tells scan and fixed** (munnetrum-design skill, first run: 14 findings
+down to 3):
+- *Content hidden until a script reveals it.* `.reveal` now starts visible; it is
+  hidden only under `.js`, which an inline script sets and removes again if `main.js`
+  has not reported within 4s.
+- *Numbers on sections with no order.* "§ 01 — Work" becomes "Work".
+- *Dashes as separators* in the path rows become full stops.
+- *Figure labels at 10.5px* become 11px. One hard-coded white becomes a token.
+- *Kept, with a reason recorded in the CSS:* the header's backdrop blur, which is a
+  real layering case.
+- *Left for the owner:* em-dash density in the long-form prose, which is their voice.
+
+**Considered and rejected.** An auto-advancing carousel (movement without cause, and
+it takes control from the reader). Arrows only, with no index (the work/personal
+split would rest on one small label). Keeping four tiles (the owner asked for three
+and for size). Dragging the reel with the mouse (it would fight the figures, which
+follow the pointer).
 

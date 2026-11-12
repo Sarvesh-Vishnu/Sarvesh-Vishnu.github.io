@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#003153" />
+  <meta name="color-scheme" content="light dark" />
+
+  <title>Natural language processing, Pinnacle Fertility and Siemens · Sarvesh Vishnu</title>
+  <meta name="description" content="Natural language processing in two settings: sentiment and its drivers across 100K+ patient records at Pinnacle Fertility, and a control-system proof of concept at Siemens." />
+
+  <link rel="canonical" href="https://sarvesh-vishnu.github.io/work/nlp.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://sarvesh-vishnu.github.io/work/nlp.html" />
+  <meta property="og:title" content="Natural language processing, Pinnacle Fertility and Siemens · Sarvesh Vishnu" />
+  <meta property="og:description" content="Natural language processing in two settings: sentiment and its drivers across 100K+ patient records at Pinnacle Fertility, and a control-system proof of concept at Siemens." />
+  <meta property="og:image" content="https://sarvesh-vishnu.github.io/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+
+  <script>
+    (function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}})();
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion');
+  </script>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body class="project-page">
+  <a href="#main" class="skip">Skip to content</a>
+
+  <header class="site-header" id="header">
+    <nav class="nav" aria-label="Primary">
+      <a href="../index.html" class="brand">sarvesh.</a>
+      <ul class="nav-links" role="list">
+        <li><a href="../index.html#work">Work</a></li>
+        <li class="nav-secondary"><a href="../index.html#path">Path</a></li>
+        <li class="nav-secondary"><a href="../index.html#glance">At a glance</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+      <button type="button" class="theme-toggle" aria-label="Switch to dark theme" aria-pressed="false" title="Toggle theme">
+        <svg class="theme-icon icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="theme-icon icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article>
+      <header class="project-hero project-hero--lead">
+        <p class="eyebrow">Work · Pinnacle Fertility and Siemens</p>
+        <h1>Reading what people write, at scale.</h1>
+        <p class="project-byline">Pinnacle Fertility, Duke Fuqua capstone, 2024 · Siemens, 2021</p>
+      </header>
+
+      <section class="lab" data-lab="sample" aria-labelledby="lab-title">
+        <div class="lab-head">
+          <div>
+            <p class="eyebrow">Operate it</p>
+            <h2 id="lab-title" class="lab-title">Is the worst facility really the worst?</h2>
+          </div>
+          <p class="lab-lede">Twelve facilities, each with a true share of unhappy comments. Read a few and the ranking is mostly luck. Read more and it settles.</p>
+        </div>
+        <div class="lab-stage">
+          <div class="lab-fig lab-sample"><!-- lab:fig --><svg viewBox="0 0 760 350" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-axis" x1="360.5" y1="18" x2="360.5" y2="316"/><line class="fig-ci fig-ci-on" x1="424.2" y1="36.2" x2="667.3" y2="36.2"/><circle class="fig-pt fig-pt-on fig-pt-top" cx="540.4" cy="36.2" r="4.5"/><text class="fig-lab" x="34" y="39.2" text-anchor="end">F02</text><line class="fig-ci fig-ci-on" x1="385.0" y1="60.5" x2="623.9" y2="60.5"/><circle class="fig-pt fig-pt-on" cx="497.8" cy="60.5" r="3.5"/><text class="fig-lab" x="34" y="63.5" text-anchor="end">F06</text><line class="fig-ci" x1="352.1" y1="84.8" x2="586.8" y2="84.8"/><circle class="fig-pt" cx="461.7" cy="84.8" r="3.5"/><text class="fig-lab fig-lab-quiet" x="34" y="87.8" text-anchor="end">F08</text><line class="fig-ci" x1="331.2" y1="109.2" x2="562.7" y2="109.2"/><circle class="fig-pt" cx="438.5" cy="109.2" r="3.5"/><text class="fig-lab fig-lab-quiet" x="34" y="112.2" text-anchor="end">F11</text><line class="fig-ci" x1="319.0" y1="133.5" x2="548.5" y2="133.5"/><circle class="fig-pt" cx="424.8" cy="133.5" r="3.5"/><text class="fig-lab fig-lab-quiet" x="34" y="136.5" text-anchor="end">F04</text><line class="fig-ci" x1="289.7" y1="157.8" x2="514.0" y2="157.8"/><circle class="fig-pt" cx="391.9" cy="157.8" r="3.5"/><text class="fig-lab fig-lab-quiet" x="34" y="160.8" text-anchor="end">F09</text><line class="fig-ci" x1="281.6" y1="182.2" x2="504.3" y2="182.2"/><circle class="fig-pt" cx="382.8" cy="182.2" r="3.5"/><text class="fig-lab fig-lab-quiet" x="34" y="185.2" text-anchor="end">F05</text><line class="fig-ci" x1="250.3" y1="206.5" x2="466.2" y2="206.5"/><circle class="fig-pt" cx="346.9" cy="206.5" r="3.5"/><text class="fig-lab fig-lab-quiet" x="34" y="209.5" text-anchor="end">F07</text><line class="fig-ci" x1="179.5" y1="230.8" x2="375.6" y2="230.8"/><circle class="fig-pt" cx="263.6" cy="230.8" r="3.5"/><text class="fig-lab fig-lab-quiet" x="34" y="233.8" text-anchor="end">F03</text><line class="fig-ci fig-ci-on" x1="146.2" y1="255.2" x2="330.3" y2="255.2"/><circle class="fig-pt fig-pt-on" cx="223.1" cy="255.2" r="3.5"/><text class="fig-lab" x="34" y="258.2" text-anchor="end">F10</text><line class="fig-ci fig-ci-on" x1="145.3" y1="279.5" x2="329.0" y2="279.5"/><circle class="fig-pt fig-pt-on" cx="222.0" cy="279.5" r="3.5"/><text class="fig-lab" x="34" y="282.5" text-anchor="end">F12</text><line class="fig-ci fig-ci-on" x1="76.1" y1="303.8" x2="225.4" y2="303.8"/><circle class="fig-pt fig-pt-on" cx="132.8" cy="303.8" r="3.5"/><text class="fig-lab" x="34" y="306.8" text-anchor="end">F01</text><text class="fig-lab" x="143.4" y="332" text-anchor="middle">10%</text><text class="fig-lab" x="285.5" y="332" text-anchor="middle">20%</text><text class="fig-lab" x="427.5" y="332" text-anchor="middle">30%</text><text class="fig-lab" x="569.6" y="332" text-anchor="middle">40%</text><text class="fig-lab" x="711.6" y="332" text-anchor="middle">50%</text><text class="fig-lab fig-lab-quiet" x="740.0" y="346" text-anchor="end">share of comments that are negative</text><text class="fig-lab fig-lab-quiet" x="366.5" y="16">average</text></svg><!-- /lab:fig --></div>
+          <div class="lab-controls"></div>
+        </div>
+        <p class="lab-now" aria-live="polite"><!-- lab:now -->Reading 120 comments at each facility, 5 of 12 can be told apart from the average. F02 looks worst, and in this draw it really is.<!-- /lab:now --></p>
+        <p class="lab-always"><!-- lab:always -->Redraw the same 120 comments 300 times and the truly worst facility tops the list in 58% of them.<!-- /lab:always --></p>
+        <p class="lab-note">Synthetic facilities, not Pinnacle data. Bars are 95% Wilson intervals; a filled dot means the facility can be told apart from the average. The project had 100K+ records across 12 facilities, about 8,300 each if spread evenly.</p>
+      </section>
+
+      <div class="project-facts">
+
+        <dl class="project-results">
+          <div><dt>patient records</dt><dd>100K+</dd></div>
+          <div><dt>facilities covered</dt><dd>12+</dd></div>
+        </dl>
+
+        <p class="project-tools">Python · NLP · Classification · Tableau</p>
+      </div>
+
+      <section class="project-body-prose">
+        <h2>Objective</h2>
+        <p>Pinnacle operates twelve fertility facilities, and the patient-experience signal was hidden in unstructured feedback. Surveys, notes, and comments piled up faster than they could be processed — with no clear way to say, at scale, <em>what was truly supporting or hurting patient satisfaction, and where</em>.</p>
+
+        <h2>Approach</h2>
+        <p>I built the NLP layer end-to-end: cleaned and tokenized 100K+ patient records, trained sentiment models with facility-level and touchpoint-level cuts, and added a predictive component so satisfaction wasn't only measured after the fact. The goal wasn't a smarter dashboard — it was moving the team from lagging indicators to leading ones.</p>
+
+        <ul>
+          <li>Ingested and cleaned patient records across 12 facilities into a consistent schema</li>
+          <li>Ran sentiment classification with facility-level and interaction-type breakdowns</li>
+          <li>Extracted drivers — the operational issues that materially move satisfaction, not the noise</li>
+          <li>Trained a predictive layer to flag interactions likely to go wrong before they did</li>
+          <li>Left the team with a framework for personalized care interventions, not just a report</li>
+        </ul>
+
+        <h2>Earlier, at Siemens</h2>
+        <p>The first version of this work was industrial. At Siemens I built a proof of concept that applied NLP to control-system text, with dashboards so the engineering team could use what it found.</p>
+      </section>
+    </article>
+
+    <section class="project-body-prose">
+      <h2>Outcome</h2>
+      <p>The team walked away with a facility-level ranking of what actually drives satisfaction, and a way to flag interactions at risk of going wrong before they did — moving from operational lagging indicators to operational leading ones.</p>
+
+      <h2>What I'd do next</h2>
+      <p>An A/B testing loop. Pair each sentiment prediction with a specific intervention and measure whether the intervention actually moves the outcome — not just whether it correlates with better sentiment. That's the only way to close the loop from insight to action.</p>
+    </section>
+
+    <nav class="project-next" aria-label="Next project">
+      <span class="label">Next · Personal</span>
+      <a href="numit.html">Numit: a globe you can sit with</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="foot-line">© 2026 Sarvesh Vishnu Muhundu Parthiban</p>
+      <p class="foot-line foot-meta">Built with HTML, CSS, and restraint.</p>
+    </div>
+  </footer>
+
+  <noscript>
+    <style>
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .site-header { border-bottom: 1px solid var(--line); }
+      .theme-toggle { display: none; }
+    </style>
+  </noscript>
+
+  <!-- Smooth scroll: Lenis 1.3.27 — vendored, pinned (design.md §14.9) -->
+  <script src="../assets/vendor/lenis.min.js" defer></script>
+  <script src="../main.js" defer></script>
+  <script src="../motion.js" defer></script>
+  <script src="../lab.js" defer></script>
+</body>
+</html>
