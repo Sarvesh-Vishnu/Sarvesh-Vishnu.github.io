@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#003153" />
-  <meta name="color-scheme" content="light dark" />
+  <meta name="color-scheme" content="dark light" />
 
   <title>Numit — a contemplative globe of shadow &amp; light — Sarvesh Vishnu</title>
   <meta name="description" content="Numit is a hand-built WebGL globe that maps two faces of the world: crises breaking now, and the responses putting them back together. Built to counter psychic numbing." />
@@ -21,14 +21,12 @@
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
 
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" />
 
   <script>
-    (function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}})();
+    (function(){var d=document.documentElement;try{d.dataset.theme=localStorage.getItem('sheet')==='white'?'white':'blue';}catch(e){d.dataset.theme='blue';}})();
     if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion');
   </script>
 
@@ -46,7 +44,7 @@
         <li class="nav-secondary"><a href="../index.html#glance">At a glance</a></li>
         <li><a href="../index.html#contact">Contact</a></li>
       </ul>
-      <button type="button" class="theme-toggle" aria-label="Switch to dark theme" aria-pressed="false" title="Toggle theme">
+      <button type="button" class="theme-toggle" aria-label="Switch to the white print" aria-pressed="false" title="Blue sheet or white print">
         <svg class="theme-icon icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="theme-icon icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
       </button>
@@ -63,6 +61,7 @@
         <p class="project-tools">Next.js 14 · TypeScript · Three.js (WebGL) · Upstash Redis — sourced from UNHCR, OCHA, Reuters, HRW, GDELT 2.0, ACLED</p>
       </header>
 
+      <div class="paper">
       <section class="project-body-prose">
         <h2>Objective</h2>
         <p>The news doesn't invite you to sit. Caring at internet scale isn't really possible, and the fleeting helplessness of watching the world burn compresses into what psychologists call <em>psychic numbing</em> — the pattern where suffering, past a certain volume, stops registering as human at all. A statistic is what's left of a person after you've stopped paying attention.</p>
@@ -79,15 +78,16 @@
           <li>Engagement metrics aggregated through Upstash Redis — the site never watches individuals</li>
         </ul>
       </section>
+
+      <section class="project-body-prose">
+        <h2>Outcome</h2>
+        <p>There isn't a conversion metric on Numit, and there was never going to be one. The success criterion is qualitative: <em>if one person leaves having chosen a place, learned a name, and done one small real thing, the whole experience has paid for itself.</em> The full essay lives on <a href="https://bluemammoth.substack.com/p/numit" rel="noopener">Substack</a>.</p>
+
+        <h2>What I'd do next</h2>
+        <p>Regional editorial rotations so the shadow layer surfaces underreported crises, not just the ones with news volume. And an offline reading mode for places with unstable connectivity — the site should still work where the news does.</p>
+      </section>
+      </div>
     </article>
-
-    <section class="project-body-prose">
-      <h2>Outcome</h2>
-      <p>There isn't a conversion metric on Numit, and there was never going to be one. The success criterion is qualitative: <em>if one person leaves having chosen a place, learned a name, and done one small real thing, the whole experience has paid for itself.</em> The full essay lives on <a href="https://bluemammoth.substack.com/p/numit" rel="noopener">Substack</a>.</p>
-
-      <h2>What I'd do next</h2>
-      <p>Regional editorial rotations so the shadow layer surfaces underreported crises, not just the ones with news volume. And an offline reading mode for places with unstable connectivity — the site should still work where the news does.</p>
-    </section>
 
     <nav class="project-next" aria-label="Next project">
       <span class="label">Back to · Work</span>
@@ -98,7 +98,7 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <p class="foot-line">© 2026 Sarvesh Vishnu Muhundu Parthiban</p>
-      <p class="foot-line foot-meta">Built with HTML, CSS, and restraint.</p>
+      <p class="foot-line foot-meta">Built with HTML, CSS, and restraint. Drawn in Prussian blue, the pigment of the blueprint.</p>
     </div>
   </footer>
 

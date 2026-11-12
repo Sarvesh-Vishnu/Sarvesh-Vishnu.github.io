@@ -10,20 +10,20 @@
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* Theme toggle — light default, persists via localStorage.
-     Initial data-theme is set by the inline script in <head>. */
+  /* Sheet toggle: the blue sheet (default) or the white print. Persists in
+     localStorage; the initial value is set by the inline script in <head>. */
   const toggle = document.querySelector('.theme-toggle');
   if (toggle) {
     const syncAria = () => {
-      const isDark = root.dataset.theme === 'dark';
-      toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-      toggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+      const white = root.dataset.theme === 'white';
+      toggle.setAttribute('aria-pressed', white ? 'true' : 'false');
+      toggle.setAttribute('aria-label', white ? 'Switch to the blue sheet' : 'Switch to the white print');
     };
     syncAria();
     toggle.addEventListener('click', () => {
-      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      const next = root.dataset.theme === 'white' ? 'blue' : 'white';
       root.dataset.theme = next;
-      try { localStorage.setItem('theme', next); } catch (e) { /* private mode */ }
+      try { localStorage.setItem('sheet', next); } catch (e) { /* private mode */ }
       syncAria();
     });
   }

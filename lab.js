@@ -384,6 +384,53 @@
   }
   renderCommittee.geom = committeeGeom;
 
+  /* The record (design.md §14.16): the committee's miss and each member's, for every
+     starting month. The hero shows one forecast; this shows all of them. */
+  let _record = null;
+  function record() {
+    if (_record) return _record;
+    const rows = [];
+    for (let n = C.FIRST; n <= C.LAST; n++) {
+      const c = committee(n);
+      rows.push({ n, label: c.label, err: c.err, members: c.members.map((mm) => mm.err), best: c.best.err, worst: c.worst.err });
+    }
+    return (_record = rows);
+  }
+  function renderRecord(st, o) {
+    const { w, h, full } = o;
+    const rows = record();
+    const wide = full && w >= NARROW;
+    const padL = full ? 40 : 18, padR = wide ? 150 : 18, padT = (full ? 22 : 34) + (o.tagRoom || 0), padB = full ? 32 : 20;
+    const X = (n) => padL + ((n - C.FIRST) / (C.LAST - C.FIRST)) * (w - padL - padR);
+    const top = Math.ceil(Math.max(...rows.map((r) => r.worst)) * 50) / 50;      // next 2% line
+    const Y = (v) => h - padB - (v / top) * (h - padT - padB);
+    const at = clamp(Math.round(st.origin), C.FIRST, C.LAST);
+    const cur = rows[at - C.FIRST];
+    let s = open(w, h);
+    s += `<line class="fig-grid" x1="${padL}" y1="${h - padB}" x2="${w - padR}" y2="${h - padB}"/>`;
+    MODELS.forEach((mdl, i) => { s += `<path class="fig-ink fig-model" d="${P(rows.map((r) => [X(r.n), Y(r.members[i])]))}"/>`; });
+    s += `<path class="fig-acc" d="${P(rows.map((r) => [X(r.n), Y(r.err)]))}"/>`;
+    s += `<line class="fig-now" x1="${X(at).toFixed(1)}" y1="${padT - 6}" x2="${X(at).toFixed(1)}" y2="${h - padB}"/>`;
+    s += `<circle class="fig-dot" cx="${X(at).toFixed(1)}" cy="${Y(cur.err).toFixed(1)}" r="4.5"/>`;
+    if (full) {
+      for (let v = 0; v <= top + 1e-9; v += top / 2) s += `<text class="fig-lab" x="${padL - 8}" y="${(Y(v) + 3.5).toFixed(1)}" text-anchor="end">${Math.round(v * 100)}%</text>`;
+      for (let n = C.FIRST; n <= C.LAST; n++) if (n % 12 === 0) s += `<text class="fig-lab" x="${X(n).toFixed(1)}" y="${h - padB + 16}" text-anchor="middle">${C.YEAR0 + n / 12}</text>`;
+      s += `<text class="fig-lab fig-lab-quiet" x="${(w - padR).toFixed(1)}" y="${padT - 8}" text-anchor="end">how far off, by the month the forecast started</text>`;
+      if (wide) {
+        const last = rows[rows.length - 1];
+        const ends = MODELS.map((mdl, i) => ({ y: Y(last.members[i]), text: mdl.name })).concat([{ y: Y(last.err), text: 'Committee', acc: true }]).sort((a, b) => a.y - b.y);
+        let prev = -1e9;
+        ends.forEach((e) => { e.y = Math.max(e.y, prev + 14); prev = e.y; });
+        ends.forEach((e) => { s += `<text class="fig-lab${e.acc ? ' fig-lab-acc' : ''}" x="${(w - padR + 8).toFixed(1)}" y="${(e.y + 3.5).toFixed(1)}">${e.text}</text>`; });
+      }
+    }
+    return s + '</svg>';
+  }
+  function sayRecord(st) {
+    const cur = record()[clamp(Math.round(st.origin), C.FIRST, C.LAST) - C.FIRST];
+    return { now: '', always: '', tag: `${cur.label} · ${pct(cur.err)} off` };
+  }
+
   const LIST_PAD = [34, 118];
   function renderList(st, o) {
     const { w, h, full } = o;
@@ -534,6 +581,12 @@
       state: () => ({ origin: C.DEFAULT, active: [true, true, true, true] }),
       render: renderCommittee, say: sayCommittee,
       // 0..1 across the figure -> the main parameter
+      scrub: (st, u) => { st.origin = Math.round(C.FIRST + clamp(u, 0, 1) * (C.LAST - C.FIRST)); },
+      unit: (st) => (st.origin - C.FIRST) / (C.LAST - C.FIRST),
+    },
+    record: {
+      state: () => ({ origin: C.DEFAULT }),
+      render: renderRecord, say: sayRecord,
       scrub: (st, u) => { st.origin = Math.round(C.FIRST + clamp(u, 0, 1) * (C.LAST - C.FIRST)); },
       unit: (st) => (st.origin - C.FIRST) / (C.LAST - C.FIRST),
     },
@@ -734,8 +787,9 @@
       scrub.setAttribute('aria-valuenow', r.origin);
       scrub.setAttribute('aria-valuetext', `${r.label}: the four models miss by ${r.best} to ${r.worst}, their average by ${r.err}`);
       ['best', 'worst', 'err', 'origins', 'verdict'].forEach((k) => { if (outs[k]) outs[k].textContent = r[k]; });
-      if (w) fig.innerHTML = renderCommittee(st, { w, h, full: false, slim: true });
+      if (w) fig.innerHTML = renderCommittee(st, tall() ? { w, h, full: true } : { w, h, full: false, slim: true });
     };
+    const tall = () => h >= 260;                         // room for labels and the overview strip
     const set = (n) => { st.origin = clamp(Math.round(n), C.FIRST, C.LAST); if (!raf) raf = requestAnimationFrame(draw); };
 
     // drag the month sideways
@@ -762,7 +816,7 @@
     fig.addEventListener('pointerdown', (e) => { figDrag = { x: e.clientX, n: st.origin }; touched = true; fig.setPointerCapture(e.pointerId); });
     fig.addEventListener('pointermove', (e) => {
       if (!figDrag) return;
-      const g = committeeGeom(w, h, false, true);
+      const g = committeeGeom(w, h, tall(), !tall());
       set(figDrag.n - (e.clientX - figDrag.x) / g.pxPerMonth);
     });
     const figStop = () => { figDrag = null; };
@@ -793,7 +847,7 @@
   }
 
   function init() {
-    document.querySelectorAll('.hero-lab').forEach(mountHero);
+    document.querySelectorAll('.hero-lab-root').forEach(mountHero);
     document.querySelectorAll('.tile-fig[data-lab]').forEach(mountTile);
     document.querySelectorAll('.lab[data-lab]').forEach(mountFull);
   }
@@ -803,9 +857,9 @@
   }
 
   return {
-    rng, ols, wape, wilson, series, monthLabel, MODELS, C, L, S,
+    rng, ols, wape, wilson, series, monthLabel, MODELS, C, L, S, record,
     committee, backtest, heroParts, mains, list, facilities, sample, nFromUnit, unitFromN,
-    renderCommittee, renderList, renderField, renderSample,
+    renderCommittee, renderRecord, renderList, renderField, renderSample,
     sayCommittee, sayList, saySample, KINDS,
   };
 });

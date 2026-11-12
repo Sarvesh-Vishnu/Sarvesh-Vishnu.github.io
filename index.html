@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#003153" />
-  <meta name="color-scheme" content="light dark" />
+  <meta name="color-scheme" content="dark light" />
 
   <title>Sarvesh Vishnu, Senior Data Scientist</title>
   <meta name="description" content="Senior data scientist. Models that end in a decision: commercial analytics and forecasting, natural language processing, and work you can operate in the browser." />
@@ -22,16 +22,14 @@
   <link rel="canonical" href="https://sarvesh-vishnu.github.io/" />
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
 
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" />
 
   <script>
-    /* Set theme before first paint to avoid flash.
-       Default = light. localStorage 'theme' overrides. */
-    (function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}})();
+    /* Set the sheet before first paint. Default = the blue sheet; 'sheet' = 'white'
+       in localStorage selects the white print. */
+    (function(){var d=document.documentElement;try{d.dataset.theme=localStorage.getItem('sheet')==='white'?'white':'blue';}catch(e){d.dataset.theme='blue';}})();
     /* `js` gates everything that waits for a script to reveal it, so without scripts the
        page is simply visible. If main.js has not reported in after 4s, the gate comes off. */
     document.documentElement.classList.add('js');
@@ -71,7 +69,7 @@
         <li class="nav-secondary"><a href="#glance">At a glance</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <button type="button" class="theme-toggle" aria-label="Switch to dark theme" aria-pressed="false" title="Toggle theme">
+      <button type="button" class="theme-toggle" aria-label="Switch to the white print" aria-pressed="false" title="Blue sheet or white print">
         <svg class="theme-icon icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="theme-icon icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
       </button>
@@ -80,13 +78,12 @@
 
   <main id="main">
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="grain" aria-hidden="true"></div>
-      <div class="hero-inner">
-        <h1 id="hero-title" class="masthead">Sarvesh Vishnu <span>Senior data scientist · strategy and market insights</span></h1>
-        <p class="thesis">I build models that end in a decision.</p>
+      <div class="hero-inner hero-lab-root">
+        <p class="thesis">Building forecasts, AI systems and civic tools with <span class="redline">purpose, meaning, integrity and care</span>.</p>
+
         <div class="hero-lab">
           <p class="hero-say">
-            Forecast the next year from
+            A small proof. Forecast the next year from
             <span class="scrub" role="slider" tabindex="0" aria-label="Month the forecast starts from" aria-valuemin="36" aria-valuemax="84" aria-valuenow="62"><!-- hero:label -->Mar 2023<!-- /hero:label --></span>
             with four models and they miss by <b data-out="best"><!-- hero:best -->1.9%<!-- /hero:best --></b>
             to <b data-out="worst"><!-- hero:worst -->4.6%<!-- /hero:worst --></b>.
@@ -94,15 +91,25 @@
             <span data-out="origins"><!-- hero:origins -->49<!-- /hero:origins --></span> starting months it was
             <span data-out="verdict"><!-- hero:verdict -->never the worst of them<!-- /hero:verdict --></span>.
           </p>
-          <div class="hero-fig" aria-hidden="true"><!-- hero:fig --><svg viewBox="0 0 1152 150" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-grid" x1="2" y1="144" x2="1150" y2="144"/><line class="fig-now" x1="828.0" y1="4" x2="828.0" y2="144"/><path class="fig-ink" d="M2.0,121.8 L30.0,144.0 L58.0,144.0 L86.0,144.0 L114.0,141.5 L142.0,111.7 L170.0,111.0 L198.0,109.6 L226.0,109.0 L254.0,99.0 L282.0,88.9 L310.0,75.7 L338.0,116.4 L366.0,104.1 L394.0,128.3 L422.0,138.9 L450.0,123.2 L478.0,98.7 L506.0,89.6 L534.0,82.6 L562.0,77.4 L590.0,59.4 L618.0,66.3 L646.0,61.4 L674.0,80.7 L702.0,106.9 L730.0,127.1 L758.0,111.6 L786.0,98.1 L814.0,77.7"/><path class="fig-ink fig-future" d="M814.0,77.7 L842.0,71.8 L870.0,69.8 L898.0,77.2 L926.0,63.4 L954.0,51.7 L982.0,48.9 L1010.0,74.9 L1038.0,99.7 L1066.0,102.8 L1094.0,113.3 L1122.0,96.3 L1150.0,76.3"/><path class="fig-ink fig-model" d="M814.0,77.7 L842.0,89.6 L870.0,82.6 L898.0,77.4 L926.0,59.4 L954.0,66.3 L982.0,61.4 L1010.0,80.7 L1038.0,106.9 L1066.0,127.1 L1094.0,111.6 L1122.0,98.1 L1150.0,77.7"/><path class="fig-ink fig-model" d="M814.0,77.7 L842.0,67.5 L870.0,66.5 L898.0,63.1 L926.0,57.0 L954.0,49.5 L982.0,38.9 L1010.0,55.9 L1038.0,78.6 L1066.0,88.5 L1094.0,79.9 L1122.0,73.3 L1150.0,50.4"/><path class="fig-ink fig-model" d="M814.0,77.7 L842.0,61.3 L870.0,60.8 L898.0,61.1 L926.0,54.7 L954.0,44.6 L982.0,42.0 L1010.0,54.0 L1038.0,74.8 L1066.0,89.5 L1094.0,86.5 L1122.0,68.0 L1150.0,47.4"/><path class="fig-ink fig-model" d="M814.0,77.7 L842.0,68.4 L870.0,73.6 L898.0,74.0 L926.0,66.9 L954.0,62.3 L982.0,49.4 L1010.0,70.0 L1038.0,83.3 L1066.0,103.7 L1094.0,100.7 L1122.0,87.8 L1150.0,63.7"/><path class="fig-acc" d="M814.0,77.7 L842.0,71.7 L870.0,70.9 L898.0,68.9 L926.0,59.5 L954.0,55.7 L982.0,47.9 L1010.0,65.1 L1038.0,85.9 L1066.0,102.2 L1094.0,94.7 L1122.0,81.8 L1150.0,59.8"/></svg><!-- /hero:fig --></div>
-          <p class="hero-hint"><span class="hint-live">Drag the month.</span> A synthetic series; the method is from the <a href="work/commercial-analytics.html">commercial analytics work</a>.</p>
+          <p class="hero-hint"><span class="hint-live">Drag the month, or the drawing.</span> A synthetic series; the method is from the <a href="work/commercial-analytics.html">commercial analytics work</a>.</p>
         </div>
-        <p class="hero-links">
-          <a href="https://github.com/Sarvesh-Vishnu" rel="noopener">GitHub</a>
-          <a href="https://linkedin.com/in/sarveshvishnu/" rel="noopener">LinkedIn</a>
-          <a href="mailto:sarveshvishnu@gmail.com">Email</a>
-          <a href="assets/resume.pdf">Résumé (PDF)</a>
-        </p>
+
+        <div class="hero-sheet">
+          <div class="hero-fig" aria-hidden="true"><!-- hero:fig --><svg viewBox="0 0 660 300" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-grid" x1="14" y1="224" x2="468" y2="224"/><line class="fig-now" x1="340.7" y1="12" x2="340.7" y2="224"/><path class="fig-ink" d="M14.0,174.5 L25.1,201.2 L36.1,217.6 L47.2,210.5 L58.3,196.8 L69.4,163.1 L80.4,162.2 L91.5,160.7 L102.6,160.0 L113.7,148.7 L124.7,137.2 L135.8,122.3 L146.9,168.4 L158.0,154.5 L169.0,181.8 L180.1,193.8 L191.2,176.1 L202.2,148.3 L213.3,138.0 L224.4,130.0 L235.5,124.2 L246.5,103.8 L257.6,111.6 L268.7,106.0 L279.8,127.9 L290.8,157.6 L301.9,180.5 L313.0,162.9 L324.0,147.6 L335.1,124.5"/><path class="fig-ink fig-future" d="M335.1,124.5 L346.2,117.8 L357.3,115.5 L368.3,124.0 L379.4,108.3 L390.5,95.1 L401.6,91.9 L412.6,121.3 L423.7,149.4 L434.8,153.0 L445.9,164.8 L456.9,145.6 L468.0,122.9"/><path class="fig-ink fig-model" d="M335.1,124.5 L346.2,138.0 L357.3,130.0 L368.3,124.2 L379.4,103.8 L390.5,111.6 L401.6,106.0 L412.6,127.9 L423.7,157.6 L434.8,180.5 L445.9,162.9 L456.9,147.6 L468.0,124.5"/><path class="fig-ink fig-model" d="M335.1,124.5 L346.2,113.0 L357.3,111.8 L368.3,108.0 L379.4,101.0 L390.5,92.6 L401.6,80.6 L412.6,99.8 L423.7,125.5 L434.8,136.8 L445.9,127.0 L456.9,119.6 L468.0,93.5"/><path class="fig-ink fig-model" d="M335.1,124.5 L346.2,105.9 L357.3,105.3 L368.3,105.7 L379.4,98.5 L390.5,87.0 L401.6,84.0 L412.6,97.6 L423.7,121.3 L434.8,137.9 L445.9,134.5 L456.9,113.5 L468.0,90.2"/><path class="fig-ink fig-model" d="M335.1,124.5 L346.2,113.9 L357.3,119.9 L368.3,120.3 L379.4,112.3 L390.5,107.0 L401.6,92.4 L412.6,115.8 L423.7,130.8 L434.8,153.9 L445.9,150.6 L456.9,135.9 L468.0,108.6"/><path class="fig-acc" d="M335.1,124.5 L346.2,117.7 L357.3,116.8 L368.3,114.5 L379.4,103.9 L390.5,99.6 L401.6,90.8 L412.6,110.3 L423.7,133.8 L434.8,152.3 L445.9,143.7 L456.9,129.2 L468.0,104.2"/><text class="fig-lab" x="478.0" y="93.7">Harmonic regression 4.6%</text><text class="fig-lab" x="478.0" y="107.7">Holt-Winters 4.1%</text><text class="fig-lab fig-lab-acc" x="478.0" y="121.7">Committee 2.1%</text><text class="fig-lab" x="478.0" y="135.7">Theta 1.9%</text><text class="fig-lab fig-lab-quiet" x="478.0" y="149.7">What happened</text><text class="fig-lab" x="478.0" y="163.7">Seasonal naive 2.4%</text><text class="fig-lab" x="58.3" y="239" text-anchor="middle">2021</text><text class="fig-lab" x="191.2" y="239" text-anchor="middle">2022</text><text class="fig-lab" x="324.0" y="239" text-anchor="middle">2023</text><text class="fig-lab" x="456.9" y="239" text-anchor="middle">2024</text><text class="fig-lab fig-lab-acc" x="334.7" y="22" text-anchor="end">forecast from Mar 2023</text><rect class="fig-band" x="166.9" y="258" width="195.9" height="40"/><path class="fig-ink" d="M14.0,294.0 L18.8,287.8 L23.6,287.6 L28.3,286.8 L33.1,285.0 L37.9,285.9 L42.7,283.9 L47.5,282.2 L52.2,284.4 L57.0,291.4 L61.8,291.0 L66.6,289.0 L71.3,287.5 L76.1,284.5 L80.9,281.2 L85.7,279.9 L90.5,281.7 L95.2,280.0 L100.0,277.4 L104.8,278.7 L109.6,281.8 L114.4,286.9 L119.1,286.2 L123.9,286.6 L128.7,281.4 L133.5,281.9 L138.3,277.0 L143.0,280.5 L147.8,281.3 L152.6,282.0 L157.4,279.9 L162.1,276.1 L166.9,276.1 L171.7,279.9 L176.5,282.2 L181.3,281.2 L186.0,279.3 L190.8,274.4 L195.6,274.3 L200.4,274.1 L205.2,274.0 L209.9,272.4 L214.7,270.7 L219.5,268.6 L224.3,275.2 L229.1,273.2 L233.8,277.1 L238.6,278.8 L243.4,276.3 L248.2,272.3 L252.9,270.8 L257.7,269.7 L262.5,268.8 L267.3,265.9 L272.1,267.0 L276.8,266.2 L281.6,269.4 L286.4,273.6 L291.2,276.9 L296.0,274.4 L300.7,272.2 L305.5,268.9 L310.3,267.9 L315.1,267.6 L319.9,268.8 L324.6,266.6 L329.4,264.7 L334.2,264.2 L339.0,268.4 L343.7,272.5 L348.5,273.0 L353.3,274.7 L358.1,271.9 L362.9,268.7 L367.6,266.5 L372.4,264.0 L377.2,265.1 L382.0,264.5 L386.8,263.1 L391.5,264.9 L396.3,269.0 L401.1,271.3 L405.9,271.6 L410.7,274.9 L415.4,269.6 L420.2,268.7 L425.0,263.1 L429.8,265.8 L434.5,263.0 L439.3,262.7 L444.1,262.0 L448.9,262.1 L453.7,265.8 L458.4,270.8 L463.2,272.7 L468.0,273.5"/><line class="fig-now" x1="310.3" y1="258" x2="310.3" y2="298"/><circle class="fig-handle" cx="310.3" cy="278.0" r="5.5"/></svg><!-- /hero:fig --></div>
+          <dl class="title-block">
+            <div><dt>Drawn by</dt><dd><h1 id="hero-title">Sarvesh Vishnu</h1></dd></div>
+            <div><dt>Role</dt><dd>Senior Data Scientist</dd></div>
+            <div><dt>Rev.</dt><dd>Nov 2026</dd></div>
+            <div class="tb-wide"><dt>Reach</dt>
+              <dd class="tb-links">
+                <a href="mailto:sarveshvishnu@gmail.com" data-print="sarveshvishnu@gmail.com">Email</a>
+                <a href="https://linkedin.com/in/sarveshvishnu/" rel="noopener" data-print="linkedin.com/in/sarveshvishnu">LinkedIn</a>
+                <a href="https://github.com/Sarvesh-Vishnu" rel="noopener" data-print="github.com/Sarvesh-Vishnu">GitHub</a>
+                <a href="assets/resume.pdf">Résumé (PDF)</a>
+              </dd>
+            </div>
+          </dl>
+        </div>
       </div>
     </section>
 
@@ -126,7 +133,7 @@
           </div>
           <div class="reel-nav">
             <button type="button" class="reel-btn" data-step="-1" aria-label="Previous project">←</button>
-            <span class="reel-count" aria-live="polite"><b>1</b> / 3</span>
+            <span class="reel-count" aria-live="polite">Sheet <b>1</b> of 3</span>
             <button type="button" class="reel-btn" data-step="1" aria-label="Next project">→</button>
           </div>
         </div>
@@ -134,14 +141,15 @@
         <ol class="reel-track" role="list" tabindex="0" aria-label="Projects: two from work, one personal">
           <li class="slide" id="p-commercial" data-kind="work">
             <a href="work/commercial-analytics.html" class="slide-link">
-              <span class="tile-fig slide-stage" aria-hidden="true" data-lab="committee">
-                <!-- fig:commercial --><svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-grid" x1="16" y1="340" x2="624" y2="340"/><line class="fig-now" x1="453.5" y1="26" x2="453.5" y2="340"/><path class="fig-ink" d="M16.0,266.0 L30.8,305.9 L45.7,330.4 L60.5,319.9 L75.3,299.3 L90.1,248.9 L105.0,247.6 L119.8,245.3 L134.6,244.3 L149.5,227.3 L164.3,210.3 L179.1,187.9 L194.0,256.9 L208.8,236.0 L223.6,276.9 L238.4,294.8 L253.3,268.3 L268.1,226.8 L282.9,211.4 L297.8,199.5 L312.6,190.8 L327.4,160.2 L342.2,171.9 L357.1,163.6 L371.9,196.3 L386.7,240.7 L401.6,274.9 L416.4,248.6 L431.2,225.8 L446.0,191.3"/><path class="fig-ink fig-future" d="M446.0,191.3 L460.9,181.2 L475.7,177.8 L490.5,190.4 L505.4,167.0 L520.2,147.3 L535.0,142.5 L549.9,186.5 L564.7,228.4 L579.5,233.8 L594.3,251.5 L609.2,222.8 L624.0,188.9"/><path class="fig-ink fig-model" d="M446.0,191.3 L460.9,211.4 L475.7,199.5 L490.5,190.8 L505.4,160.2 L520.2,171.9 L535.0,163.6 L549.9,196.3 L564.7,240.7 L579.5,274.9 L594.3,248.6 L609.2,225.8 L624.0,191.3"/><path class="fig-ink fig-model" d="M446.0,191.3 L460.9,174.0 L475.7,172.2 L490.5,166.5 L505.4,156.1 L520.2,143.5 L535.0,125.5 L549.9,154.3 L564.7,192.7 L579.5,209.6 L594.3,194.9 L609.2,183.9 L624.0,144.9"/><path class="fig-ink fig-model" d="M446.0,191.3 L460.9,163.4 L475.7,162.6 L490.5,163.2 L505.4,152.3 L520.2,135.2 L535.0,130.7 L549.9,151.0 L564.7,186.4 L579.5,211.3 L594.3,206.2 L609.2,174.8 L624.0,139.9"/><path class="fig-ink fig-model" d="M446.0,191.3 L460.9,175.4 L475.7,184.3 L490.5,184.9 L505.4,173.0 L520.2,165.1 L535.0,143.2 L549.9,178.2 L564.7,200.7 L579.5,235.2 L594.3,230.3 L609.2,208.3 L624.0,167.5"/><path class="fig-acc" d="M446.0,191.3 L460.9,181.1 L475.7,179.7 L490.5,176.4 L505.4,160.4 L520.2,153.9 L535.0,140.8 L549.9,170.0 L564.7,205.1 L579.5,232.8 L594.3,220.0 L609.2,198.2 L624.0,160.9"/></svg><!-- /fig:commercial -->
+              <span class="tile-fig slide-stage" aria-hidden="true" data-lab="record">
+                <!-- fig:commercial --><svg viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet" focusable="false"><line class="fig-grid" x1="18" y1="340" x2="622" y2="340"/><path class="fig-ink fig-model" d="M18.0,72.3 L30.6,70.3 L43.2,92.1 L55.8,90.4 L68.3,100.1 L80.9,110.3 L93.5,124.8 L106.1,146.7 L118.7,167.2 L131.3,150.2 L143.8,173.6 L156.4,192.2 L169.0,185.6 L181.6,182.4 L194.2,178.4 L206.8,181.2 L219.3,190.1 L231.9,208.8 L244.5,229.9 L257.1,235.1 L269.7,236.5 L282.3,254.4 L294.8,251.9 L307.4,238.8 L320.0,253.8 L332.6,267.5 L345.2,279.0 L357.8,284.2 L370.3,278.9 L382.9,266.2 L395.5,261.2 L408.1,264.4 L420.7,269.2 L433.3,270.4 L445.8,270.6 L458.4,280.0 L471.0,280.0 L483.6,272.8 L496.2,273.6 L508.8,267.4 L521.3,273.6 L533.9,279.3 L546.5,280.5 L559.1,281.9 L571.7,274.8 L584.3,266.0 L596.8,268.3 L609.4,269.0 L622.0,265.1"/><path class="fig-ink fig-model" d="M18.0,222.0 L30.6,253.6 L43.2,268.0 L55.8,264.3 L68.3,248.7 L80.9,265.9 L93.5,251.6 L106.1,254.2 L118.7,247.2 L131.3,276.2 L143.8,260.5 L156.4,249.7 L169.0,272.1 L181.6,272.5 L194.2,269.6 L206.8,264.7 L219.3,256.8 L231.9,239.2 L244.5,207.8 L257.1,206.4 L269.7,215.6 L282.3,221.8 L294.8,232.3 L307.4,269.7 L320.0,265.1 L332.6,248.9 L345.2,236.0 L357.8,233.3 L370.3,235.6 L382.9,253.7 L395.5,250.1 L408.1,239.6 L420.7,232.3 L433.3,236.0 L445.8,244.4 L458.4,240.0 L471.0,253.0 L483.6,256.2 L496.2,249.3 L508.8,249.2 L521.3,229.3 L533.9,222.2 L546.5,218.7 L559.1,212.5 L571.7,243.2 L584.3,272.3 L596.8,272.8 L609.4,258.5 L622.0,269.4"/><path class="fig-ink fig-model" d="M18.0,260.6 L30.6,262.1 L43.2,272.0 L55.8,271.2 L68.3,270.6 L80.9,268.5 L93.5,262.7 L106.1,266.2 L118.7,275.8 L131.3,280.5 L143.8,287.5 L156.4,279.9 L169.0,282.9 L181.6,284.3 L194.2,283.1 L206.8,280.0 L219.3,277.4 L231.9,269.2 L244.5,268.6 L257.1,262.3 L269.7,251.9 L282.3,240.1 L294.8,244.0 L307.4,255.8 L320.0,238.1 L332.6,229.7 L345.2,221.8 L357.8,217.0 L370.3,214.0 L382.9,220.3 L395.5,214.2 L408.1,203.1 L420.7,188.8 L433.3,187.3 L445.8,199.5 L458.4,196.5 L471.0,198.9 L483.6,204.2 L496.2,206.5 L508.8,210.5 L521.3,201.4 L533.9,210.3 L546.5,225.8 L559.1,239.8 L571.7,256.2 L584.3,272.9 L596.8,273.0 L609.4,264.8 L622.0,273.8"/><path class="fig-ink fig-model" d="M18.0,231.2 L30.6,198.3 L43.2,263.4 L55.8,217.2 L68.3,232.3 L80.9,249.4 L93.5,251.4 L106.1,248.4 L118.7,246.0 L131.3,230.8 L143.8,269.7 L156.4,267.6 L169.0,262.1 L181.6,234.8 L194.2,250.5 L206.8,247.5 L219.3,285.7 L231.9,284.1 L244.5,199.7 L257.1,225.8 L269.7,261.9 L282.3,262.7 L294.8,299.3 L307.4,292.3 L320.0,302.7 L332.6,295.9 L345.2,292.5 L357.8,291.9 L370.3,289.5 L382.9,289.3 L395.5,290.5 L408.1,297.7 L420.7,288.9 L433.3,282.0 L445.8,292.3 L458.4,290.5 L471.0,285.4 L483.6,280.4 L496.2,274.1 L508.8,273.1 L521.3,276.1 L533.9,275.8 L546.5,278.8 L559.1,277.1 L571.7,277.7 L584.3,270.4 L596.8,285.4 L609.4,293.0 L622.0,276.9"/><path class="fig-acc" d="M18.0,203.7 L30.6,206.3 L43.2,241.6 L55.8,231.0 L68.3,243.4 L80.9,244.7 L93.5,251.9 L106.1,258.4 L118.7,269.2 L131.3,257.0 L143.8,284.7 L156.4,279.7 L169.0,275.5 L181.6,264.1 L194.2,267.1 L206.8,268.1 L219.3,282.8 L231.9,288.5 L244.5,279.1 L257.1,282.7 L269.7,289.6 L282.3,286.7 L294.8,298.1 L307.4,307.5 L320.0,298.9 L332.6,290.7 L345.2,285.9 L357.8,280.9 L370.3,280.2 L382.9,289.2 L395.5,287.5 L408.1,285.7 L420.7,274.8 L433.3,268.1 L445.8,275.2 L458.4,271.4 L471.0,275.4 L483.6,278.9 L496.2,273.2 L508.8,270.6 L521.3,264.6 L533.9,270.0 L546.5,275.1 L559.1,274.1 L571.7,289.6 L584.3,296.6 L596.8,294.0 L609.4,287.4 L622.0,284.8"/><line class="fig-now" x1="345.2" y1="28" x2="345.2" y2="340"/><circle class="fig-dot" cx="345.2" cy="285.9" r="4.5"/></svg><!-- /fig:commercial -->
                 <span class="tile-tag">Schematic</span>
               </span>
               <span class="slide-text">
                 <span class="slide-kind">Work · Cooper Surgical</span>
                 <span class="project-name">Commercial operations and analytics</span>
                 <span class="slide-desc">The planning analytics behind a medical-device sales organisation: quota for 75+ territory managers, committee forecasts for 25+ product lines, and a LangGraph research companion that briefs the strategy team with every figure linked to its source.</span>
+                <span class="slide-why">Targets shape a person’s year. They should come from evidence anyone can check.</span>
                 <span class="project-meta">Python · SQL · Azure · PowerBI · LangGraph</span>
                 <span class="slide-open">Open the case study →</span>
               </span>
@@ -157,6 +165,7 @@
                 <span class="slide-kind">Work · Pinnacle Fertility and Siemens</span>
                 <span class="project-name">Natural language processing</span>
                 <span class="slide-desc">Reading what people write, at scale: sentiment and its drivers across 100K+ patient records and 12 facilities at Pinnacle Fertility, and a control-system NLP proof of concept at Siemens.</span>
+                <span class="slide-why">Patients had already said what was wrong. Nobody could read a hundred thousand comments.</span>
                 <span class="project-meta">Python · NLP · Classification · Tableau</span>
                 <span class="slide-open">Open the case study →</span>
               </span>
@@ -172,6 +181,7 @@
                 <span class="slide-kind">Personal project</span>
                 <span class="project-name">Numit</span>
                 <span class="slide-desc">A contemplative globe of where the world is breaking and where it is being put back together, built against psychic numbing. Every event is hand-checked against its source.</span>
+                <span class="slide-why">A statistic is what’s left of a person after you’ve stopped paying attention.</span>
                 <span class="project-meta">Three.js · Next.js · UNHCR, OCHA, Reuters, HRW</span>
                 <span class="slide-open">Open the case study →</span>
               </span>
@@ -179,6 +189,21 @@
           </li>
         </ol>
       </div>
+    </section>
+
+    <section class="section notes" id="notes" aria-labelledby="notes-title">
+      <header class="section-head reveal">
+        <p class="eyebrow">General notes</p>
+        <h2 id="notes-title" class="section-title">The rules I build by.</h2>
+      </header>
+      <ol class="notes-list reveal" role="list">
+        <li>No number without a source.</li>
+        <li>Synthetic data is labelled where it is shown.</li>
+        <li>Pragmatic decisions over clever models.</li>
+        <li>The non-technical question comes first.</li>
+        <li>Technical depth that survives a C-suite conversation.</li>
+        <li>Build for the people it reaches, not for the demo.</li>
+      </ol>
     </section>
 
     <section class="section path" id="path" aria-labelledby="path-title">
@@ -288,6 +313,7 @@
       <header class="section-head reveal">
         <p class="eyebrow">Contact</p>
         <h2 id="contact-title" class="section-title contact-title">Let's talk.</h2>
+        <p class="contact-line">Especially about work that has to be right, and work that has to matter.</p>
       </header>
       <div class="contact-actions reveal">
         <a class="btn btn-primary" href="https://linkedin.com/in/sarveshvishnu/" rel="noopener">Find me on LinkedIn →</a>
@@ -301,7 +327,7 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <p class="foot-line">© 2026 Sarvesh Vishnu Muhundu Parthiban</p>
-      <p class="foot-line foot-meta">Built with HTML, CSS, and restraint.</p>
+      <p class="foot-line foot-meta">Built with HTML, CSS, and restraint. Drawn in Prussian blue, the pigment of the blueprint.</p>
     </div>
   </footer>
 

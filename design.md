@@ -148,16 +148,17 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 --bp-md: 768px    --bp-xl: 1280px
 ```
 
-### Page structure (v4, §14.15)
-1. Header — fixed, 64px, transparent; hairline border on scroll
-2. Hero — masthead (name and title), the thesis as the display line, a sentence with
-   one draggable word and the figure it drives, then the proof links
-3. Work — a reel of three projects, one large slide at a time: two from work, one
-   personal, told apart by the index and each slide's kind line
-4. The path here — two threads that merge (§14.11), with a short bio beside it
-5. At a glance — one ledger: role, toolkit, education, writing
-6. Contact — "Let's talk." + LinkedIn, email, GitHub, résumé
-7. Footer — minimal mono captions
+### Page structure (Blueprint, §14.16)
+1. Header — fixed, 64px; hairline border on scroll
+2. Hero — the thesis across the top, with a redline under its values; below, a
+   sentence with one draggable word (left) and the drawing it drives, with the
+   title block under it (right)
+3. Work — a reel of three sheets: two from work, one personal (§14.15)
+4. General notes — the rules the work is built by
+5. The path here — two threads that merge (§14.11), with a short bio beside it
+6. At a glance — one ledger: role, toolkit, education, writing
+7. Contact — "Let's talk."
+8. Footer — mono captions and a colophon
 
 ---
 
@@ -722,4 +723,85 @@ it takes control from the reader). Arrows only, with no index (the work/personal
 split would rest on one small label). Keeping four tiles (the owner asked for three
 and for size). Dragging the reel with the mouse (it would fight the figures, which
 follow the pointer).
+
+### 14.16 — Blueprint
+*Supersedes: §2 colour, §3 typefaces, the warm-paper atmosphere of §1 and §9, and the
+hero of §14.14. Branch `blueprint`, built on v4. (2026-11-12)*
+
+The owner asked to drop the warm paper feel and for fresh ideas, then chose this
+direction. Cream grounds have also become one of the most recognisable signs of a
+generated page.
+
+**The idea.** Prussian blue is this site's colour, and it is the pigment blueprints
+were made with. A blueprint is a model drawn before anything is built or decided. So
+the site is one: Prussian is the ground, everything is drawn in near-white linework,
+and a single vermilion redline marks the one thing a figure or sentence is about, the
+way an engineer marks a revision.
+
+**Colour.** Two sheets, one drawing. The toggle switches between them; the blue sheet
+is the default (`data-theme="blue"`, stored as `sheet` in localStorage).
+
+| Token | Blue sheet | White print | Role |
+|---|---|---|---|
+| `--canvas` | `#003153` | `#FFFFFF` | the sheet |
+| `--surface` | `#053A61` | `#F4F8FB` | a panel on it (figure stages) |
+| `--ink` | `#F4F8FB` | `#003153` | text (13.4:1 / 13.4:1) |
+| `--ink-soft` | `#CFE0EC` | `#1F4E73` | supporting text |
+| `--ink-muted` | `#94B6CF` | `#4D7391` | labels (6.3:1 / 5.0:1) |
+| `--line` | `#2A5A7E` | `#C6D6E2` | hairlines |
+| `--mark` | `#F4F8FB` | `#003153` | drawn lines, links, outlines |
+| `--accent` | `#FF7A59` | `#C93B1A` | the redline (5.2:1 / 5.0:1) |
+| `--accent-deep` | `#FF977C` | `#A82E12` | its hover |
+| `--tint` | `#0B446F` | `#EAF1F6` | hover wash |
+
+The old single accent is split into two roles. `--mark` is linework. `--accent` is the
+redline and stays rare: the committee's line in a figure, the facilities that stand
+apart, the live readout, the draggable word, the current sheet in the index, the
+primary button, today's dot on the path, and the underline in the thesis. If a second
+thing on a screen wants the redline, one of them is wrong.
+
+**Long reading sits on paper.** Case-study prose is wrapped in `.paper`, which applies
+the white-print tokens to that block: a white sheet laid on the blue one. Deep blue is
+comfortable for a screen of display type and figures, not for eight paragraphs.
+
+**Type.** IBM Plex Sans (300, 400, 500) and IBM Plex Mono (400, 500), from one
+provider. An engineering-document voice; display stays light. General Sans and
+JetBrains Mono carried the paper look and are gone, and one of two render-blocking
+font requests went with them.
+
+**Hero.** The thesis is now the owner's: "Building forecasts, AI systems and civic
+tools with purpose, meaning, integrity and care." The four values carry the redline.
+"Care" was chosen over "passion" and "love": it is plainer, it is what the civic work
+shows, and "passionate" is on the list of words that say nothing. The forecasting
+sentence stays beneath it as "a small proof". The figure is now a proper drawing
+beside it, and under the drawing sits the **title block**: drawn by, role, revision,
+and how to reach him. The name (`h1`) lives there.
+
+**Character, shown rather than claimed.**
+- *General notes*: six standing rules, set the way a drawing lists its notes. Four are
+  the owner's own words from this site and his other projects; two are drafts.
+- *A reason on every sheet*: each project carries one line on why it mattered. Numit's
+  is the owner's sentence from its case study.
+- *Contact*: "Especially about work that has to be right, and work that has to matter."
+- *Colophon*: "Drawn in Prussian blue, the pigment of the blueprint."
+
+**The reel** counts in sheets ("Sheet 1 of 3"). Its first slide now shows *the record*
+(the committee's miss and each member's, for every starting month), so the hero's
+figure is not repeated one scroll later.
+
+**Print is the résumé.** A print stylesheet lays the page out as a two-page CV on the
+white print: thesis, title block with addresses spelled out, the three projects with
+their reasons, the path, the ledger. Instruments, controls and navigation are left
+off. First pass; it replaces nothing yet (`assets/resume.pdf` is still linked).
+
+**Considered and rejected.**
+- *Grid-paper background.* The colour and linework carry the idea; a fake grid is
+  ornament, and it is on the tells list.
+- *A fixed title block in the corner of the viewport.* It would cover content at
+  laptop widths. It sits in the hero instead; the header keeps Contact in reach.
+- *Vermilion for links and the path.* Too much red. Linework is white; the redline
+  means "this one".
+- *Bench (white, colour only in data)* and *Control room (graphite and amber)*: the
+  other two directions offered. Safer and more common, in that order.
+- *"Passion" or "love"* in the thesis: see Hero.
 

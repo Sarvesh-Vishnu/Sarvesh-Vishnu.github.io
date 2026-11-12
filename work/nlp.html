@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#003153" />
-  <meta name="color-scheme" content="light dark" />
+  <meta name="color-scheme" content="dark light" />
 
   <title>Natural language processing, Pinnacle Fertility and Siemens · Sarvesh Vishnu</title>
   <meta name="description" content="Natural language processing in two settings: sentiment and its drivers across 100K+ patient records at Pinnacle Fertility, and a control-system proof of concept at Siemens." />
@@ -21,14 +21,12 @@
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
 
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" />
 
   <script>
-    (function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='dark'?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}})();
+    (function(){var d=document.documentElement;try{d.dataset.theme=localStorage.getItem('sheet')==='white'?'white':'blue';}catch(e){d.dataset.theme='blue';}})();
     if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion');
   </script>
 
@@ -46,7 +44,7 @@
         <li class="nav-secondary"><a href="../index.html#glance">At a glance</a></li>
         <li><a href="../index.html#contact">Contact</a></li>
       </ul>
-      <button type="button" class="theme-toggle" aria-label="Switch to dark theme" aria-pressed="false" title="Toggle theme">
+      <button type="button" class="theme-toggle" aria-label="Switch to the white print" aria-pressed="false" title="Blue sheet or white print">
         <svg class="theme-icon icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="theme-icon icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
       </button>
@@ -88,6 +86,7 @@
         <p class="project-tools">Python · NLP · Classification · Tableau</p>
       </div>
 
+      <div class="paper">
       <section class="project-body-prose">
         <h2>Objective</h2>
         <p>Pinnacle operates twelve fertility facilities, and the patient-experience signal was hidden in unstructured feedback. Surveys, notes, and comments piled up faster than they could be processed — with no clear way to say, at scale, <em>what was truly supporting or hurting patient satisfaction, and where</em>.</p>
@@ -106,15 +105,16 @@
         <h2>Earlier, at Siemens</h2>
         <p>The first version of this work was industrial. At Siemens I built a proof of concept that applied NLP to control-system text, with dashboards so the engineering team could use what it found.</p>
       </section>
+
+      <section class="project-body-prose">
+        <h2>Outcome</h2>
+        <p>The team walked away with a facility-level ranking of what actually drives satisfaction, and a way to flag interactions at risk of going wrong before they did — moving from operational lagging indicators to operational leading ones.</p>
+
+        <h2>What I'd do next</h2>
+        <p>An A/B testing loop. Pair each sentiment prediction with a specific intervention and measure whether the intervention actually moves the outcome — not just whether it correlates with better sentiment. That's the only way to close the loop from insight to action.</p>
+      </section>
+      </div>
     </article>
-
-    <section class="project-body-prose">
-      <h2>Outcome</h2>
-      <p>The team walked away with a facility-level ranking of what actually drives satisfaction, and a way to flag interactions at risk of going wrong before they did — moving from operational lagging indicators to operational leading ones.</p>
-
-      <h2>What I'd do next</h2>
-      <p>An A/B testing loop. Pair each sentiment prediction with a specific intervention and measure whether the intervention actually moves the outcome — not just whether it correlates with better sentiment. That's the only way to close the loop from insight to action.</p>
-    </section>
 
     <nav class="project-next" aria-label="Next project">
       <span class="label">Next · Personal</span>
@@ -125,7 +125,7 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <p class="foot-line">© 2026 Sarvesh Vishnu Muhundu Parthiban</p>
-      <p class="foot-line foot-meta">Built with HTML, CSS, and restraint.</p>
+      <p class="foot-line foot-meta">Built with HTML, CSS, and restraint. Drawn in Prussian blue, the pigment of the blueprint.</p>
     </div>
   </footer>
 

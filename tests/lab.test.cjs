@@ -123,6 +123,18 @@ test('the sample: intervals tighten with n and the ranking settles', () => {
   }
 });
 
+test('the record lists every starting month and agrees with the committee', () => {
+  const rows = Lab.record();
+  assert.equal(rows.length, Lab.C.LAST - Lab.C.FIRST + 1);
+  for (const r of rows) {
+    const c = Lab.committee(r.n, ALL);
+    assert.equal(r.err, c.err);
+    assert.equal(r.best, c.best.err);
+    assert.equal(r.worst, c.worst.err);
+    assert.ok(r.err <= r.worst + 1e-12 && r.members.length === 4);
+  }
+});
+
 test('n slider mapping round-trips and stays in range', () => {
   assert.equal(Lab.nFromUnit(0), Lab.S.NMIN);
   assert.equal(Lab.nFromUnit(1), Lab.S.NMAX);

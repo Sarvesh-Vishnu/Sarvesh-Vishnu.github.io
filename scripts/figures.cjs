@@ -19,7 +19,7 @@ const fluid = (svg) => svg.replace(/ width="\d+" height="\d+"/, '');   // let CS
 
 // home page: the work figures
 const TILE = { w: 640, h: 360, full: false };
-const tiles = { commercial: 'committee', nlp: 'sample' };
+const tiles = { commercial: 'record', nlp: 'sample' };
 let index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 for (const [marker, kind] of Object.entries(tiles)) {
   const k = Lab.KINDS[kind];
@@ -28,7 +28,7 @@ for (const [marker, kind] of Object.entries(tiles)) {
 // home page: the hero sentence and its strip
 {
   const r = Lab.heroParts(Lab.C.DEFAULT);
-  index = between(index, 'hero:fig', fluid(Lab.renderCommittee({ origin: r.origin, active: [true, true, true, true] }, { w: 1152, h: 150, full: false, slim: true })), 'index.html');
+  index = between(index, 'hero:fig', fluid(Lab.renderCommittee({ origin: r.origin, active: [true, true, true, true] }, { w: 660, h: 300, full: true })), 'index.html');
   for (const key of ['label', 'best', 'worst', 'err', 'origins', 'verdict']) index = between(index, `hero:${key}`, String(r[key]), 'index.html');
 }
 fs.writeFileSync(path.join(ROOT, 'index.html'), index);
