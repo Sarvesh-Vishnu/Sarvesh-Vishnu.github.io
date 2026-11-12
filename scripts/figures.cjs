@@ -25,12 +25,6 @@ for (const [marker, kind] of Object.entries(tiles)) {
   const k = Lab.KINDS[kind];
   index = between(index, `fig:${marker}`, fluid(k.render(k.state(), TILE)), 'index.html');
 }
-// home page: the hero sentence and its strip
-{
-  const r = Lab.heroParts(Lab.C.DEFAULT);
-  index = between(index, 'hero:fig', fluid(Lab.renderCommittee({ origin: r.origin, active: [true, true, true, true] }, { w: 660, h: 300, full: true })), 'index.html');
-  for (const key of ['label', 'best', 'worst', 'err', 'origins', 'verdict']) index = between(index, `hero:${key}`, String(r[key]), 'index.html');
-}
 fs.writeFileSync(path.join(ROOT, 'index.html'), index);
 
 // case studies: the full instrument, its field (list only) and both sentences
@@ -48,4 +42,4 @@ for (const [page, kind] of Object.entries(pages)) {
   if (kind === 'list') html = between(html, 'lab:field', fluid(Lab.renderField(st, { w: 760 })), page);
   fs.writeFileSync(file, html);
 }
-console.log('figures written: hero, 2 work figures, 2 case studies');
+console.log('figures written: 2 work figures, 2 case studies');

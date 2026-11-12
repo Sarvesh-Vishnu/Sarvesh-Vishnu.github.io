@@ -148,17 +148,15 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 --bp-md: 768px    --bp-xl: 1280px
 ```
 
-### Page structure (Blueprint, §14.16)
+### Page structure (Blueprint, §14.16–14.17)
 1. Header — fixed, 64px; hairline border on scroll
-2. Hero — the thesis across the top, with a redline under its values; below, a
-   sentence with one draggable word (left) and the drawing it drives, with the
-   title block under it (right)
+2. Hero — the thesis, with a redline under its values; beneath it one plain line:
+   name, role, and four links. Nothing else
 3. Work — a reel of three sheets: two from work, one personal (§14.15)
-4. General notes — the rules the work is built by
-5. The path here — two threads that merge (§14.11), with a short bio beside it
-6. At a glance — one ledger: role, toolkit, education, writing
-7. Contact — "Let's talk."
-8. Footer — mono captions and a colophon
+4. The path here — two threads that merge (§14.11), with a short bio beside it
+5. At a glance — one ledger: role, toolkit, education, writing
+6. Contact — "Let's connect."
+7. Footer — mono captions and a colophon
 
 ---
 
@@ -804,4 +802,49 @@ off. First pass; it replaces nothing yet (`assets/resume.pdf` is still linked).
 - *Bench (white, colour only in data)* and *Control room (graphite and amber)*: the
   other two directions offered. Safer and more common, in that order.
 - *"Passion" or "love"* in the thesis: see Hero.
+
+### 14.17 — Blueprint, after the owner's review
+*Changes: §14.16 (hero, colour values, General notes, contact). (2026-11-12)*
+
+**Hero, quieted.** The draggable "small proof" sentence, its drawing and the title
+block are removed. The owner found the proof gimmicky and the boxed introduction
+heavy. The hero is now the thesis alone, and under it one unboxed line: name, role,
+links. Nothing was put in their place: the working models start one scroll down, in
+the reel, where they belong to a project. `mountHero` and `heroParts` are deleted
+from `lab.js`.
+
+**A deeper blue.** The ground moves from `#003153` to `#0A2240`: less green, darker,
+closer to ink and navy. This is nearer the pigment's own masstone. All dependent
+values moved with it.
+
+| Token | Blue sheet | White print |
+|---|---|---|
+| `--canvas` | `#0A2240` | `#FFFFFF` |
+| `--surface` | `#0F2C52` | `#F3F6FA` |
+| `--ink` | `#F3F6FA` (15.0:1) | `#0A2240` (15.0:1) |
+| `--ink-soft` | `#CBD7E7` | `#23406A` |
+| `--ink-muted` | `#8FA9C8` (6.6:1) | `#4E6A8E` (5.5:1) |
+| `--line` | `#27456F` | `#C9D4E2` |
+| `--mark` | `#F3F6FA` | `#0A2240` |
+| `--accent` | `#FF7A59` (6.3:1) | `#C93B1A` (5.0:1) |
+| `--accent-deep` | `#FF977C` | `#A82E12` |
+| `--tint` | `#14365F` | `#EAF0F7` |
+
+What the colour is for: steadiness and trust (navy), authorship and permanence (ink),
+and focus (a quiet, dark field). Its risk is coldness, which the vermilion, the light
+type and the human copy are there to offset. The sheet toggle stays; the owner likes it.
+
+**General notes removed.** A list of rules was too direct. The signal is carried more
+quietly instead: the redline under the four values, one reason on each project, the
+honesty notes that already sit under every instrument, and a colophon ("Every figure
+here is computed in your browser, from data labelled as synthetic.").
+
+**Contact, warmer.** "Let's connect." with a note that is open to ideas, shared work
+and roles.
+
+**Kept at the owner's request:** the path, and the sheet toggle.
+
+**Considered and rejected.** Replacing the proof with another hero device (a number, a
+smaller figure): the hero reads better with nothing. Keeping the title block without
+its border: it was the introduction-as-form that felt heavy, not only the lines.
 

@@ -9,18 +9,17 @@ import html, pathlib, re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DRAFTS = [
- 'Building forecasts, AI systems and civic tools', 'A small proof. Forecast the next year from', 'Drag the month',
+ 'Building forecasts, AI systems and civic tools', 'always glad to meet people', 'Every figure here is computed',
  'The work figures are running models', 'Commercial operations and analytics', 'The planning analytics behind', 'Natural language processing',
  'Reading what people write, at scale', 'Personal project', 'A contemplative globe of where', 'Open the case study', 'Language at scale', 'Commercial analytics',
- 'Targets shape a person', 'Patients had already said', 'Two threads, one practice', 'The short version', "Let's talk", 'Especially about work',
- 'The rules I build by', 'General notes', 'Build for the people it reaches', 'Synthetic data is labelled', 'The non-technical question comes first',
+ 'Targets shape a person', 'Patients had already said', 'Two threads, one practice', 'The short version', "Let's connect",
  'The research companion', 'Alongside the planning work', 'Three rules are enforced', 'Earlier, at Siemens', 'The first version of this work',
  'No single model owns the truth', 'Four forecasters read', 'A synthetic product line', 'Is the worst facility really the worst', 'Twelve facilities, each',
  'Synthetic facilities', 'Work · ', 'Strategy &amp; Market Insights · 2025 to present', 'Pinnacle Fertility, Duke Fuqua capstone, 2024', 'Senior Data Scientist',
  'On Paper</a>, an essay series', 'Models that end in a decision', 'Senior data scientist. Models', 'Python · SQL · Azure · PowerBI · LangGraph',
  'Three.js · Next.js · UNHCR', 'Operate it', 'LangGraph · hybrid retrieval', 'Drawn in Prussian blue',
 ]
-CLASSES = ('thesis|hero-say|hero-hint|eyebrow|section-title|section-note|reel-kind|reel-jump|slide-kind|project-name|slide-desc|slide-why|'
+CLASSES = ('thesis|hero-name|hero-role|eyebrow|section-title|section-note|reel-kind|reel-jump|slide-kind|project-name|slide-desc|slide-why|'
            'project-meta|slide-open|th-when|th-body|project-byline|project-tools|lab-title|lab-lede|lab-note|lab-key|label|contact-title|contact-line|foot-line')
 A = re.compile(r'<(\w+)\b([^>]*class="(?:[^"]* )?(' + CLASSES + r')(?: [^"]*)?"[^>]*)>(.*?)</\1>', re.S)
 B = re.compile(r'<(h1|h2|p|li|dt|dd)(\s[^>]*)?>(.*?)</\1>', re.S)

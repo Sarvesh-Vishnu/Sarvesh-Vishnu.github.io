@@ -7,19 +7,19 @@
    §2  Color · §3 Typography · §4 Spacing · §7 Motion
    ------------------------------------------------------------- */
 :root {
-  /* Blueprint (design.md §14.16). Prussian blue is the ground, not the accent:
-     it is the pigment blueprints were made with. Linework is near-white, and one
+  /* Blueprint (design.md §14.16, deepened in §14.17). The ground is a deep Prussian,
+     close to ink: the pigment's own masstone. Linework is near-white, and one
      vermilion "redline" marks the single thing a figure or a sentence is about. */
-  --canvas:          #003153;  /* the sheet */
-  --surface:         #053A61;  /* a panel on the sheet (figure stages) */
-  --ink:             #F4F8FB;  /* 13.4:1 on the sheet */
-  --ink-soft:        #CFE0EC;
-  --ink-muted:       #94B6CF;  /* 6.3:1 on the sheet, 5.6:1 on a panel */
-  --line:            #2A5A7E;
-  --mark:            #F4F8FB;  /* drawn lines, links, outlines */
-  --accent:          #FF7A59;  /* the redline: 5.2:1 on the sheet, 4.6:1 on a panel */
+  --canvas:          #0A2240;  /* the sheet */
+  --surface:         #0F2C52;  /* a panel on the sheet (figure stages) */
+  --ink:             #F3F6FA;  /* 15.0:1 on the sheet */
+  --ink-soft:        #CBD7E7;
+  --ink-muted:       #8FA9C8;  /* 6.6:1 on the sheet, 5.6:1 on a panel */
+  --line:            #27456F;
+  --mark:            #F3F6FA;  /* drawn lines, links, outlines */
+  --accent:          #FF7A59;  /* the redline: 6.3:1 on the sheet, 5.4:1 on a panel */
   --accent-deep:     #FF977C;
-  --tint:            #0B446F;  /* hover wash */
+  --tint:            #14365F;  /* hover wash */
 
   /* Functional */
   --success:         #2E5E3E;
@@ -77,15 +77,15 @@
    ([data-theme="white"] on <html>), and used for long reading through .paper. */
 :root[data-theme="white"], .paper {
   --canvas:      #FFFFFF;
-  --surface:     #F4F8FB;
-  --ink:         #003153;
-  --ink-soft:    #1F4E73;
-  --ink-muted:   #4D7391;  /* 5.0:1 on white */
-  --line:        #C6D6E2;
-  --mark:        #003153;
+  --surface:     #F3F6FA;
+  --ink:         #0A2240;
+  --ink-soft:    #23406A;
+  --ink-muted:   #4E6A8E;  /* 5.5:1 on white */
+  --line:        #C9D4E2;
+  --mark:        #0A2240;
   --accent:      #C93B1A;  /* 5.0:1 on white */
   --accent-deep: #A82E12;
-  --tint:        #EAF1F6;
+  --tint:        #EAF0F7;
 }
 .paper { background: var(--canvas); color: var(--ink); }
 
@@ -278,36 +278,37 @@ body {
 }
 
 /* -------------------------------------------------------------
-   Hero: the first sheet (design.md §14.16)
-   The thesis runs across the top like a drawing's title. Under it, on the
-   left, a sentence the reader can operate; on the right, the figure it
-   drives, with the title block in the corner where a drawing keeps it.
+   Hero: the first sheet (design.md §14.16, quieted in §14.17)
+   One statement, with a redline under what it is for, and beneath it
+   who is speaking and how to reach them. No figure, no frame: the
+   working models start one scroll down, in the reel.
    ------------------------------------------------------------- */
 .hero {
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
-  padding: calc(var(--header-h) + var(--space-12)) var(--gutter) var(--space-12);
+  padding: calc(var(--header-h) + var(--space-16)) var(--gutter) var(--space-16);
   display: flex;
-  align-items: center;
+  align-items: stretch;
 }
 .hero-inner {
   max-width: var(--content-max);
   margin: 0 auto;
   width: 100%;
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: var(--space-12) var(--space-16);
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-16);
 }
 .thesis {
-  grid-column: 1 / -1;
-  max-width: 22ch;
+  margin-top: auto;
+  margin-bottom: auto;
+  max-width: 19ch;
   font-family: var(--font-sans);
   font-weight: 300;
-  font-size: clamp(var(--text-3xl), 5.6vw, var(--text-7xl));
-  line-height: 1.02;
-  letter-spacing: -0.035em;
+  font-size: clamp(var(--text-4xl), 7.4vw, var(--text-8xl));
+  line-height: 1;
+  letter-spacing: -0.04em;
   color: var(--ink);
   text-wrap: balance;
 }
@@ -315,90 +316,29 @@ body {
 .redline {
   text-decoration: underline;
   text-decoration-color: var(--accent);
-  text-decoration-thickness: 0.06em;
+  text-decoration-thickness: 0.055em;
   text-underline-offset: 0.14em;
   text-decoration-skip-ink: none;
 }
-.hero-lab { display: grid; gap: var(--space-4); align-content: end; }
-.hero-say {
-  max-width: 30em;
-  font-size: clamp(var(--text-base), 1.5vw, var(--text-lg));
-  line-height: 1.55;
-  color: var(--ink-soft);
-  font-variant-numeric: tabular-nums;
+.hero-id {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-12);
 }
-.hero-say b { font-weight: 500; color: var(--ink); }
-/* the word that is a slider */
-.scrub {
-  display: inline-block;
-  padding: 0 0.12em;
-  white-space: nowrap;
+.hero-who { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-4); }
+.hero-name { font-size: var(--text-lg); font-weight: 500; letter-spacing: -0.01em; color: var(--ink); }
+.hero-role { font-size: var(--text-base); color: var(--ink-soft); }
+.hero-links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); }
+.hero-links a {
+  font-size: var(--text-sm);
   font-weight: 500;
-  color: var(--accent);
-  border-bottom: 2px dotted var(--accent);
-  cursor: ew-resize;
-  touch-action: none;
-  -webkit-user-select: none;
-          user-select: none;
-  transition: background-color var(--duration-fast) ease;
+  color: var(--mark);
+  border-bottom: 1px solid currentColor;
+  transition: color var(--duration-fast) ease;
 }
-.scrub:hover, .is-scrubbing .scrub { background: var(--tint); }
-.scrub:focus-visible { outline: 2px solid var(--mark); outline-offset: 3px; }
-.is-scrubbing, .is-scrubbing * { cursor: ew-resize !important; }
-.hero-hint {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  line-height: 1.7;
-  color: var(--ink-muted);
-}
-.hero-hint a { color: var(--mark); border-bottom: 1px solid currentColor; }
-.hint-live { display: none; color: var(--accent); margin-right: var(--space-2); }
-.is-live .hint-live { display: inline; }               /* only promise dragging when it works */
-
-.hero-sheet { display: grid; gap: var(--space-4); min-width: 0; }
-.hero-fig {
-  height: clamp(220px, 34vh, 320px);
-  border: 1px solid var(--line);
-  background: var(--surface);
-  cursor: grab;
-  touch-action: pan-y;
-}
-.hero-fig:active { cursor: grabbing; }
-.hero-fig svg { display: block; width: 100%; height: 100%; }
-.hero-fig svg * { vector-effect: non-scaling-stroke; }
-
-/* The title block: who drew it, in what role, which revision, and how to reach them. */
-.title-block {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 5fr) minmax(0, 3fr);
-  border: 1px solid var(--line);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  line-height: 1.4;
-  color: var(--ink);
-}
-.title-block > div { padding: var(--space-2) var(--space-3); border-right: 1px solid var(--line); min-width: 0; }
-.title-block > div:nth-child(3) { border-right: 0; }
-.title-block .tb-wide { grid-column: 1 / -1; border-right: 0; border-top: 1px solid var(--line); }
-.title-block dt {
-  font-size: var(--text-2xs);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--ink-muted);
-}
-.title-block dd, .title-block h1 { font-size: inherit; font-weight: 500; letter-spacing: 0; }
-.tb-links { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); margin-top: 2px; }
-.tb-links a { color: var(--mark); border-bottom: 1px solid currentColor; }
-.tb-links a:hover { color: var(--accent); }
-@media (max-width: 900px) {
-  .hero-inner { grid-template-columns: 1fr; gap: var(--space-8); }
-  .hero-fig { height: 240px; }
-}
-@media (max-width: 480px) {
-  .title-block { grid-template-columns: 1fr 1fr; }
-  .title-block > div:nth-child(2) { border-right: 0; }
-  .title-block > div:nth-child(3) { grid-column: 1 / -1; border-top: 1px solid var(--line); }
-}
+.hero-links a:hover { color: var(--accent); }
 
 /* -------------------------------------------------------------
    Sections
@@ -836,7 +776,8 @@ body {
    Contact
    ------------------------------------------------------------- */
 .contact-title {
-  font-size: clamp(var(--text-5xl), 11vw, var(--text-9xl));   /* answers the thesis at the other end */
+  grid-column: 1 / -1;
+  font-size: clamp(var(--text-5xl), 9vw, var(--text-8xl));   /* answers the thesis at the other end */
   font-weight: 300;
   letter-spacing: -0.04em;
   max-width: none;
@@ -1389,32 +1330,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 @media (max-width: 900px) { .slide-why { grid-column: 1; } }
 
-/* General notes: the standing rules, as a drawing lists them */
-.notes-list {
-  counter-reset: note;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  gap: 0 var(--space-16);
-  max-width: 1000px;
-}
-.notes-list li {
-  counter-increment: note;
-  display: grid;
-  grid-template-columns: 2.5em minmax(0, 1fr);
-  padding: var(--space-4) 0;
-  border-top: 1px solid var(--line);
-  font-size: var(--text-lg);
-  line-height: 1.4;
-  color: var(--ink);
-}
-.notes-list li::before {
-  content: counter(note) ".";
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  line-height: 2.3;
-  color: var(--ink-muted);
-}
-.contact-line { grid-column: 1 / -1; margin-top: calc(var(--space-4) - var(--gutter)); max-width: 44ch; font-size: var(--text-lg); line-height: 1.5; color: var(--ink-soft); }
+.contact-line { grid-column: 1 / -1; margin-top: calc(var(--space-4) - var(--gutter)); max-width: 52ch; font-size: var(--text-lg); line-height: 1.5; color: var(--ink-soft); }
 
 /* Long reading sits on a white print laid on the sheet */
 .paper { margin-top: var(--space-16); padding: var(--space-24) 0; }
@@ -1429,14 +1345,14 @@ html.lenis, html.lenis body { height: auto; }
 @media print {
   @page { margin: 14mm 15mm; }
   :root, :root[data-theme] {
-    --canvas: #FFFFFF; --surface: #FFFFFF; --ink: #003153; --ink-soft: #1F4E73; --ink-muted: #4D7391;
-    --line: #C6D6E2; --mark: #003153; --accent: #C93B1A; --tint: #FFFFFF;
+    --canvas: #FFFFFF; --surface: #FFFFFF; --ink: #0A2240; --ink-soft: #23406A; --ink-muted: #4E6A8E;
+    --line: #C9D4E2; --mark: #0A2240; --accent: #C93B1A; --tint: #FFFFFF;
   }
   html { font-size: 10pt; }
   body { background: #FFFFFF; color: var(--ink); }
-  .site-header, .skip, .hero-fig, .hero-lab, .tile-fig, .reel-bar, .slide-open, .section-note,
-  .contact-actions, .contact-line, .notes, .lab, .project-next, .theme-toggle, .foot-meta, .section-title,
-  .tb-links a:not([data-print]) { display: none !important; }
+  .site-header, .skip, .tile-fig, .reel-bar, .slide-open, .section-note,
+  .contact-actions, .contact-line, .lab, .project-next, .theme-toggle, .foot-meta, .section-title,
+  .hero-links a:not([data-print]) { display: none !important; }
   .reveal, .js .reveal { opacity: 1 !important; transform: none !important; }
   .ln::after { transform: none !important; }
   .dot { background: var(--mark) !important; border-color: var(--mark) !important; box-shadow: 0 0 0 3px #FFFFFF !important; }
@@ -1444,10 +1360,13 @@ html.lenis, html.lenis body { height: auto; }
   .th-m .dot { box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 4px var(--mark) !important; }
   .hero { min-height: 0; padding: 0 0 10pt; display: block; }
   .hero-inner { display: block; }
-  .thesis { max-width: none; font-size: 21pt; line-height: 1.12; margin-bottom: 10pt; }
-  .title-block { font-size: 8.5pt; }
-  .tb-links a { border: 0; }
-  .tb-links a::after { content: " " attr(data-print); font-weight: 400; color: var(--ink-soft); }
+  .thesis { max-width: none; font-size: 21pt; line-height: 1.12; margin: 0 0 10pt; }
+  .hero-id { display: block; }
+  .hero-name { font-size: 13pt; }
+  .hero-role { font-size: 10pt; }
+  .hero-links { margin-top: 4pt; gap: 2pt 14pt; }
+  .hero-links a { border: 0; font-size: 8.5pt; }
+  .hero-links a::after { content: " " attr(data-print); font-weight: 400; color: var(--ink-soft); }
   .section { padding: 9pt 0 5pt; border-top: 0.5pt solid var(--line); }
   .section-head { display: block; margin-bottom: 5pt; }
   .th, .stack-row { break-inside: avoid; }

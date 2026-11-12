@@ -564,18 +564,6 @@
     return { now, always, tag: `n = ${nn} · ${r.apart} of ${S.F} apart` };
   }
 
-  /** What the hero sentence says for a given starting month (design.md §14.15). */
-  function heroParts(origin) {
-    const c = committee(origin);
-    const bt = backtest();
-    return {
-      origin: c.origin, label: c.label,
-      best: pct(c.best.err), worst: pct(c.worst.err), err: pct(c.err),
-      origins: bt.origins,
-      verdict: bt.isWorst === 0 ? 'never the worst of them' : `the worst of them in ${bt.isWorst}`,
-    };
-  }
-
   const KINDS = {
     committee: {
       state: () => ({ origin: C.DEFAULT, active: [true, true, true, true] }),
@@ -771,83 +759,7 @@
     rootEl.classList.add('is-live');
   }
 
-  /* The hero sentence (design.md §14.14, §14.15). One word in it, the starting month,
-     is a slider: drag it or use the arrow keys, and the numbers and the strip follow. */
-  function mountHero(rootEl) {
-    const scrub = rootEl.querySelector('.scrub');
-    const fig = rootEl.querySelector('.hero-fig');
-    const outs = {};
-    rootEl.querySelectorAll('[data-out]').forEach((el) => { outs[el.dataset.out] = el; });
-    const st = { origin: C.DEFAULT, active: [true, true, true, true] };
-    let w = 0, h = 0, raf = 0, touched = false;
-    const draw = () => {
-      raf = 0;
-      const r = heroParts(st.origin);
-      scrub.textContent = r.label;
-      scrub.setAttribute('aria-valuenow', r.origin);
-      scrub.setAttribute('aria-valuetext', `${r.label}: the four models miss by ${r.best} to ${r.worst}, their average by ${r.err}`);
-      ['best', 'worst', 'err', 'origins', 'verdict'].forEach((k) => { if (outs[k]) outs[k].textContent = r[k]; });
-      if (w) fig.innerHTML = renderCommittee(st, tall() ? { w, h, full: true } : { w, h, full: false, slim: true });
-    };
-    const tall = () => h >= 260;                         // room for labels and the overview strip
-    const set = (n) => { st.origin = clamp(Math.round(n), C.FIRST, C.LAST); if (!raf) raf = requestAnimationFrame(draw); };
-
-    // drag the month sideways
-    let drag = null;
-    scrub.addEventListener('pointerdown', (e) => {
-      drag = { x: e.clientX, n: st.origin }; touched = true;
-      scrub.setPointerCapture(e.pointerId);
-      rootEl.classList.add('is-scrubbing');
-      e.preventDefault();
-    });
-    scrub.addEventListener('pointermove', (e) => { if (drag) set(drag.n + (e.clientX - drag.x) / 7); });
-    const stop = () => { drag = null; rootEl.classList.remove('is-scrubbing'); };
-    scrub.addEventListener('pointerup', stop);
-    scrub.addEventListener('pointercancel', stop);
-    scrub.addEventListener('keydown', (e) => {
-      const step = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1, PageUp: 12, PageDown: -12 }[e.key];
-      if (step) { set(st.origin + step); touched = true; e.preventDefault(); }
-      else if (e.key === 'Home') { set(C.FIRST); touched = true; e.preventDefault(); }
-      else if (e.key === 'End') { set(C.LAST); touched = true; e.preventDefault(); }
-    });
-
-    // or pull the history under the strip
-    let figDrag = null;
-    fig.addEventListener('pointerdown', (e) => { figDrag = { x: e.clientX, n: st.origin }; touched = true; fig.setPointerCapture(e.pointerId); });
-    fig.addEventListener('pointermove', (e) => {
-      if (!figDrag) return;
-      const g = committeeGeom(w, h, tall(), !tall());
-      set(figDrag.n - (e.clientX - figDrag.x) / g.pxPerMonth);
-    });
-    const figStop = () => { figDrag = null; };
-    fig.addEventListener('pointerup', figStop);
-    fig.addEventListener('pointercancel', figStop);
-
-    new ResizeObserver(() => {
-      const b = fig.getBoundingClientRect();
-      w = Math.round(b.width); h = Math.round(b.height);
-      if (!raf) raf = requestAnimationFrame(draw);
-    }).observe(fig);
-
-    // Once, shortly after load, the month moves on its own to show that it can.
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setTimeout(() => {
-        if (touched) return;
-        const t0 = performance.now(), from = st.origin, D = 1600, SWING = 7;
-        const tick = (t) => {
-          if (touched) return;
-          const u = Math.min(1, (t - t0) / D);
-          set(from + SWING * Math.sin(Math.PI * u));       // out and back
-          if (u < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      }, 1100);
-    }
-    rootEl.classList.add('is-live');
-  }
-
   function init() {
-    document.querySelectorAll('.hero-lab-root').forEach(mountHero);
     document.querySelectorAll('.tile-fig[data-lab]').forEach(mountTile);
     document.querySelectorAll('.lab[data-lab]').forEach(mountFull);
   }
@@ -858,7 +770,7 @@
 
   return {
     rng, ols, wape, wilson, series, monthLabel, MODELS, C, L, S, record,
-    committee, backtest, heroParts, mains, list, facilities, sample, nFromUnit, unitFromN,
+    committee, backtest, mains, list, facilities, sample, nFromUnit, unitFromN,
     renderCommittee, renderRecord, renderList, renderField, renderSample,
     sayCommittee, sayList, saySample, KINDS,
   };
