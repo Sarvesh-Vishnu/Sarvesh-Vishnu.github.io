@@ -564,7 +564,197 @@
     return { now, always, tag: `n = ${nn} · ${r.apart} of ${S.F} apart` };
   }
 
+  /* ====================================================================== 4. SPINE
+     Not a model: a drawing of the system built at Cooper Surgical (design.md §14.18).
+     Five columns, from sources to decisions, and for each decision the path that
+     feeds it. No data and no numbers appear; the names are the real components.
+     The picture and the sentence are both read from PATHS, so they cannot disagree. */
+  const SP_COLS = ['Sources', 'Spine', 'Analysis', 'Surfaces', 'Decisions'];
+  const SP_NODES = {
+    tx:     { col: 0, label: 'Sales transactions',       say: 'sales transactions' },
+    crm:    { col: 0, label: 'CRM and territories',      say: 'CRM and territory data' },
+    fin:    { col: 0, label: 'Finance and pricing',      say: 'finance and pricing data' },
+    pub:    { col: 0, label: 'Public sources',           say: 'public sources' },
+    spine:  { col: 1, label: 'Data spine',               say: 'the data spine' },
+    fc:     { col: 2, label: 'Ensemble forecasting',     say: 'ensemble forecasting' },
+    quota:  { col: 2, label: 'Quota allocation',         say: 'quota allocation' },
+    scen:   { col: 2, label: 'Scenario and sensitivity', say: 'scenario and sensitivity analysis' },
+    seg:    { col: 2, label: 'Customer targeting',       say: 'customer targeting' },
+    exp:    { col: 2, label: 'Experiment design',        say: 'experiment design' },
+    elas:   { col: 2, label: 'Price elasticity',         say: 'price elasticity analysis' },
+    rc:     { col: 2, label: 'Research companion',       say: 'the research companion' },
+    pbi:    { col: 3, label: 'Power BI views',           say: 'Power BI views' },
+    exec:   { col: 3, label: 'Executive readouts',       say: 'executive readouts' },
+    brief:  { col: 3, label: 'Weekly market brief',      say: 'the weekly market brief' },
+    aop:    { col: 4, label: 'Annual operating plan',    say: 'The annual operating plan' },
+    quotas: { col: 4, label: 'Territory quotas',         say: 'Territory quotas', plural: true },
+    xsell:  { col: 4, label: 'Cross-sell programme',     say: 'The cross-sell programme' },
+    supply: { col: 4, label: 'Supply and demand plan',   say: 'The supply and demand plan' },
+    lrp:    { col: 4, label: 'Long-range plan',          say: 'The long-range plan' },
+    view:   { col: 4, label: 'Leadership’s market view', say: 'Leadership’s market view' },
+  };
+  // decision -> what it is read from, level by level (sources, spine, analysis, surface)
+  const SP_PATHS = {
+    aop:    { sources: ['tx', 'fin'], spine: true,  analysis: ['fc', 'scen'],   surface: 'exec' },
+    quotas: { sources: ['tx', 'crm'], spine: true,  analysis: ['fc', 'quota'],  surface: 'pbi' },
+    xsell:  { sources: ['tx', 'crm'], spine: true,  analysis: ['seg', 'exp'],   surface: 'pbi' },
+    supply: { sources: ['tx'],        spine: true,  analysis: ['fc'],           surface: 'exec' },
+    lrp:    { sources: ['tx', 'fin'], spine: true,  analysis: ['scen', 'elas'], surface: 'exec' },
+    view:   { sources: ['pub'],       spine: false, analysis: ['rc'],           surface: 'brief' },
+  };
+  const SP_DECISIONS = Object.keys(SP_PATHS);
+  /** Every node and edge on one decision's path. */
+  function spinePath(d) {
+    const pth = SP_PATHS[d];
+    const nodes = new Set([d, pth.surface, ...pth.analysis, ...pth.sources]);
+    const edges = [];
+    if (pth.spine) {
+      nodes.add('spine');
+      pth.sources.forEach((src) => edges.push([src, 'spine']));
+      pth.analysis.forEach((an) => edges.push(['spine', an]));
+    } else {
+      pth.sources.forEach((src) => pth.analysis.forEach((an) => edges.push([src, an])));
+    }
+    pth.analysis.forEach((an) => edges.push([an, pth.surface]));
+    edges.push([pth.surface, d]);
+    return { nodes, edges };
+  }
+  /** What is lit for a focused node: every decision whose path passes through it. */
+  function spineFocus(id) {
+    const focus = SP_NODES[id] ? id : 'aop';
+    const decisions = SP_DECISIONS.filter((d) => spinePath(d).nodes.has(focus));
+    const nodes = new Set(), edges = new Set();
+    decisions.forEach((d) => { const q = spinePath(d); q.nodes.forEach((n) => nodes.add(n)); q.edges.forEach((e) => edges.add(e.join('>'))); });
+    return { focus, decisions, nodes, edges };
+  }
+  let _spEdges = null;
+  function spineEdges() {
+    if (_spEdges) return _spEdges;
+    const seen = new Map();
+    SP_DECISIONS.forEach((d) => spinePath(d).edges.forEach((e) => seen.set(e.join('>'), e)));
+    return (_spEdges = [...seen.values()]);
+  }
+
+  const SP_CH = 6.65;                                    // width of one 11px mono character
+  const SP_WIDE = 900;                                   // below this the map becomes a trace
+  /** Where each label sits on the wide map. */
+  function spineLayout(w, h, o) {
+    const padX = 22, padT = 62 + ((o && o.tagRoom) || 0) * 0.6, padB = 22;
+    const byCol = SP_COLS.map((_, c) => Object.keys(SP_NODES).filter((id) => SP_NODES[id].col === c));
+    const widths = byCol.map((ids) => Math.max(...ids.map((id) => SP_NODES[id].label.length)) * SP_CH);
+    const gap = (w - 2 * padX - widths.reduce((a, b) => a + b, 0)) / (SP_COLS.length - 1);
+    const pos = {};
+    let x = padX;
+    byCol.forEach((ids, c) => {
+      ids.forEach((id, i) => {
+        const y = padT + ((i + 0.5) / ids.length) * (h - padT - padB);
+        pos[id] = { x, y, w: SP_NODES[id].label.length * SP_CH, right: x + SP_NODES[id].label.length * SP_CH };
+      });
+      x += widths[c] + gap;
+    });
+    const colX = []; x = padX;
+    widths.forEach((cw) => { colX.push(x); x += cw + gap; });
+    return { pos, colX, padT };
+  }
+  function renderSpine(st, o) {
+    const { w, h } = o;
+    const f = spineFocus(st.focus);
+    let s = open(w, h);
+    if (w < SP_WIDE) {
+      // the trace: one decision's path, read top to bottom
+      const d = f.decisions.includes(f.focus) ? f.focus : f.decisions[0];
+      const pth = SP_PATHS[d];
+      const levels = [
+        ['Sources', pth.sources.map((id) => SP_NODES[id].label)],
+        ['Spine', pth.spine ? [SP_NODES.spine.label] : ['not used: public only']],
+        ['Analysis', pth.analysis.map((id) => SP_NODES[id].label)],
+        ['Surface', [SP_NODES[pth.surface].label]],
+        ['Decision', [SP_NODES[d].label]],
+      ];
+      const lines = levels.reduce((n, lv) => n + lv[1].length, 0);
+      const top = o.full ? 40 : 58, step = Math.min(24, (h - top - 16) / (lines + 2));
+      const tight = w < 300;                             // the smallest phones: pull the trace to the edge
+      const x0 = tight ? 10 : 22, x1 = x0 + (tight ? 12 : 16), x2 = x1 + (tight ? 66 : 76);
+      let y = top;
+      const ys = [];
+      levels.forEach(([name, items], li) => {
+        ys.push(y);
+        s += `<circle class="sp-dot is-on" cx="${x0}" cy="${(y - 3.5).toFixed(1)}" r="3"/>`;
+        s += `<text class="fig-lab fig-lab-quiet sp-level" x="${x1}" y="${y.toFixed(1)}">${name.toUpperCase()}</text>`;
+        items.forEach((txt, i) => {
+          const quiet = !pth.spine && li === 1;
+          s += `<text class="fig-lab${li === 4 ? ' fig-lab-acc' : quiet ? ' fig-lab-quiet' : ' sp-on'}" x="${x2}" y="${(y + i * step).toFixed(1)}">${txt}</text>`;
+        });
+        y += items.length * step + step * 0.5;
+      });
+      s += `<path class="sp-edge is-on" d="M${x0},${(ys[0] - 3.5).toFixed(1)} L${x0},${(ys[4] - 3.5).toFixed(1)}"/>`;
+      return s + '</svg>';
+    }
+    const L = spineLayout(w, h, o);
+    SP_COLS.forEach((name, c) => { s += `<text class="fig-lab fig-lab-quiet sp-level" x="${L.colX[c].toFixed(1)}" y="${(L.padT - 20).toFixed(1)}">${name.toUpperCase()}</text>`; });
+    const curve = (a, b) => {
+      const p0 = L.pos[a], p1 = L.pos[b];
+      const xa = p0.right + 8, xb = p1.x - 10, ya = p0.y - 3.5, yb = p1.y - 3.5, mx = (xa + xb) / 2;
+      return `M${xa.toFixed(1)},${ya.toFixed(1)} C${mx.toFixed(1)},${ya.toFixed(1)} ${mx.toFixed(1)},${yb.toFixed(1)} ${xb.toFixed(1)},${yb.toFixed(1)}`;
+    };
+    const all = spineEdges();
+    all.filter((e) => !f.edges.has(e.join('>'))).forEach((e) => { s += `<path class="sp-edge" d="${curve(e[0], e[1])}"/>`; });
+    all.filter((e) => f.edges.has(e.join('>'))).forEach((e) => { s += `<path class="sp-edge is-on" d="${curve(e[0], e[1])}"/>`; });
+    Object.keys(SP_NODES).forEach((id) => {
+      const q = L.pos[id], on = f.nodes.has(id), isFocus = id === f.focus;
+      const cls = isFocus || (on && SP_NODES[id].col === 4) ? ' fig-lab-acc' : on ? ' sp-on' : ' sp-off';
+      s += `<text class="fig-lab sp-node${cls}" x="${q.x.toFixed(1)}" y="${q.y.toFixed(1)}">${SP_NODES[id].label}</text>`;
+      if (SP_NODES[id].col > 0) s += `<circle class="sp-dot${on ? ' is-on' : ''}" cx="${(q.x - 10).toFixed(1)}" cy="${(q.y - 3.5).toFixed(1)}" r="2.5"/>`;
+      if (SP_NODES[id].col < 4) s += `<circle class="sp-dot${on ? ' is-on' : ''}" cx="${(q.right + 8).toFixed(1)}" cy="${(q.y - 3.5).toFixed(1)}" r="2.5"/>`;
+    });
+    return s + '</svg>';
+  }
+  const listOf = (items) => (items.length < 2 ? items.join('') : items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1]);
+  function saySpine(st, o) {
+    const f = spineFocus(st.focus);
+    let now;
+    if (SP_PATHS[f.focus]) {
+      const pth = SP_PATHS[f.focus];
+      const an = listOf(pth.analysis.map((id) => SP_NODES[id].say));
+      const src = listOf(pth.sources.map((id) => SP_NODES[id].say));
+      const be = SP_NODES[f.focus].plural ? 'are' : 'is';
+      now = pth.spine
+        ? `${SP_NODES[f.focus].say} ${be} read from ${SP_NODES[pth.surface].say}, built on ${an}. All of it runs on the data spine, fed by ${src}.`
+        : `${SP_NODES[f.focus].say} ${be} read from ${SP_NODES[pth.surface].say}, drafted by ${an} from ${src} only. It never touches the internal spine.`;
+    } else {
+      const label = SP_NODES[f.focus].label;
+      const ds = listOf(f.decisions.map((d) => SP_NODES[d].label.toLowerCase()));
+      now = `${label} feeds ${f.decisions.length} of the ${SP_DECISIONS.length} decisions: ${ds}.`;
+    }
+    const viaSpine = SP_DECISIONS.filter((d) => SP_PATHS[d].spine).length;
+    return {
+      now,
+      always: `${viaSpine} of the ${SP_DECISIONS.length} decisions run on one spine. The sixth, the market brief, is kept apart on purpose: nothing internal goes into it.`,
+      tag: o && o.w && o.w < SP_WIDE ? 'Schematic' : `Schematic · ${SP_NODES[f.focus].label}`,
+    };
+  }
+
   const KINDS = {
+    spine: {
+      state: () => ({ focus: 'aop' }),
+      render: renderSpine, say: saySpine,
+      // with no pointer, the decisions light one after another as the slide travels
+      scrub: (st, u) => { st.focus = SP_DECISIONS[Math.min(SP_DECISIONS.length - 1, Math.floor(clamp(u, 0, 1) * SP_DECISIONS.length))]; },
+      unit: (st) => Math.max(0, SP_DECISIONS.indexOf(st.focus)) / (SP_DECISIONS.length - 1),
+      // with one, the nearest label takes the focus
+      point: (st, x, y, w, h, o) => {
+        if (w < SP_WIDE) return;
+        const L = spineLayout(w, h, o);
+        let best = null, bd = 1e9;
+        Object.keys(L.pos).forEach((id) => {
+          const q = L.pos[id];
+          const dx = x < q.x ? q.x - x : x > q.right ? x - q.right : 0, dy = Math.abs(y - (q.y - 3.5));
+          const dd = dx * 0.6 + dy;
+          if (dd < bd) { bd = dd; best = id; }
+        });
+        if (best) st.focus = best;
+      },
+    },
     committee: {
       state: () => ({ origin: C.DEFAULT, active: [true, true, true, true] }),
       render: renderCommittee, say: sayCommittee,
@@ -605,14 +795,15 @@
       const old = el.querySelector('svg');
       if (old) old.replaceWith(holder); else el.prepend(holder);
     }
-    let w = 0, h = 0, raf = 0;
+    let w = 0, h = 0, raf = 0, opts = {};
     const draw = () => {
       raf = 0;
       if (!w) return;
       // a stage this large can carry the labelled figure; the tag keeps a clear corner
       const big = w >= 720;
-      holder.innerHTML = kind.render(st, { w, h, full: big, tagRoom: big ? 30 : 0 });
-      if (tag) tag.textContent = kind.say(st).tag;
+      opts = { w, h, full: big, tagRoom: big ? 30 : 0 };
+      holder.innerHTML = kind.render(st, opts);
+      if (tag) tag.textContent = kind.say(st, opts).tag;
     };
     const queue = () => { if (!raf) raf = requestAnimationFrame(draw); };
     new ResizeObserver(() => {
@@ -627,7 +818,8 @@
       if (e.pointerType === 'touch') return;
       hovering = true;
       const b = el.getBoundingClientRect();
-      kind.scrub(st, (e.clientX - b.left - 16) / (b.width - 32));
+      if (kind.point) kind.point(st, e.clientX - b.left, e.clientY - b.top, w, h, opts);
+      else kind.scrub(st, (e.clientX - b.left - 16) / (b.width - 32));
       queue();
     });
     el.addEventListener('pointerleave', () => { hovering = false; });
@@ -659,7 +851,7 @@
     const now = rootEl.querySelector('.lab-now');
     const always = rootEl.querySelector('.lab-always');
     const controls = rootEl.querySelector('.lab-controls');
-    let w = 0, raf = 0;
+    let w = 0, raf = 0, figH = 0;
     let legend = null;
     if (name === 'committee') {
       legend = document.createElement('ul');
@@ -671,7 +863,8 @@
     const draw = () => {
       raf = 0;
       if (!w) return;
-      const h = name === 'committee' ? Math.round(clamp(w * 0.5, 310, 430)) : Math.round(clamp(w * 0.46, 260, 400));
+      const h = name === 'committee' ? Math.round(clamp(w * 0.5, 310, 430)) : name === 'spine' ? (w < SP_WIDE ? 250 : Math.round(clamp(w * 0.4, 360, 440))) : Math.round(clamp(w * 0.46, 260, 400));
+      figH = h;
       fig.innerHTML = kind.render(st, { w, h, full: true });
       if (field) field.innerHTML = renderField(st, { w });
       if (legend) {
@@ -723,6 +916,24 @@
       controls.append(range, again, real);
       sync = () => { input.value = Math.round(unitFromN(st.n) * 1000); out.textContent = st.n.toLocaleString('en-US'); };
     }
+    if (name === 'spine') {
+      const group = el('<div class="lab-picks" role="group" aria-label="Decision to trace"></div>');
+      const btns = SP_DECISIONS.map((d) => {
+        const b = el(`<button type="button" class="lab-btn">${SP_NODES[d].label}</button>`);
+        b.addEventListener('click', () => { st.focus = d; queue(); });
+        group.append(b);
+        return b;
+      });
+      controls.append(group);
+      sync = () => btns.forEach((b, i) => b.setAttribute('aria-pressed', SP_DECISIONS[i] === st.focus ? 'true' : 'false'));
+      fig.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'touch') return;
+        const b = fig.getBoundingClientRect();
+        const before = st.focus;
+        kind.point(st, e.clientX - b.left, e.clientY - b.top, w, figH, {});
+        if (st.focus !== before) queue();
+      });
+    }
     const reset = el('<button type="button" class="lab-btn lab-btn-quiet">Reset</button>');
     reset.addEventListener('click', () => { Object.assign(st, kind.state()); queue(); });
     controls.append(reset);
@@ -743,7 +954,7 @@
       } else return;                                     // the sample's x axis is the estimate, not n
       queue();
     };
-    fig.addEventListener('pointerdown', (e) => {
+    if (name !== 'spine') fig.addEventListener('pointerdown', (e) => {
       const b = fig.getBoundingClientRect();
       const g = committeeGeom(b.width, b.height, true);
       drag = { x: e.clientX - b.left, origin: st.origin, onStrip: e.clientY - b.top >= g.stripT - 10 };
@@ -771,7 +982,8 @@
   return {
     rng, ols, wape, wilson, series, monthLabel, MODELS, C, L, S, record,
     committee, backtest, mains, list, facilities, sample, nFromUnit, unitFromN,
-    renderCommittee, renderRecord, renderList, renderField, renderSample,
+    renderCommittee, renderRecord, renderList, renderField, renderSample, renderSpine,
+    SP_NODES, SP_PATHS, SP_DECISIONS, spinePath, spineFocus, saySpine,
     sayCommittee, sayList, saySample, KINDS,
   };
 });

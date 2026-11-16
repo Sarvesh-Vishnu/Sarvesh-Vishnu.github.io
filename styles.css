@@ -710,6 +710,14 @@ body {
 .fig-lab   { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); font-variant-numeric: tabular-nums; }
 .fig-lab-acc { fill: var(--accent); font-weight: 500; }
 .fig-lab-quiet { fill: var(--ink-muted); }
+/* the system drawing (§14.18): labels and linework, the traced path in the redline */
+.sp-edge { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.16; }
+.sp-edge.is-on { stroke: var(--accent); stroke-width: 1.5; opacity: 1; }
+.sp-dot { fill: var(--surface); stroke: var(--ink-muted); stroke-width: 1; }
+.sp-dot.is-on { fill: var(--accent); stroke: var(--accent); }
+.sp-on { fill: var(--ink); }
+.sp-off { fill: var(--ink-muted); }
+.sp-level { letter-spacing: 0.12em; }
 /* the field of mains */
 .fld { fill: none; stroke: var(--line); stroke-width: 1; }
 .fld-on { fill: var(--accent); stroke: var(--accent); opacity: 0.28; }
@@ -1262,6 +1270,8 @@ html.lenis, html.lenis body { height: auto; }
   transition: background-color var(--duration-fast) ease;
 }
 .lab-btn:hover { background: var(--tint); }
+.lab-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.lab-picks { display: flex; flex-wrap: wrap; gap: var(--space-2); flex: 1 1 100%; }
 .lab-btn-quiet { border-color: var(--line); color: var(--ink-soft); }
 .lab-range input:focus-visible, .lab-checks input:focus-visible, .lab-btn:focus-visible {
   outline: 2px solid var(--mark);
@@ -1307,7 +1317,7 @@ html.lenis, html.lenis body { height: auto; }
    (cross-document view transitions; browsers without them just navigate).
    ------------------------------------------------------------- */
 @view-transition { navigation: auto; }
-.tile-fig[data-lab="record"], .lab-stage:has(.lab-committee) { view-transition-name: lab-committee; }
+.tile-fig[data-lab="spine"], .lab-stage:has(.lab-spine) { view-transition-name: lab-spine; }
 .tile-fig[data-lab="sample"],    .lab-stage:has(.lab-sample)    { view-transition-name: lab-sample; }
 ::view-transition-group(*) { animation-duration: 420ms; animation-timing-function: var(--ease-out); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 220ms; }

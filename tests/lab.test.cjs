@@ -135,6 +135,38 @@ test('the record lists every starting month and agrees with the committee', () =
   }
 });
 
+test('the spine: every path is well formed and every node is used', () => {
+  const used = new Set();
+  for (const d of Lab.SP_DECISIONS) {
+    const pth = Lab.SP_PATHS[d], q = Lab.spinePath(d);
+    assert.equal(Lab.SP_NODES[d].col, 4);
+    assert.equal(Lab.SP_NODES[pth.surface].col, 3);
+    pth.analysis.forEach((id) => assert.equal(Lab.SP_NODES[id].col, 2));
+    pth.sources.forEach((id) => assert.equal(Lab.SP_NODES[id].col, 0));
+    q.edges.forEach(([a, b]) => { assert.ok(q.nodes.has(a) && q.nodes.has(b)); assert.ok(Lab.SP_NODES[a].col < Lab.SP_NODES[b].col); });
+    q.nodes.forEach((n) => used.add(n));
+  }
+  assert.deepEqual([...used].sort(), Object.keys(Lab.SP_NODES).sort());
+});
+
+test('the spine: the market brief never touches internal data', () => {
+  const q = Lab.spinePath('view');
+  assert.ok(!q.nodes.has('spine'));
+  ['tx', 'crm', 'fin'].forEach((id) => assert.ok(!q.nodes.has(id)));
+  assert.match(Lab.saySpine({ focus: 'view' }).now, /public sources only/);
+  for (const d of Lab.SP_DECISIONS) if (d !== 'view') assert.ok(!Lab.spinePath(d).nodes.has('pub'));
+});
+
+test('the spine: focus lights every decision through a node, and the sentence names the path', () => {
+  assert.deepEqual(Lab.spineFocus('fc').decisions, ['aop', 'quotas', 'supply']);
+  assert.equal(Lab.spineFocus('spine').decisions.length, 5);
+  assert.equal(Lab.spineFocus('nonsense').focus, 'aop');
+  const said = Lab.saySpine({ focus: 'xsell' }).now;
+  ['Power BI views', 'customer targeting', 'experiment design', 'sales transactions'].forEach((w) => assert.ok(said.includes(w), w));
+  assert.match(Lab.saySpine({ focus: 'quotas' }).now, /^Territory quotas are read/);
+  for (const d of Lab.SP_DECISIONS) assert.ok(!/\d/.test(Lab.saySpine({ focus: d }).now), d + ' sentence carries a number');
+});
+
 test('n slider mapping round-trips and stays in range', () => {
   assert.equal(Lab.nFromUnit(0), Lab.S.NMIN);
   assert.equal(Lab.nFromUnit(1), Lab.S.NMAX);

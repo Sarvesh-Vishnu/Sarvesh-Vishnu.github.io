@@ -848,3 +848,50 @@ and roles.
 smaller figure): the hero reads better with nothing. Keeping the title block without
 its border: it was the introduction-as-form that felt heavy, not only the lines.
 
+### 14.18 — The first project: a drawing of the system, and no synthetic numbers
+*Changes: §14.13 (which instruments are mounted), §14.15 and §14.16 (first slide).
+(2026-11-15)*
+
+**The concern.** The owner: with synthetic numbers on a figure about employer work,
+"either we are sharing a work within our professional career that we shouldn't or it
+feels confusing as a reader." Both halves are right. A labelled synthetic forecast
+still reads, at a glance, like a company's numbers, and a reader who notices the
+label has to work out what they are looking at.
+
+**The rule that follows.** A figure about employer work carries no data values at
+all, real or synthetic. It may show structure: what was built and how the parts
+connect.
+
+**What replaced it.** The Cooper Surgical slide and the instrument on its case study
+are now *the spine*: a drawing of the system in five columns (sources, spine,
+analysis, surfaces, decisions) with the real component names. Six decisions sit on
+the right. Pointing at any label, or pressing a decision's button, lights the path
+that feeds it in the redline, and a sentence states that path in words. Under 900px
+the map becomes a trace: one decision's path, read top to bottom. With no pointer,
+the decisions light one after another as the slide scrolls.
+
+It is the Blueprint idea used literally (a drawing of what was built), and it shows
+the thing a forecast chart could not: the breadth of the work and the ownership of
+the whole system. The picture and the sentence are both read from one table of
+paths (`SP_PATHS` in `lab.js`), so they cannot disagree.
+
+**A quiet signal in the drawing.** The research companion's line runs from public
+sources to the weekly brief without touching the internal spine. The rule "nothing
+internal goes in" is visible as geometry, and a test asserts it.
+
+**Copy.** The slide and case study are rewritten from the owner's account of the
+role: Commercial Excellence (building the spine, reporting, the annual operating
+plan, a cross-sell experiment owned end to end), then Strategy and Market Insights
+as Senior Data Scientist (business performance, SKU-by-country demand forecasts,
+long-range planning, price elasticity, market research), and the research companion.
+Counts the owner states (75+ territory managers, 25+ product lines) stay; no results
+or internal names appear.
+
+**Retained but unmounted.** The committee, record and list models stay in `lab.js`
+with their tests. The sample model is still mounted on the second project; the same
+concern applies there and is the next thing to review.
+
+**Considered and rejected.** Keeping the forecast with its numbers removed (a chart
+without values is decoration). A synthetic A/B-test figure for the cross-sell work
+(still numbers, and it would repeat the second slide's statistics).
+

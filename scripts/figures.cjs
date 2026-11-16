@@ -18,8 +18,8 @@ const between = (html, name, body, file) => {
 const fluid = (svg) => svg.replace(/ width="\d+" height="\d+"/, '');   // let CSS size the static copy
 
 // home page: the work figures
-const TILE = { w: 640, h: 360, full: false };
-const tiles = { commercial: 'record', nlp: 'sample' };
+const TILE = { w: 1000, h: 540, full: false };
+const tiles = { commercial: 'spine', nlp: 'sample' };
 let index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 for (const [marker, kind] of Object.entries(tiles)) {
   const k = Lab.KINDS[kind];
@@ -28,8 +28,8 @@ for (const [marker, kind] of Object.entries(tiles)) {
 fs.writeFileSync(path.join(ROOT, 'index.html'), index);
 
 // case studies: the full instrument, its field (list only) and both sentences
-const FULL = { w: 760, h: 350, full: true };
-const pages = { 'commercial-analytics': 'committee', nlp: 'sample' };
+const FULL = { w: 1040, h: 420, full: true };
+const pages = { 'commercial-analytics': 'spine', nlp: 'sample' };
 for (const [page, kind] of Object.entries(pages)) {
   const file = path.join(ROOT, 'work', `${page}.html`);
   const k = Lab.KINDS[kind];

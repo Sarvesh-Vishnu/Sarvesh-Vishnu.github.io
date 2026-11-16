@@ -18,6 +18,9 @@ DRAFTS = [
  'Synthetic facilities', 'Work · ', 'Strategy &amp; Market Insights · 2025 to present', 'Pinnacle Fertility, Duke Fuqua capstone, 2024', 'Senior Data Scientist',
  'On Paper</a>, an essay series', 'Models that end in a decision', 'Senior data scientist. Models', 'Python · SQL · Azure · PowerBI · LangGraph',
  'Three.js · Next.js · UNHCR', 'Operate it', 'LangGraph · hybrid retrieval', 'Drawn in Prussian blue',
+ 'One data spine under a medical-device business', 'The figures respond', 'One spine, six decisions', 'Most of what I built here',
+ 'A schematic of the system', 'The system', 'Building the spine', 'A cross-sell experiment, end to end', 'Strategy and Market Insights',
+ 'Commercial Excellence, then Senior', 'Microsoft Fabric · Azure',
 ]
 CLASSES = ('thesis|hero-name|hero-role|eyebrow|section-title|section-note|reel-kind|reel-jump|slide-kind|project-name|slide-desc|slide-why|'
            'project-meta|slide-open|th-when|th-body|project-byline|project-tools|lab-title|lab-lede|lab-note|lab-key|label|contact-title|contact-line|foot-line')
