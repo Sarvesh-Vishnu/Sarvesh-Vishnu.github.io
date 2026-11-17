@@ -718,6 +718,15 @@ body {
 .sp-on { fill: var(--ink); }
 .sp-off { fill: var(--ink-muted); }
 .sp-level { letter-spacing: 0.12em; }
+/* the plan (§14.20): a pipe network in linework, the list in the redline */
+.pl-main { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.38; stroke-linecap: round; }
+.pl-main.is-on { stroke: var(--accent); stroke-width: 2.5; opacity: 1; }
+.pl-main.is-focus { stroke-width: 4; opacity: 1; }
+.pl-node { fill: var(--surface); stroke: var(--ink-muted); stroke-width: 1; }
+.pl-node.is-focus { fill: var(--ink); stroke: var(--surface); stroke-width: 1.5; }
+.pl-plate { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
+.pl-lead { fill: none; stroke: var(--ink-muted); stroke-width: 1; }
+.lab.is-live .lab-plan { cursor: crosshair; }
 /* the reading (§14.19): a comment in mono, brackets and leaders, the driver in the redline */
 .rd-word { font-family: var(--font-mono); fill: var(--ink); }
 .rd-stop { fill: var(--ink-muted); }
@@ -1335,6 +1344,7 @@ html.lenis, html.lenis body { height: auto; }
 @view-transition { navigation: auto; }
 .tile-fig[data-lab="spine"], .lab-stage:has(.lab-spine) { view-transition-name: lab-spine; }
 .tile-fig[data-lab="reading"], .lab-stage:has(.lab-reading) { view-transition-name: lab-reading; }
+.tile-fig[data-lab="plan"],    .lab-stage:has(.lab-plan)    { view-transition-name: lab-plan; }
 ::view-transition-group(*) { animation-duration: 420ms; animation-timing-function: var(--ease-out); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 220ms; }
 @media (prefers-reduced-motion: reduce) {

@@ -37,7 +37,7 @@ out = ['# Site copy', '',
        'Unmarked lines are your own words, carried over unchanged.',
        'The hero sentence and the sentences under each instrument are built by `lab.js` from the models. '
        'In the hero only the words between the numbers are editable; the instrument sentences live in `lab.js` (`sayCommittee`, `saySample`).', '']
-for f in ['index.html', 'work/commercial-analytics.html', 'work/nlp.html', 'work/numit.html']:
+for f in ['index.html', 'work/commercial-analytics.html', 'work/nlp.html', 'work/wv-water.html', 'work/numit.html']:
     src = (ROOT / f).read_text()
     out += [f'## {f}', '']
     for label, pat in (('Browser title', r'<title>(.*?)</title>'), ('Search description', r'<meta name="description" content="(.*?)"')):

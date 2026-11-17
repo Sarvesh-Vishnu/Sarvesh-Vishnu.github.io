@@ -152,7 +152,7 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 1. Header — fixed, 64px; hairline border on scroll
 2. Hero — the thesis, with a redline under its values; beneath it one plain line:
    name, role, and four links. Nothing else
-3. Work — a reel of three sheets: two from work, one personal (§14.15)
+3. Work — a reel of four sheets: three from work, one personal (§14.15, §14.20)
 4. The path here — two threads that merge (§14.11), with a short bio beside it
 5. At a glance — one ledger: role, toolkit, education, writing
 6. Contact — "Let's connect."
@@ -951,4 +951,42 @@ nothing changed, so moving within a step restarts no animation.
 
 **Considered and rejected.** A pile of strokes sorting into theme rows (row lengths
 read as quantities). A second pipeline schematic (two system diagrams back to back).
+
+### 14.20 — A fourth sheet: the water plan
+*Changes: §14.15 (the reel now has four sheets: three work, one personal), §14.13
+(which instruments are mounted). (2026-11-17)*
+
+**Why it is back.** The owner asked for more work on the reel and chose the Western
+Virginia Water Authority project. It is the one work project whose purpose is public
+on its face: a utility cannot replace every pipe, so the order matters.
+
+**The old figure could not return.** It counted failures prevented among four
+hundred synthetic mains, which is the thing §14.18 rules out.
+
+**What replaced it.** *The plan*: a small pipe network drawn for the page, in
+linework, like a utility plan. The mains on the replacement list are in the redline.
+The reader can raise the budget, switch the list between "the model" and "oldest
+first", and point at (or tap) any main to read, in words, what the model sees there
+and where each list puts it. Listed by age the picks bunch in the old town; listed by
+the model they also reach younger mains in heavy clay or with breaks on record. That
+contrast is the whole argument of the project, and it needs no numbers.
+
+**No counts, no results.** The drawing and its sentences state shares in words
+("about half", "most") and positions in words ("near the top"). Tests assert that no
+digit appears in the figure or the sentence at any budget. The budget control reads
+"a short list", "a longer list". The owner's own published facts ($150K, 6 to 12
+months, 20+ years) stay in the facts strip, where they were on the live site.
+
+**What is invented, and said so.** The network, the mains and their attributes are
+made up (`plan()` in `lab.js`, seeded). The "model" in the drawing is a plain
+weighted sum of age, soil, past breaks, road and material, a stand-in for the real
+gradient-boosted model. The tile's tag reads "Drawn for this page" and the case-study
+note says the network is not the Authority's. The plan carries "NOT TO SCALE".
+
+**The reel.** Order: Commercial analytics, Language at scale, Water mains, then
+Numit under Personal. The counter reads "Sheet N of 4". The print résumé still fits
+two pages.
+
+**Open with the owner.** Whether age, soil, past breaks, traffic and material are a
+fair plain-language account of what the real model leaned on.
 

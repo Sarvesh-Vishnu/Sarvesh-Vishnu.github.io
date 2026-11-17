@@ -3,12 +3,141 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Moved · Sarvesh Vishnu</title>
-  <meta name="robots" content="noindex" />
-  <link rel="canonical" href="https://sarvesh-vishnu.github.io/#work" />
-  <meta http-equiv="refresh" content="0; url=../index.html#work" />
+  <meta name="theme-color" content="#0A2240" />
+  <meta name="color-scheme" content="dark light" />
+
+  <title>Predicting water-main failure, Western Virginia Water Authority · Sarvesh Vishnu</title>
+  <meta name="description" content="A risk model for every active water main at the Western Virginia Water Authority: twenty-plus years of maintenance history, scored for failure six to twelve months out, and used to direct the capital plan." />
+
+  <link rel="canonical" href="https://sarvesh-vishnu.github.io/work/wv-water.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://sarvesh-vishnu.github.io/work/wv-water.html" />
+  <meta property="og:title" content="Predicting water-main failure, Western Virginia Water Authority · Sarvesh Vishnu" />
+  <meta property="og:description" content="A risk model for every active water main at the Western Virginia Water Authority: twenty-plus years of maintenance history, scored for failure six to twelve months out, and used to direct the capital plan." />
+  <meta property="og:image" content="https://sarvesh-vishnu.github.io/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" />
+
+  <script>
+    (function(){var d=document.documentElement;try{d.dataset.theme=localStorage.getItem('sheet')==='white'?'white':'blue';}catch(e){d.dataset.theme='blue';}})();
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion');
+  </script>
+
+  <link rel="stylesheet" href="../styles.css" />
 </head>
-<body>
-  <p>This page has moved to <a href="../index.html#work">Selected work</a>.</p>
+<body class="project-page">
+  <a href="#main" class="skip">Skip to content</a>
+
+  <header class="site-header" id="header">
+    <nav class="nav" aria-label="Primary">
+      <a href="../index.html" class="brand">sarvesh.</a>
+      <ul class="nav-links" role="list">
+        <li><a href="../index.html#work">Work</a></li>
+        <li class="nav-secondary"><a href="../index.html#path">Path</a></li>
+        <li class="nav-secondary"><a href="../index.html#glance">At a glance</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+      <button type="button" class="theme-toggle" aria-label="Switch to the white print" aria-pressed="false" title="Blue sheet or white print">
+        <svg class="theme-icon icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="theme-icon icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article>
+      <header class="project-hero project-hero--lead">
+        <p class="eyebrow">Work · Western Virginia Water Authority</p>
+        <h1>Finding the water mains most likely to fail next.</h1>
+        <p class="project-byline">Western Virginia Water Authority · Data Scientist · January to July 2025</p>
+      </header>
+
+      <section class="lab" data-lab="plan" aria-labelledby="lab-title">
+        <div class="lab-head">
+          <div>
+            <p class="eyebrow">The idea</p>
+            <h2 id="lab-title" class="lab-title">You can’t replace every pipe.</h2>
+          </div>
+          <p class="lab-lede">So the order matters. Set a budget, then list the mains two ways: by the model, or oldest first. Point at any main to read what the model sees there.</p>
+        </div>
+        <div class="lab-stage">
+          <div class="lab-fig lab-plan"><!-- lab:fig --><svg viewBox="0 0 1040 499" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="pl-main" d="M44.1,24.6 L169.8,34.8"/><path class="pl-main" d="M169.8,34.8 L296.5,45.6"/><path class="pl-main" d="M512.7,33.9 L644.0,34.5"/><path class="pl-main" d="M644.0,34.5 L742.9,32.4"/><path class="pl-main" d="M742.9,32.4 L864.3,23.1"/><path class="pl-main" d="M864.3,23.1 L969.3,43.3"/><path class="pl-main" d="M58.4,117.3 L178.7,126.9"/><path class="pl-main" d="M178.7,126.9 L274.9,112.3"/><path class="pl-main" d="M274.9,112.3 L398.3,123.3"/><path class="pl-main" d="M629.6,120.1 L752.2,113.8"/><path class="pl-main" d="M873.8,115.8 L979.7,128.0"/><path class="pl-main" d="M56.8,201.3 L168.5,198.8"/><path class="pl-main" d="M168.5,198.8 L271.2,198.1"/><path class="pl-main" d="M409.5,198.4 L511.2,196.2"/><path class="pl-main" d="M511.2,196.2 L653.1,191.5"/><path class="pl-main" d="M749.8,196.3 L855.2,190.3"/><path class="pl-main" d="M855.2,190.3 L985.7,198.7"/><path class="pl-main" d="M175.2,271.6 L271.2,289.6"/><path class="pl-main" d="M271.2,289.6 L395.3,290.5"/><path class="pl-main" d="M511.9,271.3 L624.5,283.9"/><path class="pl-main" d="M624.5,283.9 L748.6,274.2"/><path class="pl-main" d="M748.6,274.2 L882.9,269.8"/><path class="pl-main" d="M882.9,269.8 L990.2,269.9"/><path class="pl-main" d="M54.4,368.8 L186.3,352.8"/><path class="pl-main" d="M186.3,352.8 L301.1,353.1"/><path class="pl-main" d="M301.1,353.1 L399.8,351.9"/><path class="pl-main" d="M399.8,351.9 L522.2,363.1"/><path class="pl-main" d="M522.2,363.1 L623.1,376.5"/><path class="pl-main" d="M858.0,365.9 L990.9,354.9"/><path class="pl-main" d="M55.0,434.6 L159.0,442.3"/><path class="pl-main" d="M159.0,442.3 L291.4,437.6"/><path class="pl-main" d="M291.4,437.6 L405.0,448.5"/><path class="pl-main" d="M405.0,448.5 L508.5,445.0"/><path class="pl-main" d="M508.5,445.0 L650.8,449.5"/><path class="pl-main" d="M650.8,449.5 L736.1,455.4"/><path class="pl-main" d="M736.1,455.4 L863.2,436.5"/><path class="pl-main" d="M44.1,24.6 L58.4,117.3"/><path class="pl-main" d="M169.8,34.8 L178.7,126.9"/><path class="pl-main" d="M296.5,45.6 L274.9,112.3"/><path class="pl-main" d="M417.5,45.1 L398.3,123.3"/><path class="pl-main" d="M512.7,33.9 L529.5,113.0"/><path class="pl-main" d="M644.0,34.5 L629.6,120.1"/><path class="pl-main" d="M742.9,32.4 L752.2,113.8"/><path class="pl-main" d="M864.3,23.1 L873.8,115.8"/><path class="pl-main" d="M969.3,43.3 L979.7,128.0"/><path class="pl-main" d="M58.4,117.3 L56.8,201.3"/><path class="pl-main" d="M178.7,126.9 L168.5,198.8"/><path class="pl-main" d="M398.3,123.3 L409.5,198.4"/><path class="pl-main" d="M529.5,113.0 L511.2,196.2"/><path class="pl-main" d="M629.6,120.1 L653.1,191.5"/><path class="pl-main" d="M752.2,113.8 L749.8,196.3"/><path class="pl-main" d="M873.8,115.8 L855.2,190.3"/><path class="pl-main" d="M979.7,128.0 L985.7,198.7"/><path class="pl-main" d="M56.8,201.3 L43.5,273.7"/><path class="pl-main" d="M511.2,196.2 L511.9,271.3"/><path class="pl-main" d="M653.1,191.5 L624.5,283.9"/><path class="pl-main" d="M749.8,196.3 L748.6,274.2"/><path class="pl-main" d="M985.7,198.7 L990.2,269.9"/><path class="pl-main" d="M175.2,271.6 L186.3,352.8"/><path class="pl-main" d="M271.2,289.6 L301.1,353.1"/><path class="pl-main" d="M511.9,271.3 L522.2,363.1"/><path class="pl-main" d="M624.5,283.9 L623.1,376.5"/><path class="pl-main" d="M748.6,274.2 L747.9,364.6"/><path class="pl-main" d="M882.9,269.8 L858.0,365.9"/><path class="pl-main" d="M990.2,269.9 L990.9,354.9"/><path class="pl-main" d="M54.4,368.8 L55.0,434.6"/><path class="pl-main" d="M186.3,352.8 L159.0,442.3"/><path class="pl-main" d="M399.8,351.9 L405.0,448.5"/><path class="pl-main" d="M522.2,363.1 L508.5,445.0"/><path class="pl-main" d="M623.1,376.5 L650.8,449.5"/><path class="pl-main" d="M990.9,354.9 L981.7,442.0"/><path class="pl-main is-on" d="M398.3,123.3 L529.5,113.0"/><path class="pl-main is-on" d="M752.2,113.8 L873.8,115.8"/><path class="pl-main is-on" d="M271.2,198.1 L409.5,198.4"/><path class="pl-main is-on" d="M43.5,273.7 L175.2,271.6"/><path class="pl-main is-on" d="M395.3,290.5 L511.9,271.3"/><path class="pl-main is-on" d="M747.9,364.6 L858.0,365.9"/><path class="pl-main is-on" d="M274.9,112.3 L271.2,198.1"/><path class="pl-main is-on" d="M168.5,198.8 L175.2,271.6"/><path class="pl-main is-on" d="M395.3,290.5 L399.8,351.9"/><path class="pl-main is-on" d="M301.1,353.1 L291.4,437.6"/><path class="pl-main is-on" d="M858.0,365.9 L863.2,436.5"/><circle class="pl-node" cx="44.1" cy="24.6" r="2.5"/><circle class="pl-node" cx="169.8" cy="34.8" r="2.5"/><circle class="pl-node" cx="296.5" cy="45.6" r="2.5"/><circle class="pl-node" cx="512.7" cy="33.9" r="2.5"/><circle class="pl-node" cx="644.0" cy="34.5" r="2.5"/><circle class="pl-node" cx="742.9" cy="32.4" r="2.5"/><circle class="pl-node" cx="864.3" cy="23.1" r="2.5"/><circle class="pl-node" cx="969.3" cy="43.3" r="2.5"/><circle class="pl-node" cx="58.4" cy="117.3" r="2.5"/><circle class="pl-node" cx="178.7" cy="126.9" r="2.5"/><circle class="pl-node" cx="274.9" cy="112.3" r="2.5"/><circle class="pl-node" cx="398.3" cy="123.3" r="2.5"/><circle class="pl-node" cx="529.5" cy="113.0" r="2.5"/><circle class="pl-node" cx="629.6" cy="120.1" r="2.5"/><circle class="pl-node" cx="752.2" cy="113.8" r="2.5"/><circle class="pl-node" cx="873.8" cy="115.8" r="2.5"/><circle class="pl-node" cx="979.7" cy="128.0" r="2.5"/><circle class="pl-node" cx="56.8" cy="201.3" r="2.5"/><circle class="pl-node" cx="168.5" cy="198.8" r="2.5"/><circle class="pl-node" cx="271.2" cy="198.1" r="2.5"/><circle class="pl-node" cx="409.5" cy="198.4" r="2.5"/><circle class="pl-node" cx="511.2" cy="196.2" r="2.5"/><circle class="pl-node" cx="653.1" cy="191.5" r="2.5"/><circle class="pl-node" cx="749.8" cy="196.3" r="2.5"/><circle class="pl-node" cx="855.2" cy="190.3" r="2.5"/><circle class="pl-node" cx="985.7" cy="198.7" r="2.5"/><circle class="pl-node" cx="43.5" cy="273.7" r="2.5"/><circle class="pl-node" cx="175.2" cy="271.6" r="2.5"/><circle class="pl-node" cx="271.2" cy="289.6" r="2.5"/><circle class="pl-node" cx="395.3" cy="290.5" r="2.5"/><circle class="pl-node" cx="511.9" cy="271.3" r="2.5"/><circle class="pl-node" cx="624.5" cy="283.9" r="2.5"/><circle class="pl-node" cx="748.6" cy="274.2" r="2.5"/><circle class="pl-node" cx="882.9" cy="269.8" r="2.5"/><circle class="pl-node" cx="990.2" cy="269.9" r="2.5"/><circle class="pl-node" cx="54.4" cy="368.8" r="2.5"/><circle class="pl-node" cx="186.3" cy="352.8" r="2.5"/><circle class="pl-node" cx="301.1" cy="353.1" r="2.5"/><circle class="pl-node" cx="399.8" cy="351.9" r="2.5"/><circle class="pl-node" cx="522.2" cy="363.1" r="2.5"/><circle class="pl-node" cx="623.1" cy="376.5" r="2.5"/><circle class="pl-node" cx="747.9" cy="364.6" r="2.5"/><circle class="pl-node" cx="858.0" cy="365.9" r="2.5"/><circle class="pl-node" cx="990.9" cy="354.9" r="2.5"/><circle class="pl-node" cx="55.0" cy="434.6" r="2.5"/><circle class="pl-node" cx="159.0" cy="442.3" r="2.5"/><circle class="pl-node" cx="291.4" cy="437.6" r="2.5"/><circle class="pl-node" cx="405.0" cy="448.5" r="2.5"/><circle class="pl-node" cx="508.5" cy="445.0" r="2.5"/><circle class="pl-node" cx="650.8" cy="449.5" r="2.5"/><circle class="pl-node" cx="736.1" cy="455.4" r="2.5"/><circle class="pl-node" cx="863.2" cy="436.5" r="2.5"/><circle class="pl-node" cx="417.5" cy="45.1" r="2.5"/><circle class="pl-node" cx="981.7" cy="442.0" r="2.5"/><text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="345.1" y="244.5">OLD TOWN</text><text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="811.6" y="162.0">HEAVY CLAY</text><path class="pl-main is-on" d="M36,481 L58,481"/><text class="fig-lab sp-level" x="66" y="485">ON THE LIST</text><path class="pl-main" d="M172.6,481 L194.6,481"/><text class="fig-lab fig-lab-quiet sp-level" x="202.6" y="485">NOT YET</text><text class="fig-lab fig-lab-quiet sp-level" text-anchor="end" x="1004" y="485">NOT TO SCALE</text></svg><!-- /lab:fig --></div>
+          <div class="lab-controls"></div>
+        </div>
+        <p class="lab-now" aria-live="polite"><!-- lab:now -->Listed by the model, about half of the picks are from the oldest era. The rest are younger mains where clay soil, past breaks or a busy road raise the risk.<!-- /lab:now --></p>
+        <p class="lab-always"><!-- lab:always -->The real model was gradient-boosted on 20+ years of maintenance history, with soil, freeze cycles and traffic load beside it. This drawing uses a simple stand-in to show one thing: age is a signal, and it is not the only one.<!-- /lab:always --></p>
+        <p class="lab-note">A network drawn for this page. It is not the Authority’s network, the mains and what is said about them are invented, and no Authority data or results appear here.</p>
+      </section>
+
+      <div class="project-facts">
+
+        <dl class="project-results">
+          <div><dt>value directed</dt><dd>$150K</dd></div>
+          <div><dt>failure lead time</dt><dd>6–12mo</dd></div>
+          <div><dt>maintenance history joined</dt><dd>20+yrs</dd></div>
+        </dl>
+
+        <p class="project-tools">Python · scikit-learn · XGBoost · ArcGIS · Power BI</p>
+      </div>
+
+      <div class="paper">
+      <section class="project-body-prose">
+        <h2>Objective</h2>
+        <p>Water mains across Western Virginia, and much of the United States, are ageing. Replacing every pipe is not affordable, and waiting for failures is painful and expensive. The Authority needed a way to point its capital plan at the mains most likely to fail next, within the budget it already had.</p>
+
+        <h2>Approach</h2>
+        <p>I joined three streams that had not been joined before: twenty-plus years of maintenance history from the CMMS (the computerised maintenance management system), environmental factors such as soil, freeze cycles and traffic load, and operational telemetry. A gradient-boosted model scored every active main on its likelihood of failing within six to twelve months. The highest-risk mains went to a dashboard the asset-management and engineering teams could act on.</p>
+
+        <ul>
+          <li>Integrated CMMS, GIS and environmental data into a single feature store</li>
+          <li>Trained an XGBoost classifier with time-series cross-validation, so it was always tested on years it had not seen</li>
+          <li>Calibrated the probabilities so risk scores could be compared across asset classes</li>
+          <li>Shipped a Power BI view tied to the live CMMS, so the list never went stale</li>
+        </ul>
+      </section>
+
+      <section class="project-body-prose">
+        <h2>Outcome</h2>
+        <p>The first ranked list directed proactive replacement of high-risk mains and added approximately $150K in value through avoided emergency repairs and better-sequenced capital work. The dashboard now feeds the Authority’s five-year capital plan and gives engineering, GIS, HR and administration a shared view of asset health.</p>
+
+        <h2>What I’d do next</h2>
+        <p>Two things. First, fold in real-time pressure-sensor data so the model sees sudden warning signs as well as slow wear. Second, show operators the model’s reasons for each main, so a recommendation can be checked in the field. Once a system is live, trust matters more than a test score.</p>
+      </section>
+      </div>
+    </article>
+
+    <nav class="project-next" aria-label="Next project">
+      <span class="label">Next · Personal</span>
+      <a href="numit.html">Numit: a globe you can sit with</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="foot-line">© 2026 Sarvesh Vishnu Muhundu Parthiban</p>
+      <p class="foot-line foot-meta">Built with HTML, CSS, and restraint. The drawings are made in your browser. None of them contains company or patient data.</p>
+    </div>
+  </footer>
+
+  <noscript>
+    <style>
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .site-header { border-bottom: 1px solid var(--line); }
+      .theme-toggle { display: none; }
+    </style>
+  </noscript>
+
+  <!-- Smooth scroll: Lenis 1.3.27 — vendored, pinned (design.md §14.9) -->
+  <script src="../assets/vendor/lenis.min.js" defer></script>
+  <script src="../main.js" defer></script>
+  <script src="../motion.js" defer></script>
+  <script src="../lab.js" defer></script>
 </body>
 </html>

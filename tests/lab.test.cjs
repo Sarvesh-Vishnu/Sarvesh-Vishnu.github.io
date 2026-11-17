@@ -224,6 +224,57 @@ test('the reading: each step adds to the last, and the sentence follows the draw
   Lab.KINDS.reading.travel(st, 0); assert.equal(st.step, 0);
 });
 
+test('the plan: a deterministic network with two complete lists', () => {
+  const pl = Lab.plan(), n = pl.mains.length;
+  assert.equal(Lab.plan(), pl);
+  assert.ok(n > 60 && n < 100);
+  for (const by of ['model', 'oldest']) {
+    assert.deepEqual(pl.lists[by].slice().sort((a, b) => a - b), pl.mains.map((m) => m.id));     // a permutation
+    pl.lists[by].forEach((id, k) => assert.equal(pl.rank[by][id], k));
+  }
+  for (let k = 1; k < n; k++) assert.ok(pl.mains[pl.lists.oldest[k - 1]].age >= pl.mains[pl.lists.oldest[k]].age);
+  for (const m of pl.mains) {
+    assert.ok(['oldest', 'middle', 'newest'].includes(m.era) && ['clay', 'loam', 'sandy'].includes(m.soil));
+    assert.ok(['Cast iron', 'Ductile iron', 'PVC'].includes(m.material) && typeof m.broken === 'boolean');
+  }
+  // the point of the drawing: the two lists differ, and the model's reaches beyond the oldest era
+  const top = (by) => new Set(pl.lists[by].slice(0, Lab.PL.DEFAULT));
+  assert.ok([...top('model')].some((id) => !top('oldest').has(id)));
+  assert.ok([...top('model')].some((id) => pl.mains[id].era !== 'oldest'));
+  assert.ok([...top('oldest')].every((id) => pl.mains[id].era === 'oldest'));
+});
+
+test('the plan: the drawing and the sentence never state a count', () => {
+  const pl = Lab.plan();
+  for (const by of ['model', 'oldest']) for (let k = 0; k <= Lab.PL.KMAX; k++) {
+    const st = { by, k, focus: null };
+    assert.ok(!/\d/.test(Lab.sayPlan(st).now), `${by} ${k}: ${Lab.sayPlan(st).now}`);
+    const svg = Lab.renderPlan(st, { w: 1000, h: 480, full: true });
+    assert.equal((svg.match(/pl-main is-on/g) || []).length, k + 1);                             // the picks, plus the legend's sample
+    assert.ok(![...svg.matchAll(/<text[^>]*>([^<]*)</g)].some((t) => /\d/.test(t[1])));
+  }
+  for (const m of pl.mains) {
+    const said = Lab.sayPlan({ by: 'model', k: 11, focus: m.id }).now;
+    assert.ok(!/\d/.test(said) && said.startsWith(m.material) && said.includes(m.soil + ' soil'));
+  }
+  assert.match(Lab.sayPlan({ by: 'model', k: 0, focus: null }).now, /^No budget/);
+  assert.equal(Lab.share(0), 'none'); assert.equal(Lab.share(1), 'all'); assert.equal(Lab.share(0.5), 'about half');
+});
+
+test('the plan: pointing finds the main under the pointer, and nothing far from one', () => {
+  const pl = Lab.plan(), w = 1000, h = 480, o = { full: true };
+  const st = { by: 'model', k: 11, focus: pl.mains[7].id };
+  const svg = Lab.renderPlan(st, { w, h, full: true });
+  const plate = /<rect class="pl-plate" x="([\d.-]+)" y="([\d.-]+)" width="([\d.]+)" height="(\d+)"/.exec(svg);
+  assert.ok(plate && +plate[1] >= 0 && +plate[1] + +plate[3] <= w && +plate[2] >= 0 && +plate[2] + +plate[4] <= h);
+  for (const m of pl.mains) {                            // every callout stays on the sheet
+    const p = /<rect class="pl-plate" x="([\d.-]+)" y="([\d.-]+)" width="([\d.]+)" height="(\d+)"/.exec(Lab.renderPlan({ by: 'model', k: 11, focus: m.id }, { w: 720, h: 400, full: false, tagRoom: 30 }));
+    assert.ok(+p[1] >= 0 && +p[1] + +p[3] <= 720 && +p[2] >= 0 && +p[2] + +p[4] <= 400, 'callout for main ' + m.id);
+  }
+  assert.equal(Lab.planNearest(-200, -200, w, h, o), null);
+  assert.ok(!/pl-plate/.test(Lab.renderPlan(st, { w: 343, h: 300, full: false })));              // phones: the sentence carries it
+});
+
 test('n slider mapping round-trips and stays in range', () => {
   assert.equal(Lab.nFromUnit(0), Lab.S.NMIN);
   assert.equal(Lab.nFromUnit(1), Lab.S.NMAX);

@@ -5,6 +5,7 @@
      committee — four forecasters and their ensemble, refit from any starting month
      list      — a ranked replacement list against a fixed budget
      reading   — one comment, marked up the way the pipeline reads it (mounted)
+     plan      — a pipe network, listed by a model or by age (mounted)
      sample    — how many comments it takes to tell twelve facilities apart
 
    Everything a figure or sentence says is computed here from seeded synthetic data.
@@ -956,7 +957,155 @@
     };
   }
 
+  /* ------------------------------------------------------------------ the plan
+     A small pipe network drawn for the page (design.md §14.20). It is not the
+     Authority's network and every attribute on it is invented. It shows one idea from
+     the Western Virginia Water work: a list ranked by a model chooses different mains
+     from a list ranked by age. No counts and no results appear, and the sentences use
+     words only. The "model" here is a plain weighted sum, a stand-in for the real one. */
+  const PL = { COLS: 9, ROWS: 6, KMAX: 22, DEFAULT: 11, OLD: [2.5, 2.5], WIDE: 620 };
+  let _plan = null;
+  function plan() {
+    if (_plan) return _plan;
+    const r = rng(1907);
+    const nodes = [];
+    for (let j = 0; j < PL.ROWS; j++) for (let i = 0; i < PL.COLS; i++) nodes.push({ i, j, x: i + (r() - 0.5) * 0.3, y: j + (r() - 0.5) * 0.3 });
+    const at = (i, j) => nodes[j * PL.COLS + i];
+    const mains = [];
+    const add = (a, b, horiz) => {
+      const busy = horiz ? a.j === 3 : a.i === 5;                    // the main street and the cross road
+      if (!busy && r() < 0.24) return;                               // not every block has a main on every side
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      const age = clamp(1 - Math.hypot(mx - PL.OLD[0], (my - PL.OLD[1]) * 1.2) / 5.2 + (r() - 0.5) * 0.3, 0, 1);
+      const era = age > 0.66 ? 'oldest' : age > 0.36 ? 'middle' : 'newest';
+      const m = r();
+      const material = era === 'oldest' ? (m < 0.85 ? 'Cast iron' : 'Ductile iron')
+        : era === 'middle' ? (m < 0.7 ? 'Ductile iron' : 'Cast iron') : (m < 0.8 ? 'PVC' : 'Ductile iron');
+      const clayness = clamp((mx - 4.6) / 2.2, 0, 1) * 0.9 + (r() - 0.5) * 0.3;
+      const soil = clayness > 0.5 ? 'clay' : clayness > 0.15 ? 'loam' : 'sandy';
+      const clay = soil === 'clay' ? 1 : 0;
+      const broken = r() < 0.06 + 0.3 * age + 0.34 * clay;
+      const score = 0.36 * age + 0.24 * clay + 0.3 * (broken ? 1 : 0) + 0.08 * (busy ? 1 : 0) + 0.08 * (material === 'Cast iron' ? 1 : 0) + (r() - 0.5) * 0.04;
+      mains.push({ id: mains.length, a, b, mx, my, age, era, material, soil, broken, busy, score });
+    };
+    for (let j = 0; j < PL.ROWS; j++) for (let i = 0; i < PL.COLS - 1; i++) add(at(i, j), at(i + 1, j), true);
+    for (let j = 0; j < PL.ROWS - 1; j++) for (let i = 0; i < PL.COLS; i++) add(at(i, j), at(i, j + 1), false);
+    const order = (key) => mains.slice().sort((p, q) => q[key] - p[key] || p.id - q.id).map((mn) => mn.id);
+    const lists = { model: order('score'), oldest: order('age') };
+    const rank = { model: [], oldest: [] };
+    Object.keys(lists).forEach((by) => lists[by].forEach((id, k) => { rank[by][id] = k; }));
+    return (_plan = { nodes, mains, lists, rank });
+  }
+  const plBy = (st) => (st.by === 'oldest' ? 'oldest' : 'model');
+  const plK = (st) => clamp(Math.round(st.k), 0, PL.KMAX);
+  /** A share in words: the drawing never states a count. */
+  const share = (f) => (f <= 0 ? 'none' : f < 0.35 ? 'a few' : f < 0.65 ? 'about half' : f < 1 ? 'most' : 'all');
+  const place = (rk, n) => { const q = rk / (n - 1); return q < 0.15 ? 'near the top' : q < 0.5 ? 'in the upper half' : q < 0.85 ? 'in the lower half' : 'near the bottom'; };
+
+  function planGeom(w, h, o) {
+    const study = !!(o && o.full && !o.tagRoom);
+    const wide = w >= PL.WIDE;
+    const padX = wide ? 36 : 16, padT = study ? 22 : 50, padB = 40;
+    const sx = (w - 2 * padX) / (PL.COLS - 0.7), sy = (h - padT - padB) / (PL.ROWS - 0.7);
+    return { study, wide, padX, padT, padB, X: (x) => padX + (x + 0.15) * sx, Y: (y) => padT + (y + 0.15) * sy };
+  }
+  function renderPlan(st, o) {
+    const { w, h } = o, pl = plan(), g = planGeom(w, h, o);
+    const on = new Set(pl.lists[plBy(st)].slice(0, plK(st)));
+    const fx = (v) => v.toFixed(1);
+    const seg = (m) => `M${fx(g.X(m.a.x))},${fx(g.Y(m.a.y))} L${fx(g.X(m.b.x))},${fx(g.Y(m.b.y))}`;
+    const focus = st.focus != null ? pl.mains[st.focus] : null;
+    let s = open(w, h);
+    pl.mains.filter((m) => !on.has(m.id)).forEach((m) => { s += `<path class="pl-main" d="${seg(m)}"/>`; });
+    pl.mains.filter((m) => on.has(m.id)).forEach((m) => { s += `<path class="pl-main is-on" d="${seg(m)}"/>`; });
+    const used = new Set();
+    pl.mains.forEach((m) => { used.add(m.a); used.add(m.b); });
+    used.forEach((nd) => { s += `<circle class="pl-node" cx="${fx(g.X(nd.x))}" cy="${fx(g.Y(nd.y))}" r="${g.wide ? 2.5 : 1.8}"/>`; });
+    if (g.wide) {                                        // two places on the plan that explain the lists
+      s += `<text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="${fx(g.X(PL.OLD[0]))}" y="${fx(g.Y(PL.OLD[1]) + 4)}">OLD TOWN</text>`;
+      s += `<text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="${fx(g.X(6.5))}" y="${fx(g.Y(1.5) + 4)}">HEAVY CLAY</text>`;
+    }
+    // the legend, as on any plan
+    const ly = h - 14;
+    s += `<path class="pl-main is-on" d="M${g.padX},${ly - 4} L${g.padX + 22},${ly - 4}"/><text class="fig-lab sp-level" x="${g.padX + 30}" y="${ly}">ON THE LIST</text>`;
+    const lx = g.padX + 30 + 11 * (SP_CH + 1.4) + 18;
+    s += `<path class="pl-main" d="M${fx(lx)},${ly - 4} L${fx(lx + 22)},${ly - 4}"/><text class="fig-lab fig-lab-quiet sp-level" x="${fx(lx + 30)}" y="${ly}">NOT YET</text>`;
+    if (g.wide) s += `<text class="fig-lab fig-lab-quiet sp-level" text-anchor="end" x="${w - g.padX}" y="${ly}">NOT TO SCALE</text>`;
+    if (focus) {
+      const mx = g.X(focus.mx), my = g.Y(focus.my);
+      s += `<path class="pl-main is-focus${on.has(focus.id) ? ' is-on' : ''}" d="${seg(focus)}"/>`;
+      if (g.wide) {                                      // what the model reads at this main, in words
+        const n = pl.mains.length;
+        const lines = [
+          [`${focus.material.toUpperCase()} · ${focus.era.toUpperCase()} ERA`, 'fig-lab sp-on'],
+          [`${focus.soil} soil · ${focus.broken ? 'broken before' : 'no breaks on record'}${focus.busy ? ' · busy road' : ''}`, 'fig-lab'],
+          [`model: ${place(pl.rank.model[focus.id], n)} · by age: ${place(pl.rank.oldest[focus.id], n)}`, 'fig-lab' + (on.has(focus.id) ? ' fig-lab-acc' : '')],
+        ];
+        const pw = Math.max(...lines.map((ln) => ln[0].length)) * SP_CH + 20, ph = lines.length * 16 + 12;
+        let px = mx + 16, py = my - ph - 12;
+        if (px + pw > w - 8) px = mx - 16 - pw;
+        if (py < g.padT - 12) py = my + 12;
+        px = clamp(px, 8, w - 8 - pw); py = clamp(py, 8, h - 8 - ph);       // never off the sheet
+        s += `<path class="pl-lead" d="M${fx(mx)},${fx(my)} L${fx(px < mx ? px + pw : px)},${fx(py < my ? py + ph : py)}"/>`;
+        s += `<rect class="pl-plate" x="${fx(px)}" y="${fx(py)}" width="${fx(pw)}" height="${ph}"/>`;
+        lines.forEach(([txt, cls], i) => { s += `<text class="${cls}" x="${fx(px + 10)}" y="${fx(py + 19 + i * 16)}">${txt}</text>`; });
+      }
+      s += `<circle class="pl-node is-focus" cx="${fx(mx)}" cy="${fx(my)}" r="3.5"/>`;
+    }
+    return s + '</svg>';
+  }
+  function sayPlan(st, o) {
+    const pl = plan(), n = pl.mains.length, by = plBy(st), k = plK(st);
+    const picks = pl.lists[by].slice(0, k), set = new Set(picks);
+    const m = st.focus != null ? pl.mains[st.focus] : null;
+    let now;
+    if (m) {
+      now = `${m.material}, from the ${m.era} era, in ${m.soil} soil, ${m.broken ? 'broken before' : 'with no breaks on record'}${m.busy ? ', under a busy road' : ''}. ` +
+        `The model puts it ${place(pl.rank.model[m.id], n)} of its list. Oldest-first puts it ${place(pl.rank.oldest[m.id], n)}.`;
+    } else if (!k) {
+      now = 'No budget, so nothing is replaced. Raise it to see which mains come first.';
+    } else if (by === 'model') {
+      const old = share(picks.filter((id) => pl.mains[id].era === 'oldest').length / k);
+      now = old === 'all'
+        ? 'Listed by the model, the picks so far are all from the oldest era, though not in order of age.'
+        : `Listed by the model, ${old} of the picks are from the oldest era. The rest are younger mains where clay soil, past breaks or a busy road raise the risk.`;
+    } else {
+      const missed = share(pl.lists.model.slice(0, k).filter((id) => !set.has(id)).length / k);
+      now = 'Listed oldest first, the picks bunch in the old town. ' +
+        (missed === 'none' ? 'At this budget the two lists agree.' : `${missed[0].toUpperCase() + missed.slice(1)} of the mains the model would replace stay in the ground.`);
+    }
+    const narrow = o && o.w && o.w < PL.WIDE;
+    return {
+      now,
+      always: 'The real model was gradient-boosted on 20+ years of maintenance history, with soil, freeze cycles and traffic load beside it. This drawing uses a simple stand-in to show one thing: age is a signal, and it is not the only one.',
+      tag: narrow ? 'Drawn for this page' : `Drawn for this page · ${m ? `${m.material}, ${m.era} era` : by === 'model' ? 'The model’s list' : 'Oldest first'}`,
+    };
+  }
+  /** The main nearest a point, or none if the pointer is well away from any. */
+  function planNearest(x, y, w, h, o) {
+    const pl = plan(), g = planGeom(w, h, o);
+    let best = null, bd = 34;
+    pl.mains.forEach((m) => {
+      const ax = g.X(m.a.x), ay = g.Y(m.a.y), bx = g.X(m.b.x), by = g.Y(m.b.y);
+      const t = clamp(((x - ax) * (bx - ax) + (y - ay) * (by - ay)) / ((bx - ax) ** 2 + (by - ay) ** 2), 0, 1);
+      const d = Math.hypot(x - ax - t * (bx - ax), y - ay - t * (by - ay));
+      if (d < bd) { bd = d; best = m.id; }
+    });
+    return best;
+  }
+
   const KINDS = {
+    plan: {
+      state: () => ({ by: 'model', k: PL.DEFAULT, focus: null }),
+      render: renderPlan, say: sayPlan,
+      // with no pointer, the budget grows as the slide travels up the screen
+      scrub: (st, u) => { st.k = Math.round(clamp(u, 0, 1) * PL.KMAX); },
+      unit: (st) => plK(st) / PL.KMAX,
+      // with one, the nearest main says what the model reads there
+      point: (st, x, y, w, h, o) => { st.focus = planNearest(x, y, w, h, o); },
+      leave: (st) => { st.focus = null; },
+      height: (st, w) => Math.round(w >= PL.WIDE ? clamp(w * 0.48, 340, 500) : w * 0.86 + 40),
+    },
     reading: {
       state: () => ({ c: 0, step: RD_STEPS.length - 1 }),
       render: renderReading, say: sayReading,
@@ -1057,7 +1206,7 @@
       else kind.scrub(st, (e.clientX - b.left - 16) / (b.width - 32));
       queue();
     });
-    el.addEventListener('pointerleave', () => { hovering = false; });
+    el.addEventListener('pointerleave', () => { hovering = false; if (kind.leave) { kind.leave(st); queue(); } });
 
     // No pointer (touch, or before the first hover): the parameter follows the tile's
     // trip up the screen. Skipped when the reader asked for reduced motion.
@@ -1172,21 +1321,37 @@
         if (st.focus !== before) queue();
       });
     }
+    const picks = (label, items, isOn, pick) => {
+      const group = el(`<div class="lab-picks" role="group" aria-label="${label}"><span class="lab-picks-label" aria-hidden="true">${label}</span></div>`);
+      const btns = items.map((txt, i) => {
+        const b = el(`<button type="button" class="lab-btn">${txt}</button>`);
+        b.addEventListener('click', () => { pick(i); queue(); });
+        group.append(b);
+        return b;
+      });
+      controls.append(group);
+      return () => btns.forEach((b, i) => b.setAttribute('aria-pressed', isOn(i) ? 'true' : 'false'));
+    };
     if (name === 'reading') {
-      const picks = (label, items, isOn, pick) => {
-        const group = el(`<div class="lab-picks" role="group" aria-label="${label}"><span class="lab-picks-label" aria-hidden="true">${label}</span></div>`);
-        const btns = items.map((txt, i) => {
-          const b = el(`<button type="button" class="lab-btn">${txt}</button>`);
-          b.addEventListener('click', () => { pick(i); queue(); });
-          group.append(b);
-          return b;
-        });
-        controls.append(group);
-        return () => btns.forEach((b, i) => b.setAttribute('aria-pressed', isOn(i) ? 'true' : 'false'));
-      };
       const syncStep = picks('Step', RD_STEPS, (i) => i === st.step, (i) => { st.step = i; });
       const syncComment = picks('Comment', RD_COMMENTS.map((c) => c.name), (i) => i === st.c, (i) => { st.c = i; });
       sync = () => { syncStep(); syncComment(); };
+    }
+    if (name === 'plan') {
+      const syncBy = picks('List by', ['The model', 'Oldest first'], (i) => (i === 0) === (st.by !== 'oldest'), (i) => { st.by = i ? 'oldest' : 'model'; st.focus = null; });
+      const range = el(`<label class="lab-range"><span>Budget</span><input type="range" min="0" max="${PL.KMAX}" step="1"><output></output></label>`);
+      const input = range.querySelector('input'), out = range.querySelector('output');
+      input.addEventListener('input', () => { st.k = +input.value; st.focus = null; queue(); });
+      controls.append(range);
+      sync = () => { syncBy(); input.value = st.k; out.textContent = !st.k ? 'none' : st.k < 8 ? 'a short list' : st.k < 16 ? 'a longer list' : 'a long list'; };
+      const pointAt = (e) => {
+        const b = fig.getBoundingClientRect();
+        const before = st.focus;
+        kind.point(st, e.clientX - b.left, e.clientY - b.top, w, figH, { full: true });
+        if (st.focus !== before) queue();
+      };
+      fig.addEventListener('pointermove', (e) => { if (e.pointerType !== 'touch') pointAt(e); });
+      fig.addEventListener('click', pointAt);            // touch: tap a main
     }
     const reset = el('<button type="button" class="lab-btn lab-btn-quiet">Reset</button>');
     reset.addEventListener('click', () => { Object.assign(st, kind.state()); queue(); });
@@ -1238,6 +1403,7 @@
     committee, backtest, mains, list, facilities, sample, nFromUnit, unitFromN,
     renderCommittee, renderRecord, renderList, renderField, renderSample, renderSpine,
     SP_NODES, SP_PATHS, SP_DECISIONS, spinePath, spineFocus, saySpine,
+    PL, plan, renderPlan, sayPlan, planNearest, share, place,
     RD_STEPS, RD_COMMENTS, RD_STOP, RD_WIDE, rdParse, rdLayout, rdGeom, renderReading, sayReading,
     sayCommittee, sayList, saySample, KINDS,
   };
