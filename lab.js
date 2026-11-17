@@ -1094,7 +1094,104 @@
     return best;
   }
 
+  /* ------------------------------------------------------------------ the route
+     ObscureMusicRecSys (design.md §14.21), the one figure on the reel drawn from real
+     data: a personal project on public, CC0 listening data, so the values are shown.
+     A route is five steps from a song people know to one almost nobody plays; the
+     vertical axis is listeners on a log scale, so the route can be seen leaving the
+     head. "Pull" bends it back towards songs that share the seed's listeners. */
+  /* Generated from ObscureMusicRecSys (github.com/Sarvesh-Vishnu/ObscureMusicRecSys) at e6e4d5b:
+     web/public/data/routes.json + tracks.json (λ = 1; pull none / strong = γ 0 / 2) and
+     results/phase4.json (bench). Real ListenBrainz data, CC0. Do not edit by hand. */
+  const OB = {"head":43,"max":1491,"min":7,"transitions":20841386,"items":219876,"bench":{"routeTail":0.585,"routeReal":0.166,"popTail":0.602,"popReal":0.07},"seeds":[{"t":"Take On Me","a":"a‐ha","n":953,"routes":{"none":[{"t":"Africa","a":"Toto","n":791,"c":72,"o":4090,"held":true},{"t":"How You Remind Me","a":"Nickelback","n":645,"c":47,"o":3932,"held":true},{"t":"(I Just) Died in Your Arms","a":"Cutting Crew","n":462,"c":46,"o":2453,"held":true},{"t":"More Than This","a":"Roxy Music","n":145,"c":21,"o":1421,"held":false},{"t":"Shouldn’t Have to Be Like That","a":"Fra Lippo Lippi","n":11,"c":8,"o":332,"held":false}],"strong":[{"t":"Africa","a":"Toto","n":791,"c":72,"o":4090,"held":true},{"t":"Don’t Stop Believin’","a":"Journey","n":608,"c":23,"o":3932,"held":false},{"t":"Livin’ on a Prayer","a":"Bon Jovi","n":705,"c":20,"o":2764,"held":true},{"t":"Fortunate Son","a":"Creedence Clearwater Revival","n":706,"c":27,"o":2560,"held":false},{"t":"Paint It Black","a":"The Rolling Stones","n":734,"c":56,"o":3406,"held":true}]},"obvious":[{"t":"Africa","a":"Toto","n":791},{"t":"Everybody Wants to Rule the World","a":"Tears for Fears","n":1002},{"t":"Every Breath You Take","a":"The Police","n":811},{"t":"Don’t Stop Believin’","a":"Journey","n":608},{"t":"Another One Bites the Dust","a":"Queen","n":746}]},{"t":"Everybody Wants to Rule the World","a":"Tears for Fears","n":1002,"routes":{"none":[{"t":"Your Love","a":"The Outfield","n":425,"c":21,"o":3817,"held":true},{"t":"Run to You","a":"Bryan Adams","n":221,"c":14,"o":1359,"held":false},{"t":"Dance Hall Days","a":"Wang Chung","n":138,"c":33,"o":758,"held":true},{"t":"Call Me","a":"Go West","n":40,"c":56,"o":515,"held":false},{"t":"Kiss the Dirt (Falling Down the Mountain)","a":"INXS","n":40,"c":46,"o":203,"held":false}],"strong":[{"t":"Take On Me","a":"a‐ha","n":953,"c":46,"o":3817,"held":false},{"t":"Africa","a":"Toto","n":791,"c":72,"o":4090,"held":true},{"t":"Don’t Stop Believin’","a":"Journey","n":608,"c":23,"o":3932,"held":false},{"t":"Livin’ on a Prayer","a":"Bon Jovi","n":705,"c":20,"o":2764,"held":true},{"t":"Fortunate Son","a":"Creedence Clearwater Revival","n":706,"c":27,"o":2560,"held":false}]},"obvious":[{"t":"Take On Me","a":"a‐ha","n":953},{"t":"Africa","a":"Toto","n":791},{"t":"Shout","a":"Tears for Fears","n":418},{"t":"Every Breath You Take","a":"The Police","n":811},{"t":"I’m Still Standing","a":"Elton John","n":663}]},{"t":"Co2","a":"Prateek Kuhad","n":50,"routes":{"none":[{"t":"blue","a":"yung kai","n":152,"c":14,"o":127,"held":false},{"t":"bad","a":"wave to earth","n":69,"c":7,"o":451,"held":false},{"t":"Runaway","a":"Kanye West","n":175,"c":65,"o":455,"held":false},{"t":"Private Landing","a":"Don Toliver feat. Justin Bieber & Future","n":63,"c":37,"o":1122,"held":false},{"t":"Oldie 2","a":"Odd Future 2","n":40,"c":41,"o":212,"held":false}],"strong":[{"t":"Sahiba","a":"Aditya Rikhari","n":82,"c":1,"o":127,"held":false},{"t":"Finding Her","a":"Kushagra, Bharath & Saaheal","n":72,"c":26,"o":283,"held":true},{"t":"Jo Tum Mere Ho","a":"Anuv Jain","n":62,"c":33,"o":174,"held":true},{"t":"Ishq","a":"Faheem Abdullah, Rauhan Malik & Amir Ameer","n":43,"c":21,"o":148,"held":false},{"t":"Haseen","a":"Talwiinder, NDS & Rippy Grewal","n":24,"c":16,"o":106,"held":false}]},"obvious":[{"t":"Baarishein","a":"Anuv Jain","n":44},{"t":"Choo Lo","a":"The Local Train","n":75},{"t":"Mazaak","a":"Anuv Jain","n":22},{"t":"Alag Aasmaan","a":"Anuv Jain","n":55},{"t":"Those Eyes","a":"New West","n":242}]}]};
+  const RT = { WIDE: 620, STEPS: 5, TICKS: [1000, 100, 10], LABEL: 18 };
+  const rtSeed = (st) => OB.seeds[clamp(st.s | 0, 0, OB.seeds.length - 1)];
+  const rtPull = (st) => (st.pull === 'strong' ? 'strong' : 'none');
+  const rtK = (st) => clamp(Math.round(st.k), 0, RT.STEPS);
+  const thousands = (n) => n.toLocaleString('en-GB');
+  const cut = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
+
+  function rtGeom(w, h, o) {
+    const wide = w >= RT.WIDE, study = !!(o && o.full && !o.tagRoom);
+    const padL = wide ? 64 : 44, padR = wide ? 168 : 18, padT = study ? 28 : 54, padB = 44;
+    const lo = Math.log(OB.min), hi = Math.log(OB.max);
+    return {
+      wide, padL, padR, padT, padB,
+      X: (i) => padL + (i * (w - padL - padR)) / RT.STEPS,
+      Y: (n) => padT + ((hi - Math.log(clamp(n, OB.min, OB.max))) / (hi - lo)) * (h - padT - padB),
+    };
+  }
+  function renderRoute(st, o) {
+    const { w, h } = o, g = rtGeom(w, h, o), seed = rtSeed(st), k = rtK(st), pull = rtPull(st);
+    const fx = (v) => v.toFixed(1);
+    const pts = (stops) => stops.map((s, i) => `${i ? 'L' : 'M'}${fx(g.X(i))},${fx(g.Y(s.n))}`).join(' ');
+    const route = [seed, ...seed.routes[pull]];
+    const other = [seed, ...seed.routes[pull === 'none' ? 'strong' : 'none']];
+    let s = open(w, h);
+    RT.TICKS.forEach((n) => {
+      s += `<path class="rt-grid" d="M${g.padL},${fx(g.Y(n))} L${w - g.padR},${fx(g.Y(n))}"/>`;
+      s += `<text class="fig-lab fig-lab-quiet" text-anchor="end" x="${g.padL - 10}" y="${fx(g.Y(n) + 4)}">${thousands(n)}</text>`;
+    });
+    const yT = g.Y(OB.head);
+    s += `<path class="rt-tail" d="M${g.padL},${fx(yT)} L${w - g.padR},${fx(yT)}"/>`;
+    s += `<text class="fig-lab fig-lab-quiet sp-level" x="${g.padL + 8}" y="${fx(yT - 7)}">HEAD</text>`;
+    s += `<text class="fig-lab fig-lab-quiet sp-level" x="${g.padL + 8}" y="${fx(yT + 16)}">LONG TAIL${g.wide ? ` · UNDER ${OB.head} LISTENERS` : ''}</text>`;
+    s += `<text class="fig-lab fig-lab-quiet sp-level" x="4" y="${fx(g.padT - 16)}">LISTENERS</text>`;
+    for (let i = 0; i <= RT.STEPS; i++) {
+      s += `<text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="${fx(g.X(i))}" y="${h - 14}">${i ? i : 'SEED'}</text>`;
+    }
+    s += `<path class="rt-ghost" d="${pts(other)}"/>`;
+    if (k) s += `<path class="rt-line" d="${pts(route.slice(0, k + 1))}"/>`;
+    route.slice(0, k + 1).forEach((stop, i) => {
+      const x = g.X(i), y = g.Y(stop.n), last = i === k && k > 0;
+      s += `<circle class="${i ? 'rt-stop' : 'rt-seed'}${last ? ' is-end' : ''}" cx="${fx(x)}" cy="${fx(y)}" r="${last ? 4.5 : 3.5}"/>`;
+      if (g.wide && i && i < k) {                         // name the stops on the way, above or below the line
+        const prev = route[i - 1].n, below = stop.n < prev && i % 2 === 1;
+        s += `<text class="fig-lab rt-lab" text-anchor="middle" x="${fx(x)}" y="${fx(below ? y + 18 : y - 10)}">${cut(stop.a, RT.LABEL)}</text>`;
+      }
+    });
+    const end = route[k];
+    if (g.wide) {                                         // the stop reached so far, named in the margin
+      const ex = g.X(k) + 12, ey = g.Y(end.n);
+      s += `<text class="fig-lab ${k ? 'fig-lab-acc' : 'sp-on'}" x="${fx(ex)}" y="${fx(ey - 2)}">${cut(end.a, 22)}</text>`;
+      s += `<text class="fig-lab" x="${fx(ex)}" y="${fx(ey + 13)}">${thousands(end.n)} ${end.n === 1 ? 'listener' : 'listeners'}</text>`;
+    }
+    return s + '</svg>';
+  }
+  function sayRoute(st, o) {
+    const seed = rtSeed(st), k = rtK(st), pull = rtPull(st), stops = seed.routes[pull], b = OB.bench;
+    const end = k ? stops[k - 1] : seed;
+    let now;
+    if (!k) {
+      now = `${seed.t}, by ${seed.a}: ${thousands(seed.n)} listeners on ListenBrainz. The route starts here.`;
+    } else if (k < RT.STEPS) {
+      now = `Step ${k} of ${RT.STEPS}: ${end.t}, by ${end.a}, ${thousands(end.n)} listeners. ${end.c} of ${thousands(end.o)} plays that followed the last song went here next.`;
+    } else {
+      const fin = stops[RT.STEPS - 1], tail = fin.n < OB.head;
+      const real = stops.filter((x) => x.c > 0).length, held = stops.filter((x) => x.held).length;
+      now = pull === 'none'
+        ? `From ${seed.t} (${thousands(seed.n)} listeners) to ${fin.t} by ${fin.a} (${thousands(fin.n)}), ${tail ? 'in the long tail' : 'still in the head'}. ` +
+          `${real === RT.STEPS ? 'Every step is a move listeners made' : `${real} of ${RT.STEPS} steps are moves listeners made`}; ${held} of ${RT.STEPS} were made again after the cutoff.`
+        : `With strong pull the route keeps to songs that share ${seed.t}’s listeners and ends on ${fin.t} by ${fin.a}, ${thousands(fin.n)} listeners, ${tail ? 'in the long tail' : 'still in the head'}.`;
+    }
+    const narrow = o && o.w && o.w < RT.WIDE;
+    return {
+      now,
+      always: `In the benchmark, routes put ${Math.round(b.routeTail * 100)}% of their stops in the long tail, about as many as a popularity penalty (${Math.round(b.popTail * 100)}%), and ${f1(b.routeReal / b.popReal)}× as many of their steps were made again by real listeners (${f1(b.routeReal * 100)}% against ${f1(b.popReal * 100)}%).`,
+      tag: narrow ? 'Real data · ListenBrainz' : `Real data · ListenBrainz · ${seed.t}`,
+    };
+  }
+
   const KINDS = {
+    route: {
+      state: () => ({ s: 0, pull: 'none', k: RT.STEPS }),
+      render: renderRoute, say: sayRoute,
+      // across the figure, or up the screen: the route walks out one step at a time
+      scrub: (st, u) => { st.k = Math.round(clamp(u, 0, 1) * RT.STEPS); },
+      travel: (st, u) => { st.k = Math.round(clamp(u * 2.2, 0, 1) * RT.STEPS); },
+      unit: (st) => rtK(st) / RT.STEPS,
+      height: (st, w) => Math.round(w >= RT.WIDE ? clamp(w * 0.46, 330, 460) : w * 0.86 + 40),
+    },
     plan: {
       state: () => ({ by: 'model', k: PL.DEFAULT, focus: null }),
       render: renderPlan, say: sayPlan,
@@ -1337,6 +1434,11 @@
       const syncComment = picks('Comment', RD_COMMENTS.map((c) => c.name), (i) => i === st.c, (i) => { st.c = i; });
       sync = () => { syncStep(); syncComment(); };
     }
+    if (name === 'route') {
+      const syncSeed = picks('Start from', OB.seeds.map((x) => x.t), (i) => i === (st.s | 0), (i) => { st.s = i; st.k = RT.STEPS; });
+      const syncPull = picks('Pull', ['None', 'Strong'], (i) => (i === 1) === (st.pull === 'strong'), (i) => { st.pull = i ? 'strong' : 'none'; st.k = RT.STEPS; });
+      sync = () => { syncSeed(); syncPull(); };
+    }
     if (name === 'plan') {
       const syncBy = picks('List by', ['The model', 'Oldest first'], (i) => (i === 0) === (st.by !== 'oldest'), (i) => { st.by = i ? 'oldest' : 'model'; st.focus = null; });
       const range = el(`<label class="lab-range"><span>Budget</span><input type="range" min="0" max="${PL.KMAX}" step="1"><output></output></label>`);
@@ -1404,6 +1506,7 @@
     renderCommittee, renderRecord, renderList, renderField, renderSample, renderSpine,
     SP_NODES, SP_PATHS, SP_DECISIONS, spinePath, spineFocus, saySpine,
     PL, plan, renderPlan, sayPlan, planNearest, share, place,
+    OB, RT, renderRoute, sayRoute,
     RD_STEPS, RD_COMMENTS, RD_STOP, RD_WIDE, rdParse, rdLayout, rdGeom, renderReading, sayReading,
     sayCommittee, sayList, saySample, KINDS,
   };

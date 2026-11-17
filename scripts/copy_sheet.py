@@ -21,7 +21,9 @@ DRAFTS = [
  'One data spine under a medical-device business', 'The figures respond', 'One spine, six decisions', 'Most of what I built here',
  'A schematic of the system', 'The system', 'Building the spine', 'A cross-sell experiment, end to end', 'Strategy and Market Insights',
  'Commercial Excellence, then Senior', 'Microsoft Fabric · Azure',
+ 'Obscure', 'A recommender that walks', 'Most recommenders keep you', 'Python · PyTorch · implicit', 'Five steps to the long tail',
 ]
+ALL_DRAFT = {'work/obscure.html'}     # every line on these pages is a draft for the owner
 CLASSES = ('thesis|hero-name|hero-role|eyebrow|section-title|section-note|reel-kind|reel-jump|slide-kind|project-name|slide-desc|slide-why|'
            'project-meta|slide-open|th-when|th-body|project-byline|project-tools|lab-title|lab-lede|lab-note|lab-key|label|contact-title|contact-line|foot-line')
 A = re.compile(r'<(\w+)\b([^>]*class="(?:[^"]* )?(' + CLASSES + r')(?: [^"]*)?"[^>]*)>(.*?)</\1>', re.S)
@@ -36,13 +38,13 @@ out = ['# Site copy', '',
        '**✎ draft** marks wording written for you in the redesign: edit or replace it freely.',
        'Unmarked lines are your own words, carried over unchanged.',
        'The hero sentence and the sentences under each instrument are built by `lab.js` from the models. '
-       'In the hero only the words between the numbers are editable; the instrument sentences live in `lab.js` (`sayCommittee`, `saySample`).', '']
-for f in ['index.html', 'work/commercial-analytics.html', 'work/nlp.html', 'work/wv-water.html', 'work/numit.html']:
+       'In the hero only the words between the numbers are editable; the instrument sentences live in `lab.js` (`sayCommittee`, `saySample`, `sayRoute`).', '']
+for f in ['index.html', 'work/commercial-analytics.html', 'work/nlp.html', 'work/wv-water.html', 'work/obscure.html', 'work/numit.html']:
     src = (ROOT / f).read_text()
     out += [f'## {f}', '']
     for label, pat in (('Browser title', r'<title>(.*?)</title>'), ('Search description', r'<meta name="description" content="(.*?)"')):
         mm = re.search(pat, src); raw = mm.group(1)
-        out.append(f'- **{label}** (line {src[:mm.start()].count(chr(10)) + 1}){" ✎ draft" if any(k in raw for k in DRAFTS) else ""}: {html.unescape(raw)}')
+        out.append(f'- **{label}** (line {src[:mm.start()].count(chr(10)) + 1}){" ✎ draft" if f in ALL_DRAFT or any(k in raw for k in DRAFTS) else ""}: {html.unescape(raw)}')
     a, z = src.index('<main'), src.index('</footer>')
     items = {}
     for mm in A.finditer(src, a, z):
@@ -62,7 +64,7 @@ for f in ['index.html', 'work/commercial-analytics.html', 'work/nlp.html', 'work
         text = clean(inner)
         if len(text) < 2 or (kind, text) in seen: continue
         seen.add((kind, text))
-        out.append(f'- `{kind}` (line {src[:start].count(chr(10)) + 1}){" ✎ draft" if any(k in raw for k in DRAFTS) else ""}: {text}')
+        out.append(f'- `{kind}` (line {src[:start].count(chr(10)) + 1}){" ✎ draft" if f in ALL_DRAFT or any(k in raw for k in DRAFTS) else ""}: {text}')
     out.append('')
 (ROOT / 'COPY.md').write_text('\n'.join(out) + '\n')
 print(f'COPY.md: {len(out)} lines, {sum("✎" in l for l in out)} drafts')

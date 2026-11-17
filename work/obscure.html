@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0A2240" />
+  <meta name="color-scheme" content="dark light" />
+
+  <title>Obscure: routes from a song you know to one almost nobody plays · Sarvesh Vishnu</title>
+  <meta name="description" content="A recommender that walks from a familiar song to the long tail, five real steps at a time, on ListenBrainz data, with the benchmark behind it: collaborative filtering, re-ranking, cold start, sequences, off-policy evaluation and bandits." />
+
+  <link rel="canonical" href="https://sarvesh-vishnu.github.io/work/obscure.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://sarvesh-vishnu.github.io/work/obscure.html" />
+  <meta property="og:title" content="Obscure: routes from a song you know to one almost nobody plays · Sarvesh Vishnu" />
+  <meta property="og:description" content="A recommender that walks from a familiar song to the long tail, five real steps at a time, on ListenBrainz data, with the benchmark behind it: collaborative filtering, re-ranking, cold start, sequences, off-policy evaluation and bandits." />
+  <meta property="og:image" content="https://sarvesh-vishnu.github.io/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" />
+
+  <script>
+    (function(){var d=document.documentElement;try{d.dataset.theme=localStorage.getItem('sheet')==='white'?'white':'blue';}catch(e){d.dataset.theme='blue';}})();
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion');
+  </script>
+
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body class="project-page">
+  <a href="#main" class="skip">Skip to content</a>
+
+  <header class="site-header" id="header">
+    <nav class="nav" aria-label="Primary">
+      <a href="../index.html" class="brand">sarvesh.</a>
+      <ul class="nav-links" role="list">
+        <li><a href="../index.html#work">Work</a></li>
+        <li class="nav-secondary"><a href="../index.html#path">Path</a></li>
+        <li class="nav-secondary"><a href="../index.html#glance">At a glance</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+      <button type="button" class="theme-toggle" aria-label="Switch to the white print" aria-pressed="false" title="Blue sheet or white print">
+        <svg class="theme-icon icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="theme-icon icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article>
+      <header class="project-hero project-hero--lead">
+        <p class="eyebrow">Personal project</p>
+        <h1>A recommender that takes you somewhere new, one real step at a time.</h1>
+        <p class="project-byline">Personal build · Research, engineering, design · November 2026 · <a href="https://sarvesh-vishnu.github.io/ObscureMusicRecSys/" rel="noopener">Live app</a> · <a href="https://github.com/Sarvesh-Vishnu/ObscureMusicRecSys" rel="noopener">Code</a></p>
+      </header>
+
+      <section class="lab" data-lab="route" aria-labelledby="lab-title">
+        <div class="lab-head">
+          <div>
+            <p class="eyebrow">The idea</p>
+            <h2 id="lab-title" class="lab-title">Five steps to the long tail.</h2>
+          </div>
+          <p class="lab-lede">Start from a song many people know. Each step goes to a song that listeners really did play next, and the route keeps going down until it reaches music almost nobody plays. Turn up the pull and it stays close to home.</p>
+        </div>
+        <div class="lab-stage">
+          <div class="lab-fig lab-route"><!-- lab:fig --><svg viewBox="0 0 1040 460" preserveAspectRatio="xMidYMid meet" focusable="false"><path class="rt-grid" d="M64,56.9 L872,56.9"/><text class="fig-lab fig-lab-quiet" text-anchor="end" x="54" y="60.9">1,000</text><path class="rt-grid" d="M64,223.5 L872,223.5"/><text class="fig-lab fig-lab-quiet" text-anchor="end" x="54" y="227.5">100</text><path class="rt-grid" d="M64,390.2 L872,390.2"/><text class="fig-lab fig-lab-quiet" text-anchor="end" x="54" y="394.2">10</text><path class="rt-tail" d="M64,284.6 L872,284.6"/><text class="fig-lab fig-lab-quiet sp-level" x="72" y="277.6">HEAD</text><text class="fig-lab fig-lab-quiet sp-level" x="72" y="300.6">LONG TAIL · UNDER 43 LISTENERS</text><text class="fig-lab fig-lab-quiet sp-level" x="4" y="12.0">LISTENERS</text><text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="64.0" y="446">SEED</text><text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="225.6" y="446">1</text><text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="387.2" y="446">2</text><text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="548.8" y="446">3</text><text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="710.4" y="446">4</text><text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="872.0" y="446">5</text><path class="rt-ghost" d="M64.0,60.4 L225.6,73.9 L387.2,92.9 L548.8,82.2 L710.4,82.1 L872.0,79.3"/><path class="rt-line" d="M64.0,60.4 L225.6,73.9 L387.2,88.6 L548.8,112.8 L710.4,196.7 L872.0,383.3"/><circle class="rt-seed" cx="64.0" cy="60.4" r="3.5"/><circle class="rt-stop" cx="225.6" cy="73.9" r="3.5"/><text class="fig-lab rt-lab" text-anchor="middle" x="225.6" y="91.9">Toto</text><circle class="rt-stop" cx="387.2" cy="88.6" r="3.5"/><text class="fig-lab rt-lab" text-anchor="middle" x="387.2" y="78.6">Nickelback</text><circle class="rt-stop" cx="548.8" cy="112.8" r="3.5"/><text class="fig-lab rt-lab" text-anchor="middle" x="548.8" y="130.8">Cutting Crew</text><circle class="rt-stop" cx="710.4" cy="196.7" r="3.5"/><text class="fig-lab rt-lab" text-anchor="middle" x="710.4" y="186.7">Roxy Music</text><circle class="rt-stop is-end" cx="872.0" cy="383.3" r="4.5"/><text class="fig-lab fig-lab-acc" x="884.0" y="381.3">Fra Lippo Lippi</text><text class="fig-lab" x="884.0" y="396.3">11 listeners</text></svg><!-- /lab:fig --></div>
+          <div class="lab-controls"></div>
+        </div>
+        <p class="lab-now" aria-live="polite"><!-- lab:now -->From Take On Me (953 listeners) to Shouldn’t Have to Be Like That by Fra Lippo Lippi (11), in the long tail. Every step is a move listeners made; 3 of 5 were made again after the cutoff.<!-- /lab:now --></p>
+        <p class="lab-always"><!-- lab:always -->In the benchmark, routes put 59% of their stops in the long tail, about as many as a popularity penalty (60%), and 2.4× as many of their steps were made again by real listeners (16.6% against 7.0%).<!-- /lab:always --></p>
+        <p class="lab-note">Real routes from the app, on public ListenBrainz listening data (CC0). Listener counts are distinct listeners in the twelve training days. The dashed line is the same route with the other pull setting.</p>
+      </section>
+
+      <div class="project-facts">
+        <dl class="project-results">
+          <div><dt>listening transitions</dt><dd>20.8M</dd></div>
+          <div><dt>more real steps than a popularity penalty</dt><dd>2.4×</dd></div>
+          <div><dt>more hits from a bandit than the base ranker</dt><dd>+13%</dd></div>
+        </dl>
+        <p class="project-tools">Python · NumPy · SciPy · implicit · PyTorch · DuckDB · scikit-learn · React · TypeScript · Vite</p>
+      </div>
+
+      <div class="paper">
+      <section class="project-body-prose">
+        <h2>Objective</h2>
+        <p>Most recommenders are scored on predicting what you were going to play anyway, so they keep you where you already are. I wanted one that takes a listener somewhere new, by steps real people take, and a way to measure that honestly. The first version of this project, in 2024, asked Spotify for “obscure” songs by passing a random popularity target. This one owns its data, its models and its evaluation.</p>
+
+        <h2>Approach</h2>
+        <p>Sixteen days of public ListenBrainz listens: 33,575 listeners and 219,876 recordings after filtering, merged to canonical MusicBrainz recordings. Every model trains on what was submitted before 12 November and is scored on what the same people played for the first time in the next four days, so nothing from the future leaks in. Every model is tuned on a separate validation split first, then scored once.</p>
+        <ul>
+          <li>A ladder of recommenders on one harness: popularity, ItemKNN, EASE, ALS and BPR, each reported on recall@20 and on long-tail recall, with bootstrap intervals and paired differences</li>
+          <li>Re-rankers for popularity bias, calibration and diversity</li>
+          <li>Cold start from AcousticBrainz audio and artist information, including a network that maps sound to ALS taste vectors</li>
+          <li>A next-song model from 20.8 million back-to-back listens, and beam search over it for the routes, with penalties for jarring changes in sound</li>
+          <li>Off-policy evaluation (DM, IPS, SNIPS, doubly robust) and contextual bandits (LinUCB, Thompson sampling), on a supervised-to-bandit conversion where every true value is known</li>
+          <li>A static web app that shows each route with its evidence, and a Lab that reads every number from the result files</li>
+        </ul>
+      </section>
+
+      <section class="project-body-prose">
+        <h2>Findings</h2>
+        <ul>
+          <li><strong>Similar recall, very different reach.</strong> ItemKNN and ALS are statistically tied on recall@20 (6.87% and 6.71%), but ItemKNN finds 2.1× as many long-tail discoveries. EASE finds none.</li>
+          <li><strong>Reach costs a little recall.</strong> A mild popularity penalty gives up 0.22 points of recall for 1.13 points of long-tail recall, 44% more. Calibration costs nothing measurable.</li>
+          <li><strong>Sound alone barely finds anything.</strong> For songs too new or rare for collaborative filtering, audio features reach 0.10% recall (about five times random) while the artist’s other songs reach 2.62%. Sound describes a song, not who will like it, so the routes use it only to keep steps smooth.</li>
+          <li><strong>Routes go as deep as a popularity penalty, on steps people take.</strong> 59% of route stops are in the long tail against 60% for a penalised list, and 2.4× as many of their steps were made again by real listeners after the cutoff. The cost is recall (0.52% against 6.87%), because a route leaves the neighbourhood on purpose. A pull setting buys it back.</li>
+          <li><strong>The policies worth trying are the hardest to judge from logs.</strong> Ten thousand logged rounds from a popularity-leaning system carry the information of about 43 for a “long tail first” policy, too little for even a doubly robust estimator to tell it from the base ranker. A system that wants to try discovery has to pay to explore first.</li>
+          <li><strong>Learning from each hit beats the base ranker.</strong> A LinUCB bandit lifts the hit rate 13% over ItemKNN’s fixed top pick, level with the same model fitted on all the feedback at once. Exploring adds nothing here: listeners differ enough that acting greedily already tries a spread of songs.</li>
+        </ul>
+
+        <h2>What I’d do next</h2>
+        <p>Run the online test that offline data cannot replace: whether people enjoy where a route ends. Offline recall can only score the first half of that question. After that, a sequential neural model against the transition baseline, and lyrics and tags for the songs that have no listeners yet.</p>
+      </section>
+      </div>
+    </article>
+
+    <nav class="project-next" aria-label="Next project">
+      <span class="label">Next · Personal</span>
+      <a href="numit.html">Numit: a globe you can sit with</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="foot-line">© 2026 Sarvesh Vishnu Muhundu Parthiban</p>
+      <p class="foot-line foot-meta">Built with HTML, CSS, and restraint. The drawings are made in your browser. None of them contains company or patient data.</p>
+    </div>
+  </footer>
+
+  <noscript>
+    <style>
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .site-header { border-bottom: 1px solid var(--line); }
+      .theme-toggle { display: none; }
+    </style>
+  </noscript>
+
+  <!-- Smooth scroll: Lenis 1.3.27 — vendored, pinned (design.md §14.9) -->
+  <script src="../assets/vendor/lenis.min.js" defer></script>
+  <script src="../main.js" defer></script>
+  <script src="../motion.js" defer></script>
+  <script src="../lab.js" defer></script>
+</body>
+</html>

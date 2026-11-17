@@ -719,6 +719,15 @@ body {
 .sp-off { fill: var(--ink-muted); }
 .sp-level { letter-spacing: 0.12em; }
 /* the plan (§14.20): a pipe network in linework, the list in the redline */
+/* the route (§14.21): real data, so the one figure with values on it */
+.rt-grid  { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.12; }
+.rt-tail  { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.55; stroke-dasharray: 3 4; }
+.rt-ghost { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.3; stroke-dasharray: 2 3; }
+.rt-line  { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.rt-stop  { fill: var(--surface); stroke: var(--accent); stroke-width: 1.5; }
+.rt-stop.is-end { fill: var(--accent); }
+.rt-seed  { fill: var(--mark); stroke: var(--surface); stroke-width: 1.5; }
+.rt-lab   { paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
 .pl-main { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.38; stroke-linecap: round; }
 .pl-main.is-on { stroke: var(--accent); stroke-width: 2.5; opacity: 1; }
 .pl-main.is-focus { stroke-width: 4; opacity: 1; }

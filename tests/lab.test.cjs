@@ -314,3 +314,50 @@ test('renderers return well-formed SVG at tile and full sizes', () => {
   assert.equal((field.match(/fld-on/g) || []).length, 40);
   assert.equal((field.match(/fld-fail/g) || []).length, Lab.mains().failures);
 });
+
+test('the route: real data, well formed, and every seed descends or says it does not', () => {
+  const { OB, RT } = Lab;
+  assert.ok(OB.seeds.length >= 2);
+  for (const s of OB.seeds) {
+    for (const pull of ['none', 'strong']) {
+      const r = s.routes[pull];
+      assert.equal(r.length, RT.STEPS, `${s.t} ${pull}`);
+      for (const x of r) { assert.ok(x.n >= OB.min && x.n <= OB.max); assert.ok(x.c <= x.o); }
+      const artists = [s.a, ...r.map((x) => x.a)];
+      assert.equal(new Set(artists).size, artists.length, `${s.t} ${pull}: an artist repeats`);
+    }
+  }
+});
+
+test('the route: the sentence states exactly what the data says', () => {
+  const { OB, RT } = Lab;
+  OB.seeds.forEach((s, i) => {
+    const fin = s.routes.none[RT.STEPS - 1];
+    const said = Lab.sayRoute({ s: i, pull: 'none', k: RT.STEPS }).now;
+    assert.ok(said.includes(fin.t) && said.includes(fin.n < OB.head ? 'in the long tail' : 'still in the head'), said);
+    const held = s.routes.none.filter((x) => x.held).length;
+    assert.ok(said.includes(`${held} of ${RT.STEPS} were made again`), said);
+    for (let k = 0; k <= RT.STEPS; k++) assert.ok(Lab.sayRoute({ s: i, pull: 'none', k }).now.length > 20);
+  });
+  const b = OB.bench;
+  assert.ok(Lab.sayRoute(Lab.KINDS.route.state()).always.includes(`${Math.round(b.routeTail * 100)}%`));
+});
+
+test('the route: nothing runs off the drawing at any width', () => {
+  const { OB } = Lab;
+  for (const w of [320, 375, 620, 1000, 1040]) {
+    const h = Lab.KINDS.route.height(Lab.KINDS.route.state(), w);
+    for (let s = 0; s < OB.seeds.length; s++) for (const pull of ['none', 'strong']) {
+      const svg = Lab.renderRoute({ s, pull, k: 5 }, { w, h, full: true });
+      for (const m of svg.matchAll(/c[xy]="(-?[\d.]+)"/g)) assert.ok(+m[1] >= 0 && +m[1] <= Math.max(w, h), `${w}: ${m[0]}`);
+      for (const m of svg.matchAll(/<text[^>]*x="([\d.]+)"[^>]*>([^<]*)</g)) {
+        const anchorEnd = /text-anchor="end"/.test(m[0]), mid = /text-anchor="middle"/.test(m[0]);
+        const len = m[2].length * 6.65, x = +m[1];
+        const right = anchorEnd ? x : mid ? x + len / 2 : x + len;
+        const left = anchorEnd ? x - len : mid ? x - len / 2 : x;
+        assert.ok(right <= w + 1, `${w} ${s} ${pull}: "${m[2]}" runs off the right edge`);
+        assert.ok(left >= -1, `${w} ${s} ${pull}: "${m[2]}" runs off the left edge`);
+      }
+    }
+  }
+});

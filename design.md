@@ -990,3 +990,45 @@ two pages.
 **Open with the owner.** Whether age, soil, past breaks, traffic and material are a
 fair plain-language account of what the real model leaned on.
 
+
+### 14.21 — A fifth sheet: Obscure, the route
+*Changes: §14.15 (the reel now has five sheets: three work, two personal), §14.13
+(which instruments are mounted). (2026-11-17)*
+
+**Why.** ObscureMusicRecSys is the strongest public evidence of recommender and
+experimentation depth: a six-part benchmark on one leakage-free split, off-policy
+evaluation and bandits, and a live app. The owner chose to add it as the first
+personal sheet, before Numit.
+
+**The figure: the route.** Five steps from a song many people know to one almost
+nobody plays, on a listeners axis (log scale), so the route is seen leaving the
+head. The route is the redline; the same seed's route at the other pull setting is a
+faint dashed line, so the trade-off is on the drawing. Stops are named in linework
+on wide sheets, the reached stop in the margin. The tile walks the route out a step
+at a time as the slide travels up the screen (or as the pointer crosses it). The
+case study adds real form controls: three seeds and pull none / strong.
+
+**The one figure with values on it.** §14.18 rules out data values on employer work.
+This is a personal project on public, CC0 data, so the values are real and shown:
+listener counts, the plays behind each step, whether a step was made again after the
+cutoff. The data is generated from the ObscureMusicRecSys export (`OB` in `lab.js`,
+with its source commit in the comment), never typed; the sentences are built from
+it, and the benchmark line is built from `results/phase4.json` figures in the same
+constant. The tile's tag reads "Real data · ListenBrainz".
+
+**Seeds.** Take On Me (the app's landing seed, chosen there by rule), Everybody
+Wants to Rule the World, and Co2 by Prateek Kuhad. Co2 is there for the readers this
+site is for: with strong pull its route stays in Indian independent music; without
+it, it wanders. Its sentence also says plainly that none of its steps were repeated
+after the cutoff, because India is thin in ListenBrainz.
+
+**Tests.** Every route has five stops, no repeated artist, counts within bounds; the
+sentence names the end and its zone and the repeated-step count exactly; no label
+runs off either edge at 320 to 1040 px.
+
+**Considered and rejected.** Showing the standard recommender's five picks as a
+cluster at step one (a second idea on one drawing; the case study prose carries it).
+A screenshot of the app (the drawing is the argument; the app is one link away).
+
+**Open with the owner.** All copy on the slide and the case study is a draft for
+the owner's edit.
