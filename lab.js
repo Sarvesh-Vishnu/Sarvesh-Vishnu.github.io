@@ -4,6 +4,7 @@
    Three small models that run in the reader's browser, one per case study:
      committee — four forecasters and their ensemble, refit from any starting month
      list      — a ranked replacement list against a fixed budget
+     reading   — one comment, marked up the way the pipeline reads it (mounted)
      sample    — how many comments it takes to tell twelve facilities apart
 
    Everything a figure or sentence says is computed here from seeded synthetic data.
@@ -734,7 +735,238 @@
     };
   }
 
+  /* ------------------------------------------------------------------ the reading
+     Not a model either: one comment, marked up the way the Pinnacle pipeline read each
+     record (design.md §14.19). Five steps: as written, cleaned, tone, touchpoint,
+     driver. The comments are written for the page and are never a patient's words; no
+     data and no results appear. The picture and the sentence are both read from
+     RD_COMMENTS, so they cannot disagree.
+
+     Markup: [a:words] marks a remark; marks.a says what the pipeline attaches to it. */
+  const RD_STEPS = ['As written', 'Cleaned', 'Tone', 'Touchpoint', 'Driver'];
+  const RD_STOP = new Set('i a an and the me my once was in it of to so on even each had before that but for with were is at as'.split(' '));
+  const RD_COMMENTS = [
+    { id: 'wait', name: 'A long wait',
+      text: ['I [a:waited almost an hour] and [b:nobody told me why].', 'Once I was in, [c:the nurse was wonderful].'],
+      marks: {
+        a: { touch: 'Waiting', tone: -1 },
+        b: { touch: 'Communication', tone: -1, driver: 'unexplained waiting' },
+        c: { touch: 'Nursing care', tone: 1 },
+      } },
+    { id: 'steps', name: 'Kept informed',
+      text: ['[a:Everyone explained each step] before it happened.', '[b:I never felt lost], even on the hard days.'],
+      marks: {
+        a: { touch: 'Communication', tone: 1, driver: 'knowing what comes next' },
+        b: { touch: 'Care team', tone: 1 },
+      },
+      toneNote: 'A word count would read “lost” as a complaint. Read in context, “never felt lost” is praise.' },
+    { id: 'bill', name: 'A surprise bill',
+      text: ['[a:The bill had charges nobody mentioned].', '[b:It took three calls to sort out].'],
+      marks: {
+        a: { touch: 'Billing', tone: -1, driver: 'unexpected charges' },
+        b: { touch: 'Follow-up', tone: -1 },
+      } },
+  ];
+  /** Words of a comment, each with its sentence, its remark and whether it is filler. */
+  function rdParse(c) {
+    if (c._p) return c._p;
+    const toks = [], phrases = {};
+    c.text.forEach((sent, si) => {
+      let ph = null;
+      sent.split(' ').forEach((raw) => {
+        let wd = raw;
+        const m = /^\[(\w):(.*)$/.exec(wd);
+        if (m) { ph = m[1]; wd = m[2]; phrases[ph] = { id: ph, toks: [] }; }
+        const closes = wd.includes(']');
+        wd = wd.replace(']', '');
+        const core = wd.replace(/[.,!?]+$/, '');
+        const tok = { text: wd, core: core.length, bare: core.toLowerCase(), sent: si, phrase: ph, stop: RD_STOP.has(core.toLowerCase()) };
+        if (ph) phrases[ph].toks.push(toks.length);
+        toks.push(tok);
+        if (closes) ph = null;
+      });
+    });
+    Object.values(phrases).forEach((p) => {
+      p.text = p.toks.map((i, k) => (k === p.toks.length - 1 ? toks[i].text.slice(0, toks[i].core) : toks[i].text)).join(' ');
+      const key = p.toks.find((i) => !toks[i].stop);
+      p.key = toks[key === undefined ? p.toks[0] : key].bare;
+    });
+    return (c._p = { toks, phrases });
+  }
+  const rdComment = (st) => RD_COMMENTS[st.c] || RD_COMMENTS[0];
+  const rdTone = (t) => (t < 0 ? '− unhappy' : '+ pleased');
+
+  const RD_WIDE = 620;                                   // below this the callouts become a short ledger
+  const RD_ROW = 17;
+  /** Where every word sits. Mono type, so a character is exactly 0.6 of the font size. */
+  function rdLayout(c, w) {
+    const { toks } = rdParse(c);
+    const wide = w >= RD_WIDE;
+    const pad = wide ? Math.max(32, Math.round(w * 0.06)) : w < 300 ? 12 : 18;
+    const lineLen = (ln) => ln.reduce((n, i) => n + toks[i].text.length, 0) + ln.length - 1;
+    const lines = [];
+    let F;
+    if (wide) {                                          // one sentence to a line
+      c.text.forEach((_, si) => lines.push(toks.map((t, i) => (t.sent === si ? i : -1)).filter((i) => i >= 0)));
+      F = clamp(Math.floor((w - 2 * pad) / Math.max(...lines.map(lineLen)) / 0.6), 14, 30);
+    } else {                                             // wrapped to the width
+      F = w < 340 ? 13 : 14;
+      const max = Math.floor((w - 2 * pad) / (0.6 * F));
+      let cur = [], len = 0;
+      toks.forEach((t, i) => {
+        if (cur.length && len + 1 + t.text.length > max) { lines.push(cur); cur = []; len = 0; }
+        len += t.text.length + (cur.length ? 1 : 0);
+        cur.push(i);
+      });
+      if (cur.length) lines.push(cur);
+    }
+    const cw = 0.6 * F;
+    const widest = Math.max(...lines.map(lineLen)) * cw;
+    const x0 = wide ? Math.round((w - widest) / 2) : pad;
+    const pos = [];
+    lines.forEach((ln, li) => {
+      let col = 0;
+      ln.forEach((i) => { pos[i] = { line: li, x: x0 + col * cw, end: x0 + (col + toks[i].core) * cw }; col += toks[i].text.length + 1; });
+    });
+    return { wide, pad, F, cw, lines, pos, x0, widest };
+  }
+  /** Layout plus the vertical rhythm for a given box. `study` is the case-study instrument. */
+  function rdGeom(c, w, h, o) {
+    const g = rdLayout(c, w);
+    const study = !!(o && o.full && !o.tagRoom);
+    const n = g.lines.length, marks = Object.keys(c.marks).length;
+    g.study = study;
+    if (g.wide) {
+      g.lineH = g.F * 2;
+      g.above = n > 1 ? 3 * RD_ROW + 14 : 0;
+      const total = g.above + g.F * 1.1 + (n - 1) * g.lineH + 3 * RD_ROW + 14;
+      const padT = study ? 14 : 44, padB = study ? 14 : 44;
+      g.need = Math.round(total + padT + padB + 30);
+      const top = padT + Math.max(0, ((h || g.need) - padT - padB - total) / 2);
+      g.base = (li) => top + g.above + g.F * 0.8 + li * g.lineH;
+      g.rail = study ? 0 : (h || g.need) - 18;
+    } else {
+      const top = study ? 22 : 48, rows = marks + 1;
+      g.lineH = g.F * 1.6; g.rowH = RD_ROW;
+      const need = () => top + g.F + (n - 1) * g.lineH + 14 + rows * g.rowH + 8;
+      if (h && need() > h) { g.lineH = g.F * 1.4; g.rowH = 15; }      // the smallest tiles: tighten the rhythm
+      g.need = Math.round(need());
+      const slack = h ? Math.max(0, (h - g.need) / 2) : 0;            // a taller tile: sit in the middle of what is left
+      g.base = (li) => top + slack + g.F * 0.8 + li * g.lineH;
+      g.ledger = g.base(n - 1) + 14 + g.rowH;
+    }
+    return g;
+  }
+  function renderReading(st, o) {
+    const c = rdComment(st), step = clamp(st.step, 0, RD_STEPS.length - 1);
+    const { toks, phrases } = rdParse(c);
+    const { w } = o, g = rdGeom(c, w, o.h, o), h = o.h || g.need;
+    const fx = (v) => v.toFixed(1);
+    const fresh = (at) => (step === at ? ' rd-new' : '');
+    const labW = (txt, spaced) => txt.length * (SP_CH + (spaced ? 1.4 : 0));
+    let s = open(w, h);
+    // the comment
+    toks.forEach((t, i) => {
+      const q = g.pos[i], m = t.phrase && c.marks[t.phrase];
+      const cls = step >= 4 && m && m.driver ? ' rd-acc' : step >= 1 && t.stop ? ' rd-stop' : '';
+      s += `<text class="rd-word${cls}" font-size="${g.F}" x="${fx(q.x)}" y="${fx(g.base(q.line))}">${t.text}</text>`;
+    });
+    const last = g.pos[toks.length - 1], lastTok = toks[toks.length - 1];
+    s += `<text class="rd-word rd-stop" font-size="${g.F}" x="${fx(g.x0 - g.cw)}" y="${fx(g.base(0))}">“</text>`;
+    s += `<text class="rd-word rd-stop" font-size="${g.F}" x="${fx(last.x + lastTok.text.length * g.cw)}" y="${fx(g.base(last.line))}">”</text>`;
+    if (step < 2) return s + rdRail(g, step) + '</svg>';
+
+    Object.values(phrases).forEach((p, pi) => {
+      const m = c.marks[p.id], acc = step >= 4 && !!m.driver;
+      if (g.wide) {
+        // a bracket on the remark, and a leader that grows as more is read into it
+        const a = g.pos[p.toks[0]], b = g.pos[p.toks[p.toks.length - 1]];
+        const up = g.lines.length > 1 && a.line === 0;
+        const rows = [[rdTone(m.tone), 'fig-lab' + fresh(2), false]];
+        if (step >= 3) rows.push([m.touch.toUpperCase(), 'fig-lab sp-on sp-level' + fresh(3), true]);
+        if (acc) rows.push(['DRIVER · ' + m.driver.toUpperCase(), 'fig-lab fig-lab-acc sp-level' + fresh(4), true]);
+        const y0 = up ? g.base(a.line) - g.F * 0.98 : g.base(a.line) + g.F * 0.36;
+        const rowY = (k) => (up ? y0 - 10 - k * RD_ROW : y0 + 19 + k * RD_ROW);
+        const tip = up ? rowY(rows.length - 1) - 9 : rowY(rows.length - 1) + 3;
+        s += `<path class="rd-rule${acc ? ' is-acc' : ''}${fresh(2)}" d="M${fx(b.end)},${fx(y0)} L${fx(a.x)},${fx(y0)} L${fx(a.x)},${fx(tip)}"/>`;
+        rows.forEach(([txt, cls, spaced], k) => {
+          const x = Math.min(a.x + 9, w - 10 - labW(txt, spaced));
+          s += `<text class="${cls}" x="${fx(x)}" y="${fx(rowY(k))}">${txt}</text>`;
+        });
+      } else {
+        // underline each stretch of the remark, then one ledger row for it
+        const byLine = new Map();
+        p.toks.forEach((i) => { const q = g.pos[i]; const e = byLine.get(q.line) || [q.x, q.end]; e[1] = q.end; byLine.set(q.line, e); });
+        byLine.forEach(([xa, xb], li) => {
+          const y = g.base(li) + g.F * 0.34;
+          s += `<path class="rd-rule${acc ? ' is-acc' : ''}${fresh(2)}" d="M${fx(xa)},${fx(y)} L${fx(xb)},${fx(y)}"/>`;
+        });
+        const y = g.ledger + pi * g.rowH;
+        s += `<text class="fig-lab ${acc ? 'fig-lab-acc' : 'sp-on'}${fresh(2)}" x="${g.pad}" y="${fx(y)}">${p.key}…</text>`;
+        s += `<text class="fig-lab${fresh(2)}" x="${fx(g.pad + 11 * SP_CH)}" y="${fx(y)}">${rdTone(m.tone)}</text>`;
+        if (step >= 3) s += `<text class="fig-lab sp-on${fresh(3)}" x="${fx(g.pad + 22 * SP_CH)}" y="${fx(y)}">${m.touch.toUpperCase()}</text>`;
+      }
+    });
+    if (!g.wide && step >= 4) {
+      const drv = Object.values(c.marks).find((m) => m.driver);
+      const y = g.ledger + Object.keys(c.marks).length * g.rowH + 3;
+      s += `<text class="fig-lab fig-lab-acc rd-new" x="${g.pad}" y="${fx(y)}">DRIVER</text>`;
+      s += `<text class="fig-lab fig-lab-acc rd-new" x="${fx(g.pad + 11 * SP_CH)}" y="${fx(y)}">${drv.driver}</text>`;
+    }
+    return s + rdRail(g, step) + '</svg>';
+  }
+  /** On the home slide, the five steps along the foot of the drawing. */
+  function rdRail(g, step) {
+    if (!g.wide || !g.rail) return '';
+    let s = '', x = g.x0;
+    RD_STEPS.forEach((name, i) => {
+      const txt = name.toUpperCase();
+      s += `<text class="fig-lab sp-level ${i === step ? 'sp-on' : i < step ? '' : 'fig-lab-quiet'}" x="${x.toFixed(1)}" y="${g.rail.toFixed(1)}">${txt}</text>`;
+      if (i === step) s += `<path class="rd-rule" d="M${x.toFixed(1)},${(g.rail + 6).toFixed(1)} L${(x + txt.length * (SP_CH + 1.4) - 1.4).toFixed(1)},${(g.rail + 6).toFixed(1)}"/>`;
+      x += txt.length * (SP_CH + 1.4) + 26;
+    });
+    return s;
+  }
+  const numWord = (n) => ['no', 'one', 'two', 'three', 'four'][n] || String(n);
+  function sayReading(st, o) {
+    const c = rdComment(st), step = clamp(st.step, 0, RD_STEPS.length - 1);
+    const { toks, phrases } = rdParse(c);
+    const marks = Object.values(phrases).map((p) => ({ ...c.marks[p.id], text: p.text }));
+    const drv = marks.find((m) => m.driver);
+    let now;
+    if (step === 0) now = 'As written. One comment, the way a patient might type it. Nothing has been read yet.';
+    else if (step === 1) {
+      now = `Cleaned. Filler words fade and the words that carry meaning stay: ${listOf(toks.filter((t) => !t.stop).map((t) => t.bare))}.`;
+    } else if (step === 2) {
+      const down = marks.filter((m) => m.tone < 0).length, up = marks.length - down;
+      now = down && up
+        ? `Tone. Each remark is scored on its own: ${numWord(down)} unhappy, ${numWord(up)} pleased. Scored as one, this comment would average out to neutral and the complaint would disappear.`
+        : `Tone. Each remark is scored on its own, and here ${marks.length === 2 ? 'both' : 'all'} are ${down ? 'unhappy' : 'pleased'}.`;
+      if (c.toneNote) now += ' ' + c.toneNote;
+    } else if (step === 3) {
+      now = `Touchpoint. Each remark is filed under the part of the visit it is about: ${listOf(marks.map((m) => m.touch.toLowerCase()))}.`;
+    } else {
+      now = `Driver. “${drv.text}” is the remark that counts toward a driver of satisfaction: ${drv.driver}.` +
+        (drv.tone > 0 ? ' Drivers run both ways. This one is something to keep.' : '');
+    }
+    return {
+      now,
+      always: 'One comment is easy to read. The pipeline read 100K+ records this way across 12 facilities, so the drivers could be ranked by facility and by touchpoint.',
+      tag: o && o.w && o.w < RD_WIDE ? 'Written for this page' : `Written for this page · ${RD_STEPS[step]}`,
+    };
+  }
+
   const KINDS = {
+    reading: {
+      state: () => ({ c: 0, step: RD_STEPS.length - 1 }),
+      render: renderReading, say: sayReading,
+      // across the figure, or up the screen: the reading advances a step at a time
+      scrub: (st, u) => { st.step = Math.min(RD_STEPS.length - 1, Math.floor(clamp(u, 0, 1) * RD_STEPS.length)); },
+      // on scroll the reading is complete by the time the slide is centred
+      travel: (st, u) => { st.step = Math.min(RD_STEPS.length - 1, Math.floor(clamp(u * 2.4, 0, 1) * RD_STEPS.length)); },
+      unit: (st) => st.step / (RD_STEPS.length - 1),
+      height: (st, w) => rdGeom(rdComment(st), w, 0, { full: true }).need,
+    },
     spine: {
       state: () => ({ focus: 'aop' }),
       render: renderSpine, say: saySpine,
@@ -795,13 +1027,16 @@
       const old = el.querySelector('svg');
       if (old) old.replaceWith(holder); else el.prepend(holder);
     }
-    let w = 0, h = 0, raf = 0, opts = {};
+    let w = 0, h = 0, raf = 0, opts = {}, drawn = '';
     const draw = () => {
       raf = 0;
       if (!w) return;
       // a stage this large can carry the labelled figure; the tag keeps a clear corner
       const big = w >= 720;
       opts = { w, h, full: big, tagRoom: big ? 30 : 0 };
+      const sig = JSON.stringify(st) + w + 'x' + h;      // moving within a step redraws nothing
+      if (sig === drawn) return;
+      drawn = sig;
       holder.innerHTML = kind.render(st, opts);
       if (tag) tag.textContent = kind.say(st, opts).tag;
     };
@@ -832,7 +1067,7 @@
         if (!seen || hovering) return;
         const b = el.getBoundingClientRect();
         const u = 1 - (b.top + b.height / 2) / window.innerHeight;   // 0 at the bottom edge, 1 at the top
-        kind.scrub(st, clamp((u - 0.2) / 0.6, 0, 1));
+        (kind.travel || kind.scrub)(st, clamp((u - 0.2) / 0.6, 0, 1));
         queue();
       };
       new IntersectionObserver((es) => { seen = es[0].isIntersecting; if (seen) onScroll(); }).observe(el);
@@ -851,7 +1086,7 @@
     const now = rootEl.querySelector('.lab-now');
     const always = rootEl.querySelector('.lab-always');
     const controls = rootEl.querySelector('.lab-controls');
-    let w = 0, raf = 0, figH = 0;
+    let w = 0, raf = 0, figH = 0, drawn = '';
     let legend = null;
     if (name === 'committee') {
       legend = document.createElement('ul');
@@ -863,8 +1098,11 @@
     const draw = () => {
       raf = 0;
       if (!w) return;
-      const h = name === 'committee' ? Math.round(clamp(w * 0.5, 310, 430)) : name === 'spine' ? (w < SP_WIDE ? 250 : Math.round(clamp(w * 0.4, 360, 440))) : Math.round(clamp(w * 0.46, 260, 400));
+      const h = kind.height ? kind.height(st, w) : name === 'committee' ? Math.round(clamp(w * 0.5, 310, 430)) : name === 'spine' ? (w < SP_WIDE ? 250 : Math.round(clamp(w * 0.4, 360, 440))) : Math.round(clamp(w * 0.46, 260, 400));
       figH = h;
+      const sig = JSON.stringify(st) + w;
+      if (sig === drawn) return;
+      drawn = sig;
       fig.innerHTML = kind.render(st, { w, h, full: true });
       if (field) field.innerHTML = renderField(st, { w });
       if (legend) {
@@ -934,6 +1172,22 @@
         if (st.focus !== before) queue();
       });
     }
+    if (name === 'reading') {
+      const picks = (label, items, isOn, pick) => {
+        const group = el(`<div class="lab-picks" role="group" aria-label="${label}"><span class="lab-picks-label" aria-hidden="true">${label}</span></div>`);
+        const btns = items.map((txt, i) => {
+          const b = el(`<button type="button" class="lab-btn">${txt}</button>`);
+          b.addEventListener('click', () => { pick(i); queue(); });
+          group.append(b);
+          return b;
+        });
+        controls.append(group);
+        return () => btns.forEach((b, i) => b.setAttribute('aria-pressed', isOn(i) ? 'true' : 'false'));
+      };
+      const syncStep = picks('Step', RD_STEPS, (i) => i === st.step, (i) => { st.step = i; });
+      const syncComment = picks('Comment', RD_COMMENTS.map((c) => c.name), (i) => i === st.c, (i) => { st.c = i; });
+      sync = () => { syncStep(); syncComment(); };
+    }
     const reset = el('<button type="button" class="lab-btn lab-btn-quiet">Reset</button>');
     reset.addEventListener('click', () => { Object.assign(st, kind.state()); queue(); });
     controls.append(reset);
@@ -954,7 +1208,7 @@
       } else return;                                     // the sample's x axis is the estimate, not n
       queue();
     };
-    if (name !== 'spine') fig.addEventListener('pointerdown', (e) => {
+    if (name === 'committee' || name === 'list') fig.addEventListener('pointerdown', (e) => {
       const b = fig.getBoundingClientRect();
       const g = committeeGeom(b.width, b.height, true);
       drag = { x: e.clientX - b.left, origin: st.origin, onStrip: e.clientY - b.top >= g.stripT - 10 };
@@ -984,6 +1238,7 @@
     committee, backtest, mains, list, facilities, sample, nFromUnit, unitFromN,
     renderCommittee, renderRecord, renderList, renderField, renderSample, renderSpine,
     SP_NODES, SP_PATHS, SP_DECISIONS, spinePath, spineFocus, saySpine,
+    RD_STEPS, RD_COMMENTS, RD_STOP, RD_WIDE, rdParse, rdLayout, rdGeom, renderReading, sayReading,
     sayCommittee, sayList, saySample, KINDS,
   };
 });

@@ -167,6 +167,63 @@ test('the spine: focus lights every decision through a node, and the sentence na
   for (const d of Lab.SP_DECISIONS) assert.ok(!/\d/.test(Lab.saySpine({ focus: d }).now), d + ' sentence carries a number');
 });
 
+test('the reading: every comment is well formed', () => {
+  for (const c of Lab.RD_COMMENTS) {
+    const { toks, phrases } = Lab.rdParse(c);
+    assert.ok(c.text.length <= 2, c.id + ': the wide drawing has room for two sentences');
+    assert.ok(!toks.some((t) => /[[\]:]/.test(t.text)), c.id + ': markup leaked into the words');
+    assert.deepEqual(Object.keys(phrases).sort(), Object.keys(c.marks).sort(), c.id + ': marks and remarks differ');
+    assert.equal(Object.values(c.marks).filter((m) => m.driver).length, 1, c.id + ': one redline');
+    for (const p of Object.values(phrases)) {
+      assert.ok(p.toks.length > 1 && p.key && !Lab.RD_STOP.has(p.key), `${c.id}/${p.id}`);
+      assert.ok(new Set(p.toks.map((i) => toks[i].sent)).size === 1, `${c.id}/${p.id} crosses a sentence`);
+      assert.ok(Math.abs(c.marks[p.id].tone) === 1 && c.marks[p.id].touch);
+    }
+  }
+});
+
+test('the reading: nothing runs off the drawing at any width', () => {
+  const widths = [264, 288, 320, 343, 480, 619, 620, 720, 900, 1000, 1040, 1280];
+  Lab.RD_COMMENTS.forEach((c, ci) => {
+    for (const w of widths) for (const full of [true, false]) {
+      const g = Lab.rdGeom(c, w, 0, { full });
+      const { toks } = Lab.rdParse(c);
+      toks.forEach((t, i) => {
+        const q = g.pos[i];
+        assert.ok(q.x >= 8 && q.x + t.text.length * g.cw <= w - 4, `${c.id} @${w}: “${t.text}” is clipped`);
+      });
+      // every label drawn at the last step stays inside too (11px mono, with tracking)
+      const svg = Lab.renderReading({ c: ci, step: 4 }, { w, h: g.need, full });
+      for (const m of svg.matchAll(/<text class="(fig-lab[^"]*)" x="([\d.]+)"[^>]*>([^<]+)</g)) {
+        const ch = m[1].includes('sp-level') ? 8.1 : 6.7;                // tracked capitals are wider
+        assert.ok(+m[2] >= 8 && +m[2] + m[3].length * ch <= w, `${c.id} @${w}: label “${m[3]}” is clipped`);
+      }
+    }
+  });
+});
+
+test('the reading: each step adds to the last, and the sentence follows the drawing', () => {
+  const marks = (step) => Lab.renderReading({ c: 0, step }, { w: 1000, h: 480, full: false });
+  assert.equal((marks(0).match(/rd-rule/g) || []).length, 1);          // only the marker under the current step
+  assert.ok(!/rd-stop[^>]*>I</.test(marks(0)));
+  assert.match(marks(1), /rd-stop[^>]*>I</);
+  assert.ok(marks(2).includes('unhappy') && !marks(2).includes('COMMUNICATION'));
+  assert.ok(marks(3).includes('COMMUNICATION') && !marks(3).includes('DRIVER ·'));
+  assert.ok(marks(4).includes('DRIVER · UNEXPLAINED WAITING') && marks(4).includes('rd-acc'));
+  Lab.RD_COMMENTS.forEach((c, ci) => {
+    const drv = Object.values(c.marks).find((m) => m.driver);
+    assert.ok(Lab.sayReading({ c: ci, step: 4 }).now.includes(drv.driver));
+    for (const m of Object.values(c.marks)) assert.ok(Lab.sayReading({ c: ci, step: 3 }).now.includes(m.touch.toLowerCase()));
+    for (let step = 0; step < 5; step++) assert.ok(!/\d/.test(Lab.sayReading({ c: ci, step }).now), `${c.id} step ${step} carries a number`);
+  });
+  assert.match(Lab.sayReading({ c: 0, step: 2 }).now, /two unhappy, one pleased/);
+  assert.match(Lab.sayReading({ c: 1, step: 2 }).now, /both are pleased.*never felt lost/);
+  // on scroll the reading is complete by the time the slide is centred
+  const st = Lab.KINDS.reading.state();
+  Lab.KINDS.reading.travel(st, 0.5); assert.equal(st.step, 4);
+  Lab.KINDS.reading.travel(st, 0); assert.equal(st.step, 0);
+});
+
 test('n slider mapping round-trips and stays in range', () => {
   assert.equal(Lab.nFromUnit(0), Lab.S.NMIN);
   assert.equal(Lab.nFromUnit(1), Lab.S.NMAX);

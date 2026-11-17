@@ -888,10 +888,67 @@ Counts the owner states (75+ territory managers, 25+ product lines) stay; no res
 or internal names appear.
 
 **Retained but unmounted.** The committee, record and list models stay in `lab.js`
-with their tests. The sample model is still mounted on the second project; the same
-concern applies there and is the next thing to review.
+with their tests. The sample model followed them two days later (§14.19).
 
 **Considered and rejected.** Keeping the forecast with its numbers removed (a chart
 without values is decoration). A synthetic A/B-test figure for the cross-sell work
 (still numbers, and it would repeat the second slide's statistics).
+
+### 14.19 — The second project: one comment, marked up
+*Changes: §14.13 (which instruments are mounted), §14.18 (the sample is unmounted).
+(2026-11-17)*
+
+**The concern.** The owner, on the sample figure: "the visual is confusing and not
+fairly representative." It answered a statistics question next to the work (how many
+comments before a facility ranking can be trusted) with synthetic percentages. A
+visitor saw dots and intervals and learned nothing about what the pipeline does to a
+comment. It also broke the §14.18 rule.
+
+**The rule that follows.** A figure shows the work itself, not a neighbouring
+question about it. For text work, the text is the picture.
+
+**What replaced it.** *The reading*: one comment set large in Plex Mono and marked up
+the way the pipeline reads each record, in five steps.
+
+| Step | What appears |
+|---|---|
+| As written | the comment, plain |
+| Cleaned | filler words fade (a real stoplist, `RD_STOP`) |
+| Tone | a bracket on each remark, labelled unhappy or pleased |
+| Touchpoint | the part of the visit each remark is about |
+| Driver | the one remark that counts toward a driver of satisfaction, in the redline |
+
+The leaders grow as more is read into a remark, so the annotation builds outward
+from the words. On the home slide, moving across the figure (or scrolling the slide
+up the screen) advances a step at a time, and the five steps sit along the foot. On
+the case study the steps are buttons, and there are three comments to choose from:
+a mixed one (the lead), a pleased one, and a billing complaint. Under 620px the
+callouts become underlines and a short ledger.
+
+**No numbers.** Nothing on the figure is a quantity. The sentences are built from the
+same table as the drawing (`RD_COMMENTS` in `lab.js`) and a test asserts they carry
+no digits. The only counts on the page are the owner's own (100K+ records, 12
+facilities), in the standing line under the figure.
+
+**The comments are written for the page.** They are examples in the style of patient
+feedback, never a patient's words. The home tile says so in its tag ("Written for
+this page"), and the case study says so in its note. Each has exactly one driver, so
+the redline stays single.
+
+**Two quiet signals.** The lead comment is mixed: two unhappy remarks and one
+pleased. Scored as a whole it would average out to neutral, which is the reason the
+work cut sentiment by touchpoint. The second comment contains "never felt lost": a
+word count reads "lost" as a complaint, and the tone step says why that is wrong.
+
+**Open with the owner.** The drawing shows tone and touchpoint attached to remarks
+inside a comment. If the Pinnacle models scored whole records and took the
+touchpoint from a field on the record, the brackets should become one label per
+comment. The Siemens work has no figure yet; it needs the owner's account first.
+
+**Also changed.** The footer line now reads "The drawings are made in your browser.
+None of them contains company or patient data." Both mounts skip a redraw when
+nothing changed, so moving within a step restarts no animation.
+
+**Considered and rejected.** A pile of strokes sorting into theme rows (row lengths
+read as quantities). A second pipeline schematic (two system diagrams back to back).
 

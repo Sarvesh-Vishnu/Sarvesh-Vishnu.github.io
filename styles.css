@@ -718,6 +718,14 @@ body {
 .sp-on { fill: var(--ink); }
 .sp-off { fill: var(--ink-muted); }
 .sp-level { letter-spacing: 0.12em; }
+/* the reading (§14.19): a comment in mono, brackets and leaders, the driver in the redline */
+.rd-word { font-family: var(--font-mono); fill: var(--ink); }
+.rd-stop { fill: var(--ink-muted); }
+.rd-acc { fill: var(--accent); }
+.rd-rule { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.7; }
+.rd-rule.is-acc { stroke: var(--accent); stroke-width: 1.5; opacity: 1; }
+.motion .rd-new { animation: rd-in 280ms var(--ease-out) both; }
+@keyframes rd-in { from { opacity: 0; } to { opacity: 1; } }
 /* the field of mains */
 .fld { fill: none; stroke: var(--line); stroke-width: 1; }
 .fld-on { fill: var(--accent); stroke: var(--accent); opacity: 0.28; }
@@ -1271,7 +1279,15 @@ html.lenis, html.lenis body { height: auto; }
 }
 .lab-btn:hover { background: var(--tint); }
 .lab-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
-.lab-picks { display: flex; flex-wrap: wrap; gap: var(--space-2); flex: 1 1 100%; }
+.lab-picks { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); flex: 1 1 100%; }
+.lab-picks-label {
+  min-width: 5.5em;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+}
 .lab-btn-quiet { border-color: var(--line); color: var(--ink-soft); }
 .lab-range input:focus-visible, .lab-checks input:focus-visible, .lab-btn:focus-visible {
   outline: 2px solid var(--mark);
@@ -1318,7 +1334,7 @@ html.lenis, html.lenis body { height: auto; }
    ------------------------------------------------------------- */
 @view-transition { navigation: auto; }
 .tile-fig[data-lab="spine"], .lab-stage:has(.lab-spine) { view-transition-name: lab-spine; }
-.tile-fig[data-lab="sample"],    .lab-stage:has(.lab-sample)    { view-transition-name: lab-sample; }
+.tile-fig[data-lab="reading"], .lab-stage:has(.lab-reading) { view-transition-name: lab-reading; }
 ::view-transition-group(*) { animation-duration: 420ms; animation-timing-function: var(--ease-out); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 220ms; }
 @media (prefers-reduced-motion: reduce) {
