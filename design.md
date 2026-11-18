@@ -110,7 +110,7 @@ Target: Lighthouse 95+ on Performance, Accessibility, Best Practices, and SEO.
 ### Hierarchy patterns
 - **Eyebrow / section label**: mono, uppercase, 11px, tracking `0.12em`, `--ink-muted`
 - **Section heading**: sans, 600, fluid 39 → 76px
-- **Body**: sans, 400, 16–20px, `max-width: 65ch`
+- **Body**: sans, 400, 16–20px (18px on a phone), `max-width: 56ch`, about 70 characters (§14.23)
 
 ### Scale tension (§14.2)
 The design's modernity comes from the *gap* between display and label, not from
@@ -140,7 +140,7 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 - **Grid**: 12 col desktop / 6 col tablet / 4 col mobile
 - **Gutter**: 24px desktop, 16px mobile
 - **Max content width**: 1200px
-- **Reading width**: 65ch (~720px)
+- **Reading width**: 56ch, about 70 characters of running text (§14.23; was 65ch)
 
 ### Breakpoints
 ```
@@ -184,7 +184,7 @@ Section vertical padding lives in `--space-32` to `--space-48`. Be generous — 
 - Result strip: 2–3 outcome figures in display type over mono labels (§14.5).
   **Omitted entirely when the project has no honest metric** — never padded.
 - Tools line: mono, muted, below the strip
-- Body: 65ch reading column
+- Body: 56ch reading column (§14.23)
 - Full-bleed image break with mono caption
 - "Next project" hairline link at the bottom
 
@@ -758,6 +758,7 @@ apart, the live readout, the draggable word, the current sheet in the index, the
 primary button, today's dot on the path, and the underline in the thesis. If a second
 thing on a screen wants the redline, one of them is wrong.
 
+*(Superseded by §14.23: prose now follows the sheet the reader chose.)*
 **Long reading sits on paper.** Case-study prose is wrapped in `.paper`, which applies
 the white-print tokens to that block: a white sheet laid on the blue one. Deep blue is
 comfortable for a screen of display type and figures, not for eight paragraphs.
@@ -823,7 +824,7 @@ values moved with it.
 | `--surface` | `#0F2C52` | `#F3F6FA` |
 | `--ink` | `#F3F6FA` (15.0:1) | `#0A2240` (15.0:1) |
 | `--ink-soft` | `#CBD7E7` | `#23406A` |
-| `--ink-muted` | `#8FA9C8` (6.6:1) | `#4E6A8E` (5.5:1) |
+| `--ink-muted` | `#A9BED8` (8.4:1; was `#8FA9C8`, §14.23) | `#4E6A8E` (5.5:1) |
 | `--line` | `#27456F` | `#C9D4E2` |
 | `--mark` | `#F3F6FA` | `#0A2240` |
 | `--accent` | `#FF7A59` (6.3:1) | `#C93B1A` (5.0:1) |
@@ -1111,3 +1112,53 @@ by the colour.
 
 **Open with the owner.** The corrected Approach bullets, the lab title and lede, the
 meaning line and the slide's meta line are drafts.
+
+### 14.23 — Readability on the blue sheet
+*Changes: §2 and §14.17 (`--ink-muted`), §3 (reading width, small type), §14.16 (long
+reading on `.paper`), §14.2 (what 11px is for). (2026-11-17)*
+
+**Why.** An audit of every text style on every page, both sheets, at 1440 and 375 px
+(contrast against the real background, size, weight, measure, tap size). Everything
+passed AA. Five things still stood between a new reader and the content, and the owner
+asked for all five.
+
+**1. Small grey lines that carry information.** Employer, role, dates, what a number
+means, tool lists and the notes that say a figure is invented were 11px mono in
+`--ink-muted` (6.6:1 on the sheet, 5.8:1 on a panel). `--ink-muted` on the blue sheet
+is now `#A9BED8` (8.4:1 and 7.4:1). Informative lines move from 11px to 12px: stat
+labels, bylines, tool lists, path dates, at-a-glance labels, slide kind lines and the
+side-heads of case-study prose. Figure notes move to 13px in `--ink-soft`. 11px stays
+for pure labels: eyebrows, tile tags, figure labels, control labels. The white print's
+muted colour is unchanged.
+
+**2. Long reading follows the sheet.** `.paper` used to turn case-study prose white
+inside the blue sheet: a 16:1 jump in brightness for the longest reading on the site,
+and a white page for a reader who had chosen the dark one. `.paper` no longer sets its
+own colours. Prose sits on whichever sheet the reader chose (about 11:1 at 20px on
+blue), set apart by a hairline and the room above it. The white print is one click
+away, as before. This reverses "long reading sits on paper" in §14.16.
+
+**3. Measure.** `--reading-max` was `65ch`, which is 80 to 85 characters of running
+text at 20px, because a `ch` is the width of a zero and the average letter is narrower.
+It is now `56ch`: 48 to 74 characters a line in the audit.
+
+**4. The redline as small text.** Vermilion text at 11 to 13px on a panel was 5.4:1 on
+blue and 4.7:1 on white. Small text in the accent now uses `--accent-deep` (6.6:1 and
+6.3:1): live tile tags, accented figure labels, the pressed button, the slider's
+output, the highlighted words of the reading. Lines, marks and rules keep `--accent`.
+
+**5. Phone.** Running text is 18px (`--text-md`) at 640px and below, which gives about
+38 characters a line instead of 33. Nav links, the brand, the hero links, byline links
+and the at-a-glance links are padded to at least 24px tall, and sliders to 28px, with
+no change to where the text sits.
+
+**After.** No text style on the blue sheet is under 6.6:1 except the disabled reel
+arrow (exempt) and the LinkedIn button label at 6.2:1. No tap target is under 24px
+except one link inside a sentence (exempt, 23px).
+
+**Considered and rejected.** Softening the paper to an off-white instead of removing
+it (still a white page in a dark room). Lifting the white print's muted colour too
+(not asked for; it passes, and the size change helps there as well). Raising figure
+labels above 11px (their layout is computed from character widths, and they are labels,
+not sentences). A prefers-color-scheme default (the blue sheet is the design; the
+toggle is in the header).

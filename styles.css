@@ -14,11 +14,11 @@
   --surface:         #0F2C52;  /* a panel on the sheet (figure stages) */
   --ink:             #F3F6FA;  /* 15.0:1 on the sheet */
   --ink-soft:        #CBD7E7;
-  --ink-muted:       #8FA9C8;  /* 6.6:1 on the sheet, 5.6:1 on a panel */
+  --ink-muted:       #A9BED8;  /* 8.4:1 on the sheet, 7.4:1 on a panel (lifted, §14.23) */
   --line:            #27456F;
   --mark:            #F3F6FA;  /* drawn lines, links, outlines */
   --accent:          #FF7A59;  /* the redline: 6.3:1 on the sheet, 5.4:1 on a panel */
-  --accent-deep:     #FF977C;
+  --accent-deep:     #FF977C;  /* the redline as small text: 7.6:1 on the sheet, 6.6:1 on a panel */
   --tint:            #14365F;  /* hover wash */
 
   /* Functional */
@@ -35,6 +35,7 @@
   --text-xs:   12px;
   --text-sm:   14px;
   --text-base: 16px;
+  --text-md:   18px;  /* running text on a phone (§14.23) */
   --text-lg:   20px;
   --text-xl:   25px;
   --text-2xl:  31px;
@@ -61,7 +62,7 @@
 
   /* Layout */
   --content-max: 1200px;
-  --reading-max: 65ch;
+  --reading-max: 56ch;   /* about 70 characters of running text; a ch is wider than the average letter (§14.23) */
   --gutter:      24px;
   --header-h:    64px;
 
@@ -74,8 +75,9 @@
 }
 
 /* The white print: the same drawing as blue lines on white. Opt-in via the toggle
-   ([data-theme="white"] on <html>), and used for long reading through .paper. */
-:root[data-theme="white"], .paper {
+   ([data-theme="white"] on <html>). Case-study prose (.paper) follows the sheet the
+   reader chose; it no longer turns white inside the blue sheet (§14.23). */
+:root[data-theme="white"] {
   --canvas:      #FFFFFF;
   --surface:     #F3F6FA;
   --ink:         #0A2240;
@@ -87,7 +89,7 @@
   --accent-deep: #A82E12;
   --tint:        #EAF0F7;
 }
-.paper { background: var(--canvas); color: var(--ink); }
+.paper { background: var(--canvas); color: var(--ink); border-top: 1px solid var(--line); }
 
 /* Native controls (sliders, checkboxes, scrollbars) follow the sheet, not the
    operating system. */
@@ -214,6 +216,7 @@ body {
 }
 
 .brand {
+  padding-block: 8px;                                   /* a 24px-plus target (§14.23) */
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: 500;
@@ -227,6 +230,7 @@ body {
 }
 .nav-links a {
   position: relative;
+  padding-block: 10px;
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--ink-soft);
@@ -236,7 +240,7 @@ body {
   content: "";
   position: absolute;
   left: 0; right: 0;
-  bottom: -6px;
+  bottom: 4px;
   height: 1px;
   background: var(--mark);
   transform: scaleX(0);
@@ -332,6 +336,8 @@ body {
 .hero-role { font-size: var(--text-base); color: var(--ink-soft); }
 .hero-links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); }
 .hero-links a {
+  padding-top: 8px;
+  padding-bottom: 2px;
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--mark);
@@ -469,7 +475,7 @@ body {
 
 .th-when {
   font-family: var(--font-mono);
-  font-size: var(--text-2xs);
+  font-size: var(--text-xs);
   color: var(--ink-muted);
   padding: 0.55em 0 var(--space-8);
   white-space: nowrap;
@@ -628,7 +634,7 @@ body {
   align-items: center;
   gap: var(--space-2);
   font-family: var(--font-mono);
-  font-size: var(--text-2xs);
+  font-size: var(--text-xs);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -707,7 +713,7 @@ body {
 .fig-pt-on { fill: var(--accent); stroke: var(--accent); }
 .fig-pt-top { stroke-width: 2.5; }
 .fig-lab   { font-family: var(--font-mono); font-size: 11px; fill: var(--ink-soft); font-variant-numeric: tabular-nums; }
-.fig-lab-acc { fill: var(--accent); font-weight: 500; }
+.fig-lab-acc { fill: var(--accent-deep); font-weight: 500; }
 .fig-lab-quiet { fill: var(--ink-muted); }
 /* the system drawing (§14.18): labels and linework, the traced path in the redline */
 .sp-edge { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.16; }
@@ -751,7 +757,7 @@ body {
 /* the reading (§14.19): a comment in mono, brackets and leaders, the driver in the redline */
 .rd-word { font-family: var(--font-mono); fill: var(--ink); }
 .rd-stop { fill: var(--ink-muted); }
-.rd-acc { fill: var(--accent); }
+.rd-acc { fill: var(--accent-deep); }
 .rd-rule { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.7; }
 .rd-rule.is-acc { stroke: var(--accent); stroke-width: 1.5; opacity: 1; }
 .motion .rd-new { animation: rd-in 280ms var(--ease-out) both; }
@@ -772,7 +778,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--accent);
+  color: var(--accent-deep);
   font-variant-numeric: tabular-nums;
 }
 
@@ -797,7 +803,7 @@ body {
 .stack-row:last-child { border-bottom: 1px solid var(--line); }
 .stack-row dt {
   font-family: var(--font-mono);
-  font-size: var(--text-2xs);
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--ink-muted);
@@ -812,6 +818,9 @@ body {
 }
 
 .stack-row dd a {
+  display: inline-block;
+  padding-top: 6px;
+  margin-top: -6px;
   color: var(--mark);
   border-bottom: 1px solid currentColor;
   transition: border-bottom-width var(--duration-fast) ease;
@@ -977,7 +986,7 @@ body {
 .project-byline {
   margin-top: var(--space-6);
   font-family: var(--font-mono);
-  font-size: var(--text-2xs);
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   line-height: 1.7;
@@ -985,6 +994,9 @@ body {
   max-width: 60ch;
 }
 .project-byline a {
+  display: inline-block;                                /* taller to tap, same line height */
+  padding-top: 8px;
+  margin-top: -8px;
   color: var(--mark);
   border-bottom: 1px solid currentColor;
   transition: border-bottom-width var(--duration-fast) ease;
@@ -1016,7 +1028,7 @@ body {
 }
 .project-results dt {
   font-family: var(--font-mono);
-  font-size: var(--text-2xs);
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--ink-muted);
@@ -1029,7 +1041,7 @@ body {
 .project-tools {
   margin-top: var(--space-8);
   font-family: var(--font-mono);
-  font-size: var(--text-2xs);
+  font-size: var(--text-xs);
   color: var(--ink-muted);
   max-width: 60ch;
 }
@@ -1068,7 +1080,7 @@ body {
     margin: 0;
     padding-top: 0.5em;
     font-family: var(--font-mono);
-    font-size: var(--text-2xs);
+    font-size: var(--text-xs);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.12em;
@@ -1252,7 +1264,7 @@ html.lenis, html.lenis body { height: auto; }
   font-variant-numeric: tabular-nums;
 }
 .lab-legend[hidden] { display: none; }
-.lab-legend .is-acc { color: var(--accent); font-weight: 500; }
+.lab-legend .is-acc { color: var(--accent-deep); font-weight: 500; }
 .lab-legend .is-quiet { color: var(--ink-muted); }
 .lab-field { margin-top: var(--space-6); }
 .lab-field svg { display: block; width: 100%; height: auto; }
@@ -1291,8 +1303,8 @@ html.lenis, html.lenis body { height: auto; }
 .lab-controls:empty { display: none; }                   /* no JS: no controls to show */
 .lab-range { display: flex; align-items: center; gap: var(--space-3); flex: 1 1 320px; min-width: 0; }
 .lab-range span { white-space: nowrap; }
-.lab-range input { flex: 1 1 auto; min-width: 80px; accent-color: var(--accent); }
-.lab-range output { min-width: 9ch; color: var(--accent); font-variant-numeric: tabular-nums; text-align: right; }
+.lab-range input { flex: 1 1 auto; min-width: 80px; min-height: 28px; accent-color: var(--accent); }
+.lab-range output { min-width: 9ch; color: var(--accent-deep); font-variant-numeric: tabular-nums; text-align: right; }
 .lab-checks { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); border: 0; padding: 0; margin: 0; }
 .lab-checks legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .lab-checks label { display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; }
@@ -1308,7 +1320,7 @@ html.lenis, html.lenis body { height: auto; }
   transition: background-color var(--duration-fast) ease;
 }
 .lab-btn:hover { background: var(--tint); }
-.lab-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.lab-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-deep); }
 .lab-picks { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); flex: 1 1 100%; }
 .lab-picks-label {
   min-width: 5.5em;
@@ -1348,9 +1360,9 @@ html.lenis, html.lenis body { height: auto; }
   border-left: 2px solid var(--mark);
   max-width: 68ch;
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
+  font-size: 13px;                                      /* the notes say what is invented: not the smallest type (§14.23) */
   line-height: 1.7;
-  color: var(--ink-muted);
+  color: var(--ink-soft);
 }
 @media (max-width: 640px) {
   .lab-stage { padding: var(--space-4); }
@@ -1390,10 +1402,16 @@ html.lenis, html.lenis body { height: auto; }
 
 .contact-line { grid-column: 1 / -1; margin-top: calc(var(--space-4) - var(--gutter)); max-width: 52ch; font-size: var(--text-lg); line-height: 1.5; color: var(--ink-soft); }
 
-/* Long reading sits on a white print laid on the sheet */
+/* Long reading follows the sheet the reader chose (§14.23): a hairline and room above it set it apart */
 .paper { margin-top: var(--space-16); padding: var(--space-24) 0; }
 .paper .project-body-prose { margin-top: 0; margin-bottom: 0; }
 .paper .project-body-prose + .project-body-prose { margin-top: var(--space-16); }
+
+/* Running text a step smaller on a phone: about 38 characters a line, not 33 (§14.23).
+   Last among the screen rules so it wins over the sizes set above. */
+@media (max-width: 640px) {
+  .prose, .project-body-prose, .lab-lede, .contact-line { font-size: var(--text-md); }
+}
 
 /* -------------------------------------------------------------
    Print: the page becomes a one-sheet résumé (design.md §14.16).
@@ -1405,6 +1423,7 @@ html.lenis, html.lenis body { height: auto; }
   :root, :root[data-theme] {
     --canvas: #FFFFFF; --surface: #FFFFFF; --ink: #0A2240; --ink-soft: #23406A; --ink-muted: #4E6A8E;
     --line: #C9D4E2; --mark: #0A2240; --accent: #C93B1A; --tint: #FFFFFF;
+    --reading-max: 65ch;                                /* paper is read closer than a screen; the wider measure keeps two pages */
   }
   html { font-size: 10pt; }
   body { background: #FFFFFF; color: var(--ink); }
@@ -1423,7 +1442,9 @@ html.lenis, html.lenis body { height: auto; }
   .hero-name { font-size: 13pt; }
   .hero-role { font-size: 10pt; }
   .hero-links { margin-top: 4pt; gap: 2pt 14pt; }
-  .hero-links a { border: 0; font-size: 8.5pt; }
+  .hero-links a { border: 0; padding: 0; font-size: 8.5pt; }
+  .slide-kind, .th-when, .stack-row dt { font-size: 11px; }
+  .stack-row dd a { display: inline; padding: 0; margin: 0; }
   .hero-links a::after { content: " " attr(data-print); font-weight: 400; color: var(--ink-soft); }
   .section { padding: 7pt 0 4pt; border-top: 0.5pt solid var(--line); }
   .section-head { display: block; margin-bottom: 5pt; }
