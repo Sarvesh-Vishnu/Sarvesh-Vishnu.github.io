@@ -19,7 +19,7 @@ const fluid = (svg) => svg.replace(/ width="\d+" height="\d+"/, '');   // let CS
 
 // home page: the work figures
 const TILE = { w: 1000, h: 540, full: false };
-const tiles = { commercial: 'spine', nlp: 'reading', water: 'plan', obscure: 'route' };
+const tiles = { commercial: 'spine', nlp: 'reading', water: 'plan', obscure: 'route', numit: 'globe' };
 let index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 for (const [marker, kind] of Object.entries(tiles)) {
   const k = Lab.KINDS[kind];
@@ -29,7 +29,7 @@ fs.writeFileSync(path.join(ROOT, 'index.html'), index);
 
 // case studies: the full instrument, its field (list only) and both sentences
 const FULL = { w: 1040, h: 420, full: true };
-const pages = { 'commercial-analytics': 'spine', nlp: 'reading', 'wv-water': 'plan', obscure: 'route' };
+const pages = { 'commercial-analytics': 'spine', nlp: 'reading', 'wv-water': 'plan', obscure: 'route', numit: 'globe' };
 for (const [page, kind] of Object.entries(pages)) {
   const file = path.join(ROOT, 'work', `${page}.html`);
   const k = Lab.KINDS[kind];
@@ -41,6 +41,18 @@ for (const [page, kind] of Object.entries(pages)) {
   html = between(html, 'lab:now', said.now, page);
   html = between(html, 'lab:always', said.always, page);
   if (kind === 'list') html = between(html, 'lab:field', fluid(Lab.renderField(st, { w: 760 })), page);
+  fs.writeFileSync(file, html);
+}
+// Numit: the counts on its case study come from the same generated data as the globe
+{
+  const file = path.join(ROOT, 'work', 'numit.html');
+  const { NM } = Lab, [y, m, d] = NM.asOf.split('-').map(Number);
+  const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][m - 1];
+  let html = fs.readFileSync(file, 'utf8');
+  html = between(html, 'nm:shadow', String(NM.shadow.length / 4), 'numit');
+  html = between(html, 'nm:light', String(NM.light.length / 4), 'numit');
+  html = between(html, 'nm:floor', String(NM.floor), 'numit');
+  html = between(html, 'nm:asof', `${d} ${month} ${y}`, 'numit');
   fs.writeFileSync(file, html);
 }
 console.log(`figures written: ${Object.keys(tiles).length} work figures, ${Object.keys(pages).length} case studies`);

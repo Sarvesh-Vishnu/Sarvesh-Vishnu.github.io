@@ -361,3 +361,131 @@ test('the route: nothing runs off the drawing at any width', () => {
     }
   }
 });
+
+/* ---------------------------------------------------------------- the globe (Numit) */
+const NUMIT_TEXT = require('../assets/data/numit-events.js');
+
+test('the globe: real data, every mark placed, and every mark has its words', () => {
+  const { NM, globe } = Lab, D = globe();
+  assert.ok(D.shadow.length > 100 && D.light.length > 20);
+  assert.equal(NM.shadow.length % 4, 0);
+  assert.equal(NM.light.length % 4, 0);
+  assert.match(NM.asOf, /^\d{4}-\d{2}-\d{2}$/);
+  assert.equal(NUMIT_TEXT.src, NM.src, 'the words and the marks come from the same commit');
+  for (const kind of ['shadow', 'light']) {
+    assert.equal(NUMIT_TEXT[kind].length, D[kind].length);
+    D[kind].forEach((m) => {
+      assert.ok(Math.abs(m.lat) <= 90 && Math.abs(m.lon) <= 180, m.id);
+      assert.ok(m.wt >= 0 && m.wt <= 3 && m.country, m.id);
+      const [title, place, source, date] = NUMIT_TEXT[kind][m.i];
+      assert.ok(title.length > 8 && place.length > 2 && NUMIT_TEXT.sources[source], `${m.id} has no source`);
+      assert.match(date, /^\d{4}-\d{2}-\d{2}$/);
+      assert.ok(date <= NM.asOf, `${m.id} is dated after the snapshot`);
+      assert.ok(place.endsWith(m.country), m.id);
+    });
+  }
+  assert.equal(NUMIT_TEXT.light.filter((r) => r[4]).length, NM.grew);
+  assert.ok(NM.floor >= 10);
+});
+
+test('the globe: a face holds exactly the marks in front of it, drawn inside the globe', () => {
+  const { globe, globeView, GL } = Lab, D = globe(), o = { full: true }, rad = Math.PI / 180;
+  // worked out here on its own: how far a place sits in front of the limb
+  const depth = (m, lon0) => Math.sin(GL.TILT * rad) * Math.sin(m.lat * rad) + Math.cos(GL.TILT * rad) * Math.cos(m.lat * rad) * Math.cos((m.lon - lon0) * rad);
+  for (const lon of [-120, -30, 46, 140]) {
+    const front = globeView({ lon, lit: 1, dim: false }, 1040, 520, o);
+    for (const kind of ['shadow', 'light']) {
+      const want = D[kind].filter((m) => depth(m, lon) > 0.03).map((m) => m.id);
+      assert.deepEqual(front[kind].map((p) => p.m.id), want, `${kind} at ${lon}`);
+    }
+    for (const p of [...front.shadow, ...front.light]) {
+      assert.ok(Math.hypot(p.x - front.g.cx, p.y - front.g.cy) <= front.g.R + 0.01, `${p.m.id} is drawn off the globe`);
+    }
+  }
+  // a place faces the reader when the globe is turned to it
+  const delhi = D.shadow.concat(D.light).find((m) => m.country === 'India');
+  assert.ok(globeView({ lon: 78, lit: 1 }, 1040, 520, o).shadow.concat(globeView({ lon: 78, lit: 1 }, 1040, 520, o).light).some((p) => p.m.id === delhi.id));
+  assert.ok(!globeView({ lon: -102, lit: 1 }, 1040, 520, o).shadow.some((p) => p.m.id === delhi.id));
+});
+
+test('the globe: shadow first, then the light, and the sentence says what is drawn', () => {
+  const { globe, globeView, globeTravel, sayGlobe, GL, NM } = Lab, D = globe();
+  const st = Lab.KINDS.globe.state();
+  globeTravel(st, 0);
+  assert.equal(st.lit, 0);
+  assert.equal(globeView(st, 1000, 540, {}).light.length, 0);
+  assert.ok(sayGlobe(st).now.includes('not shown yet'));
+  let last = -1;
+  for (let u = 0; u <= 1.0001; u += 0.05) { globeTravel(st, u); assert.ok(st.lit >= last); last = st.lit; }
+  assert.equal(st.lit, 1);
+  assert.equal(st.lon, GL.LON);
+  for (const lon of [-150, -60, 0, 46, 100]) {
+    const s = { lon, lit: 1, dim: false, focus: null }, v = globeView(s, 1040, 520, { full: true }), said = sayGlobe(s).now;
+    assert.ok(said.includes(`${v.shadow.length} of Numit’s ${D.shadow.length} shadow events`), said);
+    assert.ok(said.includes(`${v.light.length} of its ${D.light.length} light events`), said);
+    const svg = Lab.renderGlobe(s, { w: 1040, h: 520, full: true });
+    assert.ok(svg.includes(`${v.shadow.length} of ${D.shadow.length} in view`) && svg.includes(`${v.light.length} of ${D.light.length} in view`));
+  }
+  const always = sayGlobe(st).always;
+  assert.ok(always.includes(String(D.shadow.length)) && always.includes(String(D.light.length)) && always.includes(String(NM.grew)));
+  assert.ok(sayGlobe({ lon: 46, lit: 1, dim: true }).now.includes(`of Numit’s ${D.light.length} light events`));
+});
+
+test('the globe: a mark can be read by pointer and by keyboard, in the words of its source', () => {
+  const { globeView, globeNearest, globeStep, sayGlobe } = Lab, o = { full: true };
+  globalThis.NUMIT_EVENTS = NUMIT_TEXT;
+  try {
+    const st = { lon: 46, lit: 1, dim: false, focus: null }, v = globeView(st, 1040, 520, o);
+    const p = v.shadow[10];
+    const hit = globeNearest(st, p.x, p.y, 1040, 520, o);
+    const found = [...v.shadow, ...v.light].find((q) => q.m.id === hit);
+    assert.ok(Math.hypot(found.x - p.x, found.y - p.y) < 0.5, 'pointing at a mark finds the mark there');
+    assert.equal(globeNearest(st, 4, 4, 1040, 520, o), null);
+    // stepping visits every mark in view exactly once before coming round
+    const seen = new Set();
+    for (let i = 0; i < v.shadow.length + v.light.length; i++) { st.focus = globeStep(st, 1, 1040, 520, o); seen.add(st.focus); }
+    assert.equal(seen.size, v.shadow.length + v.light.length);
+    // and every one of them can be said, with its source
+    for (const q of [...v.shadow, ...v.light]) {
+      const said = sayGlobe({ ...st, focus: q.m.id }).now, row = NUMIT_TEXT[q.m.kind][q.m.i];
+      assert.ok(said.includes(row[0]) && said.includes(`Source: ${NUMIT_TEXT.sources[row[2]]}.`), said);
+      if (row[4]) assert.ok(said.includes(row[4]), said);
+    }
+    // a mark turned out of view is no longer the focus
+    const gone = { lon: 46 + 180, lit: 1, dim: false, focus: p.m.id };
+    assert.ok(!sayGlobe(gone).now.startsWith('Shadow.'));
+  } finally { delete globalThis.NUMIT_EVENTS; }
+});
+
+test('the globe: nothing runs off the drawing at any width, plate included', () => {
+  const { globeView, renderGlobe } = Lab, k = Lab.KINDS.globe;
+  globalThis.NUMIT_EVENTS = NUMIT_TEXT;
+  try {
+    for (const [w, full] of [[320, true], [375, true], [343, false], [620, true], [760, true], [1000, false], [1040, true]]) {
+      const h = full ? k.height(k.state(), w) : Math.round(w * (w < 700 ? 0.75 : 0.54));
+      const o = { w, h, full, tagRoom: !full && w >= 720 ? 30 : 0 };
+      for (const lon of [-100, 46]) {
+        const st = { lon, lit: 1, dim: false, focus: null }, v = globeView(st, w, h, o);
+        const marks = [...v.shadow, ...v.light];
+        for (const focus of [null, ...marks.filter((_, i) => i % 9 === 0).map((p) => p.m.id)]) {
+          const svg = renderGlobe({ ...st, focus }, o);
+          assert.ok(svg.startsWith('<svg') && svg.endsWith('</svg>') && !/NaN|undefined/.test(svg), `${w}`);
+          for (const m of svg.matchAll(/<text[^>]*x="(-?[\d.]+)"[^>]*>([^<]*)</g)) {
+            const end = /text-anchor="end"/.test(m[0]), wide = /sp-level/.test(m[0]) ? 8.1 : 6.65;
+            const len = m[2].replace(/&amp;/g, '&').length * wide, x = +m[1];
+            assert.ok((end ? x : x + len) <= w + 1 && (end ? x - len : x) >= -1, `${w} ${lon}: "${m[2]}" runs off the drawing`);
+          }
+          for (const m of svg.matchAll(/<rect class="pl-plate" x="(-?[\d.]+)" y="(-?[\d.]+)" width="([\d.]+)" height="([\d.]+)"/g)) {
+            assert.ok(+m[1] >= 0 && +m[2] >= 0 && +m[1] + +m[3] <= w && +m[2] + +m[4] <= h, `${w}: the plate leaves the sheet`);
+          }
+        }
+        // the two keys never meet in the middle on a narrow sheet
+        if (w < 620) {
+          const keys = [...renderGlobe(st, o).matchAll(/<text class="fig-lab sp-o[nf]+ sp-level"[^>]*x="([\d.]+)"[^>]*>([^<]*)</g)];
+          assert.equal(keys.length, 2);
+          assert.ok(+keys[0][1] + keys[0][2].length * 8.1 < +keys[1][1] - keys[1][2].length * 8.1, `${w}: the keys overlap`);
+        }
+      }
+    }
+  } finally { delete globalThis.NUMIT_EVENTS; }
+});

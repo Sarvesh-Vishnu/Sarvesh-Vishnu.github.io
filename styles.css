@@ -601,8 +601,7 @@ body {
   overflow: hidden;
   transition: border-color var(--duration-base) var(--ease-out);
 }
-.tile-fig svg, .tile-fig img { display: block; width: 100%; height: 100%; }
-.tile-fig img { object-fit: cover; transform: scale(1.06); }   /* trims capture edges */
+.tile-fig svg { display: block; width: 100%; height: 100%; }
 .tile-tag {
   position: absolute;
   top: var(--space-3);
@@ -728,6 +727,17 @@ body {
 .rt-stop.is-end { fill: var(--accent); }
 .rt-seed  { fill: var(--mark); stroke: var(--surface); stroke-width: 1.5; }
 .rt-lab   { paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
+.gl-sphere { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.6; }
+.gl-grat { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.09; }
+.gl-land { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.42; stroke-linejoin: round; }
+.gl-s, .gl-l, .gl-l-halo { fill: none; stroke-linecap: round; }
+.gl-s { stroke: var(--accent); opacity: 0.9; }
+.gl-l { stroke: var(--mark); }
+.gl-l-halo { stroke: var(--surface); }
+.gl-key-s { fill: var(--accent); }
+.gl-key-l { fill: var(--mark); }
+.gl-key-l.is-off { fill: none; stroke: var(--ink-muted); stroke-width: 1; }
+.gl-ring { fill: none; stroke: var(--mark); stroke-width: 1.5; }
 .pl-main { fill: none; stroke: var(--mark); stroke-width: 1; opacity: 0.38; stroke-linecap: round; }
 .pl-main.is-on { stroke: var(--accent); stroke-width: 2.5; opacity: 1; }
 .pl-main.is-focus { stroke-width: 4; opacity: 1; }
@@ -736,6 +746,8 @@ body {
 .pl-plate { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
 .pl-lead { fill: none; stroke: var(--ink-muted); stroke-width: 1; }
 .lab.is-live .lab-plan { cursor: crosshair; }
+.lab.is-live .lab-globe { cursor: grab; }
+.lab.is-live .lab-globe:active { cursor: grabbing; }
 /* the reading (§14.19): a comment in mono, brackets and leaders, the driver in the redline */
 .rd-word { font-family: var(--font-mono); fill: var(--ink); }
 .rd-stop { fill: var(--ink-muted); }
@@ -1354,6 +1366,7 @@ html.lenis, html.lenis body { height: auto; }
 .tile-fig[data-lab="spine"], .lab-stage:has(.lab-spine) { view-transition-name: lab-spine; }
 .tile-fig[data-lab="reading"], .lab-stage:has(.lab-reading) { view-transition-name: lab-reading; }
 .tile-fig[data-lab="plan"],    .lab-stage:has(.lab-plan)    { view-transition-name: lab-plan; }
+.tile-fig[data-lab="globe"],   .lab-stage:has(.lab-globe)   { view-transition-name: lab-globe; }
 ::view-transition-group(*) { animation-duration: 420ms; animation-timing-function: var(--ease-out); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 220ms; }
 @media (prefers-reduced-motion: reduce) {
@@ -1412,13 +1425,13 @@ html.lenis, html.lenis body { height: auto; }
   .hero-links { margin-top: 4pt; gap: 2pt 14pt; }
   .hero-links a { border: 0; font-size: 8.5pt; }
   .hero-links a::after { content: " " attr(data-print); font-weight: 400; color: var(--ink-soft); }
-  .section { padding: 9pt 0 5pt; border-top: 0.5pt solid var(--line); }
+  .section { padding: 7pt 0 4pt; border-top: 0.5pt solid var(--line); }
   .section-head { display: block; margin-bottom: 5pt; }
   .th, .stack-row { break-inside: avoid; }
   .th-merge { min-height: 26pt; }
   .section-title { font-size: 13pt; margin-top: 2pt; max-width: none; }
   .reel-track { display: block; overflow: visible; }
-  .slide { margin: 0 0 8pt; break-inside: avoid; }
+  .slide { margin: 0 0 5pt; break-inside: avoid; }   /* five sheets on two pages (§14.22) */
   .slide-text { margin-top: 0; grid-template-columns: 1fr; gap: 2pt; }
   .project-name, .slide-desc, .project-meta, .slide-why { grid-column: 1; grid-row: auto; }
   .project-name { font-size: 12pt; }
@@ -1426,7 +1439,7 @@ html.lenis, html.lenis body { height: auto; }
   .slide-why { border-left-width: 1.5pt; }
   .path-grid { display: block; }
   .threads { max-width: none; }
-  .th-when, .th-body { padding-bottom: 6pt; }
+  .th-when, .th-body { padding-bottom: 4pt; }
   .path-bio { position: static; margin-top: 6pt; }
   .path-bio p + p { margin-top: 4pt; }
   .stack-row { padding: 3pt 0; grid-template-columns: 90pt 1fr; gap: 8pt; }
