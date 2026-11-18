@@ -323,6 +323,7 @@
   /* ================================================================== renderers
      Pure: (state, {w, h, full}) -> SVG markup. Sizes are real pixels, so the mono
      labels stay one size on every screen. Classes come from styles.css (.fig-*). */
+  const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const P = (pts) => 'M' + pts.map((q) => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' L');
   const open = (w, h) => `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet" focusable="false">`;
 
@@ -1106,22 +1107,36 @@
      web/public/data/routes.json + tracks.json (λ = 1; pull none / strong = γ 0 / 2) and
      results/phase4.json (bench). Real ListenBrainz data, CC0. Do not edit by hand. */
   const OB = {"head":43,"max":1491,"min":7,"transitions":20841386,"items":219876,"bench":{"routeTail":0.585,"routeReal":0.166,"popTail":0.602,"popReal":0.07},"seeds":[{"t":"Take On Me","a":"a‐ha","n":953,"routes":{"none":[{"t":"Africa","a":"Toto","n":791,"c":72,"o":4090,"held":true},{"t":"How You Remind Me","a":"Nickelback","n":645,"c":47,"o":3932,"held":true},{"t":"(I Just) Died in Your Arms","a":"Cutting Crew","n":462,"c":46,"o":2453,"held":true},{"t":"More Than This","a":"Roxy Music","n":145,"c":21,"o":1421,"held":false},{"t":"Shouldn’t Have to Be Like That","a":"Fra Lippo Lippi","n":11,"c":8,"o":332,"held":false}],"strong":[{"t":"Africa","a":"Toto","n":791,"c":72,"o":4090,"held":true},{"t":"Don’t Stop Believin’","a":"Journey","n":608,"c":23,"o":3932,"held":false},{"t":"Livin’ on a Prayer","a":"Bon Jovi","n":705,"c":20,"o":2764,"held":true},{"t":"Fortunate Son","a":"Creedence Clearwater Revival","n":706,"c":27,"o":2560,"held":false},{"t":"Paint It Black","a":"The Rolling Stones","n":734,"c":56,"o":3406,"held":true}]},"obvious":[{"t":"Africa","a":"Toto","n":791},{"t":"Everybody Wants to Rule the World","a":"Tears for Fears","n":1002},{"t":"Every Breath You Take","a":"The Police","n":811},{"t":"Don’t Stop Believin’","a":"Journey","n":608},{"t":"Another One Bites the Dust","a":"Queen","n":746}]},{"t":"Everybody Wants to Rule the World","a":"Tears for Fears","n":1002,"routes":{"none":[{"t":"Your Love","a":"The Outfield","n":425,"c":21,"o":3817,"held":true},{"t":"Run to You","a":"Bryan Adams","n":221,"c":14,"o":1359,"held":false},{"t":"Dance Hall Days","a":"Wang Chung","n":138,"c":33,"o":758,"held":true},{"t":"Call Me","a":"Go West","n":40,"c":56,"o":515,"held":false},{"t":"Kiss the Dirt (Falling Down the Mountain)","a":"INXS","n":40,"c":46,"o":203,"held":false}],"strong":[{"t":"Take On Me","a":"a‐ha","n":953,"c":46,"o":3817,"held":false},{"t":"Africa","a":"Toto","n":791,"c":72,"o":4090,"held":true},{"t":"Don’t Stop Believin’","a":"Journey","n":608,"c":23,"o":3932,"held":false},{"t":"Livin’ on a Prayer","a":"Bon Jovi","n":705,"c":20,"o":2764,"held":true},{"t":"Fortunate Son","a":"Creedence Clearwater Revival","n":706,"c":27,"o":2560,"held":false}]},"obvious":[{"t":"Take On Me","a":"a‐ha","n":953},{"t":"Africa","a":"Toto","n":791},{"t":"Shout","a":"Tears for Fears","n":418},{"t":"Every Breath You Take","a":"The Police","n":811},{"t":"I’m Still Standing","a":"Elton John","n":663}]},{"t":"Co2","a":"Prateek Kuhad","n":50,"routes":{"none":[{"t":"blue","a":"yung kai","n":152,"c":14,"o":127,"held":false},{"t":"bad","a":"wave to earth","n":69,"c":7,"o":451,"held":false},{"t":"Runaway","a":"Kanye West","n":175,"c":65,"o":455,"held":false},{"t":"Private Landing","a":"Don Toliver feat. Justin Bieber & Future","n":63,"c":37,"o":1122,"held":false},{"t":"Oldie 2","a":"Odd Future 2","n":40,"c":41,"o":212,"held":false}],"strong":[{"t":"Sahiba","a":"Aditya Rikhari","n":82,"c":1,"o":127,"held":false},{"t":"Finding Her","a":"Kushagra, Bharath & Saaheal","n":72,"c":26,"o":283,"held":true},{"t":"Jo Tum Mere Ho","a":"Anuv Jain","n":62,"c":33,"o":174,"held":true},{"t":"Ishq","a":"Faheem Abdullah, Rauhan Malik & Amir Ameer","n":43,"c":21,"o":148,"held":false},{"t":"Haseen","a":"Talwiinder, NDS & Rippy Grewal","n":24,"c":16,"o":106,"held":false}]},"obvious":[{"t":"Baarishein","a":"Anuv Jain","n":44},{"t":"Choo Lo","a":"The Local Train","n":75},{"t":"Mazaak","a":"Anuv Jain","n":22},{"t":"Alag Aasmaan","a":"Anuv Jain","n":55},{"t":"Those Eyes","a":"New West","n":242}]}]};
-  const RT = { WIDE: 620, STEPS: 5, TICKS: [1000, 100, 10], LABEL: 18 };
+  const RT = { WIDE: 860, STEPS: 5, TICKS: [1000, 100, 10] };   // WIDE: from here a step is wide enough to carry a song's name
   const rtSeed = (st) => OB.seeds[clamp(st.s | 0, 0, OB.seeds.length - 1)];
   const rtPull = (st) => (st.pull === 'strong' ? 'strong' : 'none');
   const rtK = (st) => clamp(Math.round(st.k), 0, RT.STEPS);
   const thousands = (n) => n.toLocaleString('en-GB');
-  const cut = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
+  const cut = (s, n) => (s.length > n ? s.slice(0, Math.max(1, n - 1)).trimEnd() + '…' : s);
+  const heard = (n) => `${thousands(n)} ${n === 1 ? 'listener' : 'listeners'}`;
 
   function rtGeom(w, h, o) {
     const wide = w >= RT.WIDE, study = !!(o && o.full && !o.tagRoom);
-    const padL = wide ? 64 : 44, padR = wide ? 168 : 18, padT = study ? 28 : 54, padB = 44;
-    const lo = Math.log(OB.min), hi = Math.log(OB.max);
+    const padL = wide ? 78 : 44, padR = wide ? 222 : 18, padT = wide ? (study ? 40 : 62) : (study ? 22 : 48), padB = wide ? 44 : 56;
+    const lo = Math.log(OB.min), hi = Math.log(OB.max), step = (w - padL - padR) / RT.STEPS;
     return {
-      wide, padL, padR, padT, padB,
-      X: (i) => padL + (i * (w - padL - padR)) / RT.STEPS,
+      wide, study, padL, padR, padT, padB, step,
+      X: (i) => padL + i * step,
       Y: (n) => padT + ((hi - Math.log(clamp(n, OB.min, OB.max))) / (hi - lo)) * (h - padT - padB),
     };
+  }
+  /* Where a stop's name can sit without the route running through it. Stops alternate
+     sides, so two neighbours share one gap between them: one above the line, one below.
+     Returns the anchor, the x, and the baseline of each line. */
+  function rtPlace(g, h, ys, i, k, lines) {
+    const y = ys[i], prev = i > 0 ? ys[i - 1] : null, next = i < k ? ys[i + 1] : null;
+    const right = i % 2 === 0;
+    let up = right ? (next === null || next >= y - 2) : !(prev === null || prev <= y + 2);
+    if (!up && y + 20 + (lines - 1) * 14 > h - g.padB + 2) up = true;      // too near the foot: go above
+    if (up && y - 9 - (lines - 1) * 14 < g.padT - 26) up = false;          // too near the head: go below
+    const x = g.X(i) + (right ? 10 : -10);
+    const first = up ? y - 9 - (lines - 1) * 14 : y + 19;
+    return { anchor: right ? 'start' : 'end', x, ys: Array.from({ length: lines }, (_, j) => first + j * 14) };
   }
   function renderRoute(st, o) {
     const { w, h } = o, g = rtGeom(w, h, o), seed = rtSeed(st), k = rtK(st), pull = rtPull(st);
@@ -1129,35 +1144,61 @@
     const pts = (stops) => stops.map((s, i) => `${i ? 'L' : 'M'}${fx(g.X(i))},${fx(g.Y(s.n))}`).join(' ');
     const route = [seed, ...seed.routes[pull]];
     const other = [seed, ...seed.routes[pull === 'none' ? 'strong' : 'none']];
+    const ys = route.map((x) => g.Y(x.n)), end = route[k];
     let s = open(w, h);
-    RT.TICKS.forEach((n) => {
+    RT.TICKS.forEach((n, i) => {
       s += `<path class="rt-grid" d="M${g.padL},${fx(g.Y(n))} L${w - g.padR},${fx(g.Y(n))}"/>`;
       s += `<text class="fig-lab fig-lab-quiet" text-anchor="end" x="${g.padL - 10}" y="${fx(g.Y(n) + 4)}">${thousands(n)}</text>`;
+      if (!i && g.wide) s += `<text class="fig-lab fig-lab-quiet" text-anchor="end" x="${g.padL - 10}" y="${fx(g.Y(n) + 18)}">listeners</text>`;
     });
     const yT = g.Y(OB.head);
     s += `<path class="rt-tail" d="M${g.padL},${fx(yT)} L${w - g.padR},${fx(yT)}"/>`;
-    s += `<text class="fig-lab fig-lab-quiet sp-level" x="${g.padL + 8}" y="${fx(yT - 7)}">HEAD</text>`;
-    s += `<text class="fig-lab fig-lab-quiet sp-level" x="${g.padL + 8}" y="${fx(yT + 16)}">LONG TAIL${g.wide ? ` · UNDER ${OB.head} LISTENERS` : ''}</text>`;
-    s += `<text class="fig-lab fig-lab-quiet sp-level" x="4" y="${fx(g.padT - 16)}">LISTENERS</text>`;
-    for (let i = 0; i <= RT.STEPS; i++) {
-      s += `<text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="${fx(g.X(i))}" y="${h - 14}">${i ? i : 'SEED'}</text>`;
+    if (g.wide) {
+      for (let i = 0; i <= RT.STEPS; i++) s += `<text class="fig-lab fig-lab-quiet sp-level" text-anchor="middle" x="${fx(g.X(i))}" y="${h - 14}">${i ? i : 'SEED'}</text>`;
     }
-    s += `<path class="rt-ghost" d="${pts(other)}"/>`;
+    if (g.study) {                                        // the same start with the other pull setting, for comparison
+      s += `<path class="rt-ghost" d="${pts(other)}"/>`;
+      const oy = g.Y(other[RT.STEPS].n);
+      if (g.wide && k === RT.STEPS && Math.abs(oy - ys[RT.STEPS]) > 56) {
+        s += `<text class="fig-lab fig-lab-quiet sp-level" x="${fx(g.X(RT.STEPS) + 12)}" y="${fx(oy + 4)}">${pull === 'none' ? 'WITH STRONG PULL' : 'WITH NO PULL'}</text>`;
+      }
+    }
     if (k) s += `<path class="rt-line" d="${pts(route.slice(0, k + 1))}"/>`;
     route.slice(0, k + 1).forEach((stop, i) => {
-      const x = g.X(i), y = g.Y(stop.n), last = i === k && k > 0;
-      s += `<circle class="${i ? 'rt-stop' : 'rt-seed'}${last ? ' is-end' : ''}" cx="${fx(x)}" cy="${fx(y)}" r="${last ? 4.5 : 3.5}"/>`;
-      if (g.wide && i && i < k) {                         // name the stops on the way, above or below the line
-        const prev = route[i - 1].n, below = stop.n < prev && i % 2 === 1;
-        s += `<text class="fig-lab rt-lab" text-anchor="middle" x="${fx(x)}" y="${fx(below ? y + 18 : y - 10)}">${cut(stop.a, RT.LABEL)}</text>`;
-      }
+      const last = i === k && k > 0;
+      s += `<circle class="${i ? 'rt-stop' : 'rt-seed'}${last ? ' is-end' : ''}" cx="${fx(g.X(i))}" cy="${fx(ys[i])}" r="${last ? 4.5 : 3.5}"/>`;
     });
-    const end = route[k];
-    if (g.wide) {                                         // the stop reached so far, named in the margin
-      const ex = g.X(k) + 12, ey = g.Y(end.n);
-      s += `<text class="fig-lab ${k ? 'fig-lab-acc' : 'sp-on'}" x="${fx(ex)}" y="${fx(ey - 2)}">${cut(end.a, 22)}</text>`;
-      s += `<text class="fig-lab" x="${fx(ex)}" y="${fx(ey + 13)}">${thousands(end.n)} ${end.n === 1 ? 'listener' : 'listeners'}</text>`;
+
+    // names: collected first, so the words on the tail line can keep clear of them
+    const names = [];
+    const put = (at, lines) => lines.forEach(([cls, text], j) => names.push({ cls: `rt-lab ${cls}`, anchor: at.anchor, x: at.x, y: at.ys[j], text }));
+    if (g.wide) {
+      // every stop is a song: its title, who it is by, and at the two ends how many people play it
+      const room = Math.floor((g.step - 20) / SP_CH);
+      const first = [['sp-on', cut(seed.t, room)], ['fig-lab-quiet', cut(seed.a, room)], ['fig-lab-quiet', heard(seed.n)]];
+      put(rtPlace(g, h, ys, 0, k, first.length), first);
+      for (let i = 1; i < k; i++) {
+        const lines = [['', cut(route[i].t, room)], ['fig-lab-quiet', cut(route[i].a, room)]];
+        put(rtPlace(g, h, ys, i, k, lines.length), lines);
+      }
+      if (k) {                                            // the stop reached so far, named to its right
+        const er = Math.floor((g.padR - 20) / SP_CH), ey = clamp(ys[k], g.padT + 14, h - g.padB - 14);
+        put({ anchor: 'start', x: g.X(k) + 12, ys: [ey - 12, ey + 2, ey + 16] }, [['fig-lab-acc', cut(end.t, er)], ['', cut(end.a, er)], ['', heard(end.n)]]);
+      }
+    } else {
+      // a narrow sheet names the two ends under the plot: where the route starts, and where it has got to
+      const half = Math.floor((w - 16 - 12) / 2 / SP_CH), y1 = h - 26, y2 = h - 10;
+      names.push({ cls: 'sp-on', anchor: 'start', x: 8, y: y1, text: cut(seed.t, half) }, { cls: 'fig-lab-quiet', anchor: 'start', x: 8, y: y2, text: heard(seed.n) });
+      if (k) names.push({ cls: 'fig-lab-acc', anchor: 'end', x: w - 8, y: y1, text: cut(end.t, half) }, { cls: '', anchor: 'end', x: w - 8, y: y2, text: heard(end.n) });
     }
+    const box = (n, per) => { const len = n.text.length * per, x0 = n.anchor === 'end' ? n.x - len : n.anchor === 'middle' ? n.x - len / 2 : n.x; return [x0 - 4, n.y - 12, x0 + len + 4, n.y + 6]; };
+    const hit = (a, b) => a[0] < b[2] && b[0] < a[2] && a[1] < b[3] && b[1] < a[3];
+    const taken = names.map((n) => box(n, SP_CH));
+    const tail = [['HEAD', yT - 7], [`LONG TAIL${g.wide ? ` · UNDER ${OB.head} LISTENERS` : ''}`, yT + 16]];
+    const spots = [['start', g.padL + 8], ['end', w - g.padR - 8], ['middle', (g.padL + w - g.padR) / 2]];
+    const free = spots.find(([anchor, x]) => tail.every(([text, y]) => !taken.some((t) => hit(t, box({ text, anchor, x, y }, 8.1)))));
+    if (free) tail.forEach(([text, y]) => { s += `<text class="fig-lab fig-lab-quiet sp-level rt-lab" text-anchor="${free[0]}" x="${fx(free[1])}" y="${fx(y)}">${text}</text>`; });
+    s += names.map((n) => `<text class="fig-lab ${n.cls}" text-anchor="${n.anchor}" x="${fx(n.x)}" y="${fx(n.y)}">${esc(n.text)}</text>`).join('');
     return s + '</svg>';
   }
   function sayRoute(st, o) {
@@ -1347,7 +1388,6 @@
     }
     return s + '</svg>';
   }
-  const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
   function sayGlobe(st, o) {
     const w = (o && o.w) || 1040, h = (o && o.h) || 520;
@@ -1421,7 +1461,7 @@
       scrub: (st, u) => { st.k = Math.round(clamp(u, 0, 1) * RT.STEPS); },
       travel: (st, u) => { st.k = Math.round(clamp(u * 2.2, 0, 1) * RT.STEPS); },
       unit: (st) => rtK(st) / RT.STEPS,
-      height: (st, w) => Math.round(w >= RT.WIDE ? clamp(w * 0.46, 330, 460) : w * 0.86 + 40),
+      height: (st, w) => Math.round(w >= RT.WIDE ? clamp(w * 0.46, 380, 460) : Math.min(w * 0.86 + 40, 400)),
     },
     plan: {
       state: () => ({ by: 'model', k: PL.DEFAULT, focus: null }),
@@ -1775,7 +1815,7 @@
     renderCommittee, renderRecord, renderList, renderField, renderSample, renderSpine,
     SP_NODES, SP_PATHS, SP_DECISIONS, spinePath, spineFocus, saySpine,
     PL, plan, renderPlan, sayPlan, planNearest, share, place,
-    OB, RT, renderRoute, sayRoute,
+    OB, RT, rtGeom, renderRoute, sayRoute,
     NM, GL, globe, globeView, renderGlobe, sayGlobe, globeNearest, globeStep, globeTravel,
     RD_STEPS, RD_COMMENTS, RD_STOP, RD_WIDE, rdParse, rdLayout, rdGeom, renderReading, sayReading,
     sayCommittee, sayList, saySample, KINDS,

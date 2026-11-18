@@ -1162,3 +1162,71 @@ it (still a white page in a dark room). Lifting the white print's muted colour t
 labels above 11px (their layout is computed from character widths, and they are labels,
 not sentences). A prefers-color-scheme default (the blue sheet is the design; the
 toggle is in the header).
+
+### 14.24 — A broader opening, the Obscure slide, and a résumé that agrees with the site
+*Changes: §14.16 and §14.17 (the hero's line), §14.21 (the route figure), §14.16 (print
+as the résumé). (2026-11-18)*
+
+**Why.** The owner: "Building forecasts, AI systems and civic tools" reads as niche. The
+site should speak to a tech recruiter, a UN official and a general reader, and carry
+confidence, integrity and trust throughout. Asked to choose between a more technical
+line and a more general one, the owner did not want to narrow the offer either way.
+
+**The hero: two registers at two sizes.** The large line is general and makes one
+claim: "Data science and AI that people can trust." It names the field in the words a
+recruiter searches for and states the value in words anyone understands; the redline is
+under "people can trust". A proof line under it carries the technical range and the
+sectors in two plain sentences: forecasting, experiments, language models and
+recommender systems; a medical-device business, a water authority, the world's crises.
+Each item in it is backed by a sheet on the reel. The name, role and links are
+unchanged. The values list (purpose, meaning, integrity, care) leaves the hero; the
+site shows them in how the work is presented. Both lines are drafts for the owner.
+
+**Trust said where the reader is looking.** The note above the reel now says what the
+figures are: every one works, employer figures show the method and never company data,
+personal ones run on real public data. The footer keeps its shorter version.
+
+**The Obscure slide.** The route was a line with artist names on it and no start. A
+general reader could not tell it was a walk between songs.
+- Every stop is now a song: title and artist, and at the two ends how many people play
+  it. Names alternate sides so two neighbours share one gap, one above the line and one
+  below, and a name never sits on the route.
+- The axis title hid behind the tile's tag. The unit now sits under the top tick.
+- Under 860px a step is too narrow for a name, so the two ends are named under the
+  plot: where the route starts and where it has got to.
+- The dashed comparison line is drawn only on the case study, where it is labelled
+  ("with strong pull"). On the tile it was an unexplained second line.
+- "Head" and "long tail" move to whichever part of their line no song name occupies.
+- The slide's description leads with what the thing does in plain words and ends with
+  the methods a recruiter looks for.
+Tests: both ends named with their counts for every seed; no two labels overlap and
+nothing leaves the drawing, for every seed, pull and step at nine widths.
+
+**The résumé.** The linked PDF was a Word export from July 2026 that named the old
+role and older figures (70+ managers, 20+ product lines, 50K+ records) and carried a
+phone number. `resume.html` is now the résumé: one column, real text, plain headings,
+A4, two pages, set in the white print's type and colours. `scripts/resume_pdf.cjs`
+prints it to `assets/resume.pdf`, so the file the site links cannot drift from the
+page, and redraws the share card from the hero's line in the same run. Content comes
+only from the previous résumé and from this site: current title and figures, the
+cross-sell experiment, SKU-level forecasting and the research assistant added; Obscure,
+Numit and On Paper added as projects; course lists removed; "C-suite" corrected to the
+directors actually named. No phone number on the public copy. The home page's print
+stylesheet stays a tidy two pages but is no longer the résumé.
+
+**Wording, for confidence without overclaiming.** Three places undersold the work in
+the owner's own prose and were rewritten as drafts: the first and third paragraphs
+beside the path ("the more interesting bits", "Outside the dashboards", "more than is
+strictly necessary"), and "wearing several hats … ad-hoc requests" on the Cooper case
+study. The non-profit is now described by what it worked on, the UN Sustainable
+Development Goals, as the résumé always has. Nothing was made larger than its source.
+
+**Considered and rejected.** A hero line built on "decisions" (leaves out the systems
+and products). The owner's three words as the line itself (a list of virtues is a
+claim about oneself; "people can trust" is a claim about the work that the site can
+back). A longer proof line naming employers (the id line below already does). Song
+names on the phone tile at every stop (no room; the two ends carry it). One page for
+the résumé (it needed 8pt type or cuts the owner has not asked for).
+
+**Open with the owner.** Every new line is a draft, the résumé in full. The résumé's
+two judgement calls: no phone number, and two pages.

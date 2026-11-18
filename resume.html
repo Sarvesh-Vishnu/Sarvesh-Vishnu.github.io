@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#FFFFFF" />
+  <title>Sarvesh Vishnu, Senior Data Scientist: résumé</title>
+  <meta name="description" content="Résumé of Sarvesh Vishnu, senior data scientist: forecasting, experimentation, NLP and AI systems for business, public services and the public interest." />
+  <meta name="author" content="Sarvesh Vishnu Muhundu Parthiban" />
+  <link rel="canonical" href="https://sarvesh-vishnu.github.io/resume.html" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" />
+
+  <!-- The résumé is one self-contained sheet: this page is its source, and assets/resume.pdf
+       is printed from it by scripts/resume_pdf.cjs (design.md §14.24). One column, real text,
+       plain headings, so a résumé parser reads it in the order a person does. -->
+  <style>
+    :root { --ink: #0A2240; --soft: #23406A; --muted: #4E6A8E; --line: #C9D4E2; --accent: #C93B1A; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10pt; -webkit-text-size-adjust: 100%; }
+    body { background: #E9EEF5; color: var(--ink); font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; line-height: 1.38; }
+    a { color: inherit; text-decoration: none; }
+    .bar { max-width: 210mm; margin: 0 auto; padding: 14px 4px; display: flex; justify-content: space-between; gap: 16px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; }
+    .bar a { padding: 6px 0; border-bottom: 1px solid currentColor; }
+    .sheet { max-width: 210mm; margin: 0 auto 32px; padding: 14mm 15mm; background: #FFFFFF; }
+    h1 { font-size: 21pt; font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; }
+    .role { margin-top: 2pt; font-size: 11pt; font-weight: 500; }
+    .reach { margin-top: 4pt; font-size: 9pt; color: var(--soft); }
+    .reach a { white-space: nowrap; border-bottom: 0.5pt solid var(--line); }
+    .profile { margin-top: 9pt; padding-top: 8pt; border-top: 1.5pt solid var(--accent); color: var(--soft); }
+    h2 { margin: 12pt 0 5pt; padding-bottom: 2pt; border-bottom: 0.5pt solid var(--line); font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 8.5pt; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .job { margin-top: 7pt; break-inside: avoid; }
+    .job:first-of-type { margin-top: 0; }
+    .head { display: flex; justify-content: space-between; align-items: baseline; gap: 12pt; }
+    h3 { font-size: 10.5pt; font-weight: 500; }
+    .when { flex: none; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 8.5pt; color: var(--soft); white-space: nowrap; }
+    .title { color: var(--soft); }
+    ul { margin: 2.5pt 0 0 11pt; }
+    li { margin-top: 1.5pt; padding-left: 1pt; color: var(--soft); }
+    li::marker { color: var(--muted); }
+    .item { margin-top: 4pt; color: var(--soft); break-inside: avoid; }
+    .item:first-of-type { margin-top: 0; }
+    .item b, .skills b { font-weight: 500; color: var(--ink); }
+    .skills p { margin-top: 2pt; color: var(--soft); }
+    @media (max-width: 640px) {
+      .sheet { padding: 22px 18px; }
+      .head { flex-wrap: wrap; gap: 0 12pt; }
+      html { font-size: 11pt; }
+    }
+    @page { size: A4; margin: 13mm 15mm; }
+    @media print {
+      body { background: #FFFFFF; }
+      .bar { display: none; }
+      .sheet { max-width: none; margin: 0; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="bar" aria-label="Résumé">
+    <a href="index.html">← sarvesh-vishnu.github.io</a>
+    <a href="assets/resume.pdf" download>Download as PDF</a>
+  </nav>
+
+  <main class="sheet">
+    <header>
+      <h1>Sarvesh Vishnu Muhundu Parthiban</h1>
+      <p class="role">Senior Data Scientist</p>
+      <p class="reach"><a href="mailto:sarveshvishnu@gmail.com">sarveshvishnu@gmail.com</a> · <a href="https://linkedin.com/in/sarveshvishnu/">linkedin.com/in/sarveshvishnu</a> · <a href="https://github.com/Sarvesh-Vishnu">github.com/Sarvesh-Vishnu</a> · <a href="https://sarvesh-vishnu.github.io/">sarvesh-vishnu.github.io</a></p>
+      <p class="profile">Senior data scientist working across forecasting, experimentation, NLP and AI systems, from the data foundation to the decision. My work has set sales targets for a medical-device business, shown a public water authority which mains to replace first, and measured patient experience across a network of clinics. MS in Quantitative Management from Duke Fuqua; B.E. in Computer Science with a specialization in AI and machine learning.</p>
+    </header>
+
+    <section aria-labelledby="r-exp">
+      <h2 id="r-exp">Experience</h2>
+
+      <div class="job">
+        <div class="head"><h3>Cooper Surgical</h3><span class="when">Trumbull, CT · Jul 2025 – Present</span></div>
+        <p class="title">Senior Data Scientist, Strategy &amp; Market Insights. Earlier: Data Scientist, Commercial Excellence.</p>
+        <ul>
+          <li>Own the analytics behind the Annual Operating Plan for the Medical Device business: quota allocation for 75+ territory managers and ensemble demand forecasts (ARIMA, SARIMAX, Prophet, gradient boosting) across 25+ product lines.</li>
+          <li>Built the data spine the plan runs on with Python pipelines, Microsoft Fabric, SQL and Azure, and the Power BI views that moved executive reporting from days of ad-hoc pulls to live monitoring.</li>
+          <li>Led a cross-sell initiative end to end: identified the target customers, designed the A/B test, built the compensation plan and evaluated the result.</li>
+          <li>Forecast demand by SKU and country for supply and demand planning, and support long-range planning with price-elasticity and market analysis.</li>
+          <li>Built a research assistant on LangGraph with hybrid keyword and semantic retrieval that drafts a weekly market brief for leadership from public sources. Every statistic links to its source, and every story is validated before it is sent.</li>
+          <li>Present scenario and sensitivity analysis to the directors of Marketing, Sales and Business Analytics, so product-launch decisions are tested against the forecast before they become commitments.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="head"><h3>Western Virginia Water Authority</h3><span class="when">Roanoke, VA · Jan 2025 – Jul 2025</span></div>
+        <p class="title">Data Scientist, Planning and Asset Management</p>
+        <ul>
+          <li>Built a gradient-boosted model (XGBoost) that scores every active water main for failure 6 to 12 months ahead, joining 20+ years of maintenance history with soil, freeze-cycle and traffic data. Validated on years the model had not seen, with calibrated probabilities.</li>
+          <li>The first ranked list directed proactive replacement of high-risk mains: about $150K in value from avoided emergency repairs and better-sequenced capital work.</li>
+          <li>Shipped a Power BI view on the live maintenance system that feeds the Authority’s five-year capital plan and gives engineering, GIS and administration one view of asset health.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="head"><h3>Pinnacle Fertility, Duke Fuqua capstone</h3><span class="when">Scottsdale, AZ · Mar 2024 – May 2024</span></div>
+        <p class="title">Data Scientist</p>
+        <ul>
+          <li>Built an NLP pipeline over 100K+ patient records from 12 facilities: sentiment by facility and by touchpoint, and the operational drivers behind it.</li>
+          <li>Added a predictive layer that flags interactions likely to go wrong, and showed that conversation length has a sweet spot for patient satisfaction.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="head"><h3>Duke University, Nicholas School of the Environment</h3><span class="when">Durham, NC · Oct 2023 – Oct 2024</span></div>
+        <p class="title">Data &amp; Marketing Specialist</p>
+        <ul>
+          <li>Segmented audiences for executive education programs with Python, Tableau and ArcGIS, raising engagement 40% while cutting costs 20%.</li>
+          <li>Automated campaign reporting in Python, which informed campaign targeting and curriculum planning.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="head"><h3>Deloitte, Strategy &amp; Analytics</h3><span class="when">Bengaluru, India · Jan 2023 – Jun 2023</span></div>
+        <p class="title">Data Analyst</p>
+        <ul>
+          <li>Led five analysts on sales analytics over millions of transaction records (Hadoop, Hive, AWS, Power BI) that shaped client marketing campaigns.</li>
+          <li>Built machine-learning models on blockchain transaction data, and ETL pipelines that improved data quality for downstream analytics.</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="head"><h3>Siemens</h3><span class="when">Bengaluru, India · Jun 2021 – Aug 2021</span></div>
+        <p class="title">Technical Intern, Distributed Control Systems (PCS)</p>
+        <ul>
+          <li>Built an NLP proof of concept for automating control-system documentation, and KPI dashboards over data from 15+ manufacturing facilities.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section aria-labelledby="r-proj">
+      <h2 id="r-proj">Projects and research</h2>
+      <p class="item"><b>Obscure, a music recommender</b> (Python, PyTorch, DuckDB, React). Benchmarked collaborative filtering, re-ranking, cold start, sequence models, off-policy evaluation and contextual bandits on one leakage-free split of 20.8M listening transitions from ListenBrainz. Its routes reach the long tail on 2.4× as many real listener steps as a popularity penalty, and a LinUCB bandit lifts hit rate 13% over the base ranker. <a href="https://sarvesh-vishnu.github.io/ObscureMusicRecSys/">Live app</a> and <a href="https://github.com/Sarvesh-Vishnu/ObscureMusicRecSys">code</a>.</p>
+      <p class="item"><b>Numit, a globe of the world’s crises and repairs</b> (Next.js, TypeScript, Three.js). More than 400 hand-sourced events, a source-credibility index, and a build check that keeps 18 countries and regions represented. <a href="https://numit.vercel.app/">numit.vercel.app</a></p>
+      <p class="item"><b>On Paper</b>, an essay series on the distance between what India promises on paper and what reaches people. <a href="https://sarvesh-vishnu.github.io/on-paper/">sarvesh-vishnu.github.io/on-paper</a></p>
+      <p class="item"><b>Causal impact of ESG on financial performance</b> (R). Propensity score matching, difference-in-differences and fixed-effects models across S&amp;P 500 companies.</p>
+      <p class="item"><b>The Blue Cross of India</b> (Python, Tableau). A six-month analytics engagement for one of India’s largest animal-welfare non-profits; adoption rates rose about 5%.</p>
+    </section>
+
+    <section aria-labelledby="r-edu">
+      <h2 id="r-edu">Education</h2>
+      <div class="job">
+        <div class="head"><h3>Duke University, The Fuqua School of Business</h3><span class="when">Durham, NC · May 2024</span></div>
+        <p class="title">MS in Quantitative Management: Business Analytics, Strategy track. GPA 3.65/4.0. Merit Scholar. Graduate Research Assistant in econometrics and network theory.</p>
+      </div>
+      <div class="job">
+        <div class="head"><h3>SRM University</h3><span class="when">Chennai, India · May 2022</span></div>
+        <p class="title">B.E. in Computer Science, specialization in Artificial Intelligence and Machine Learning. GPA 9.13/10. Chief Student Editor of the university newsletter.</p>
+      </div>
+    </section>
+
+    <section class="skills" aria-labelledby="r-skills">
+      <h2 id="r-skills">Skills</h2>
+      <p><b>Languages:</b> Python, R, SQL</p>
+      <p><b>Modelling and statistics:</b> time-series forecasting, classification, NLP, recommender systems, causal inference, A/B testing, off-policy evaluation, contextual bandits</p>
+      <p><b>AI systems:</b> LangGraph, retrieval-augmented generation, hybrid keyword and semantic search</p>
+      <p><b>Data and cloud:</b> Microsoft Fabric, Azure, AWS, PySpark, Hadoop, Kafka, DuckDB, ETL, Git</p>
+      <p><b>Visualization and BI:</b> Power BI, Tableau, Looker, ArcGIS</p>
+    </section>
+
+    <section aria-labelledby="r-lead">
+      <h2 id="r-lead">Leadership and service</h2>
+      <p class="item"><b>Hind Towards Change</b>, Director. Led a 150-person non-profit, with 12 core members across operations, finance, HR and media, on initiatives aligned with the UN Sustainable Development Goals.</p>
+      <p class="item"><b>Duke Women’s Lacrosse</b>, performance analytics. Pipelines and dashboards in SQL, Python and Tableau for player performance and injury-prevention metrics in Division I athletics.</p>
+    </section>
+  </main>
+</body>
+</html>

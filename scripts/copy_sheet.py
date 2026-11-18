@@ -17,6 +17,8 @@ DRAFTS = [
  'No single model owns the truth', 'Four forecasters read', 'A synthetic product line', 'Is the worst facility really the worst', 'Twelve facilities, each',
  'Synthetic facilities', 'Work · ', 'Strategy &amp; Market Insights · 2025 to present', 'Pinnacle Fertility, Duke Fuqua capstone, 2024', 'Senior Data Scientist',
  'On Paper</a>, an essay series', 'Models that end in a decision', 'Senior data scientist. Models', 'Python · SQL · Azure · PowerBI · LangGraph',
+ 'Data science and AI that', 'My work runs from forecasting', 'Every figure works', 'I work where data science meets strategy',
+ 'Outside work I volunteer', 'A music recommender that takes you', 'I started as a Data Scientist on the Commercial Excellence team',
  'Three.js · Next.js · TypeScript · sourced', '“sun” in Meitei', 'Same world, different facing', 'Each mark is one event',
  'The same list the live globe draws', 'shadow events, each with a named source', 'light events: repairs', 'countries and regions a build check',
  'A curated list of several hundred events', 'A live news feed that I built', 'A source-credibility index of my own',
@@ -26,7 +28,7 @@ DRAFTS = [
  'Commercial Excellence, then Senior', 'Microsoft Fabric · Azure',
  'Obscure', 'A recommender that walks', 'Most recommenders keep you', 'Python · PyTorch · implicit', 'Five steps to the long tail',
 ]
-ALL_DRAFT = {'work/obscure.html'}     # every line on these pages is a draft for the owner
+ALL_DRAFT = {'work/obscure.html', 'resume.html'}     # every line on these pages is a draft for the owner
 CLASSES = ('thesis|hero-name|hero-role|eyebrow|section-title|section-note|reel-kind|reel-jump|slide-kind|project-name|slide-desc|slide-why|'
            'project-meta|slide-open|th-when|th-body|project-byline|project-tools|lab-title|lab-lede|lab-note|lab-key|label|contact-title|contact-line|foot-line')
 A = re.compile(r'<(\w+)\b([^>]*class="(?:[^"]* )?(' + CLASSES + r')(?: [^"]*)?"[^>]*)>(.*?)</\1>', re.S)
@@ -42,13 +44,13 @@ out = ['# Site copy', '',
        'Unmarked lines are your own words, carried over unchanged.',
        'The hero sentence and the sentences under each instrument are built by `lab.js` from the models. '
        'In the hero only the words between the numbers are editable; the instrument sentences live in `lab.js` (`sayCommittee`, `saySample`, `sayRoute`).', '']
-for f in ['index.html', 'work/commercial-analytics.html', 'work/nlp.html', 'work/wv-water.html', 'work/obscure.html', 'work/numit.html']:
+for f in ['index.html', 'work/commercial-analytics.html', 'work/nlp.html', 'work/wv-water.html', 'work/obscure.html', 'work/numit.html', 'resume.html']:
     src = (ROOT / f).read_text()
     out += [f'## {f}', '']
     for label, pat in (('Browser title', r'<title>(.*?)</title>'), ('Search description', r'<meta name="description" content="(.*?)"')):
         mm = re.search(pat, src); raw = mm.group(1)
         out.append(f'- **{label}** (line {src[:mm.start()].count(chr(10)) + 1}){" ✎ draft" if f in ALL_DRAFT or any(k in raw for k in DRAFTS) else ""}: {html.unescape(raw)}')
-    a, z = src.index('<main'), src.index('</footer>')
+    a, z = src.index('<main'), (src.index('</footer>') if '</footer>' in src else src.index('</main>'))
     items = {}
     for mm in A.finditer(src, a, z):
         items[mm.start()] = (mm.group(3), mm.group(2) + mm.group(4), mm.group(4))

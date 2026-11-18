@@ -304,9 +304,16 @@ body {
   justify-content: space-between;
   gap: var(--space-16);
 }
+/* the line and its proof travel together, centred in the space above the name (§14.24) */
+.hero-say { margin-top: auto; margin-bottom: auto; }
+.hero-proof {
+  margin-top: var(--space-8);
+  max-width: 58ch;
+  font-size: var(--text-lg);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
 .thesis {
-  margin-top: auto;
-  margin-bottom: auto;
   max-width: 19ch;
   font-family: var(--font-sans);
   font-weight: 300;
@@ -1410,7 +1417,8 @@ html.lenis, html.lenis body { height: auto; }
 /* Running text a step smaller on a phone: about 38 characters a line, not 33 (§14.23).
    Last among the screen rules so it wins over the sizes set above. */
 @media (max-width: 640px) {
-  .prose, .project-body-prose, .lab-lede, .contact-line { font-size: var(--text-md); }
+  .prose, .project-body-prose, .lab-lede, .contact-line, .hero-proof { font-size: var(--text-md); }
+  .hero-proof { margin-top: var(--space-6); }
 }
 
 /* -------------------------------------------------------------
@@ -1437,7 +1445,9 @@ html.lenis, html.lenis body { height: auto; }
   .th-m .dot { box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 4px var(--mark) !important; }
   .hero { min-height: 0; padding: 0 0 10pt; display: block; }
   .hero-inner { display: block; }
-  .thesis { max-width: none; font-size: 21pt; line-height: 1.12; margin: 0 0 10pt; }
+  .thesis { max-width: none; font-size: 21pt; line-height: 1.12; margin: 0 0 6pt; }
+  .hero-say { margin: 0; }
+  .hero-proof { display: none; }                      /* the printed page keeps to two sheets; the résumé itself is resume.html */
   .hero-id { display: block; }
   .hero-name { font-size: 13pt; }
   .hero-role { font-size: 10pt; }

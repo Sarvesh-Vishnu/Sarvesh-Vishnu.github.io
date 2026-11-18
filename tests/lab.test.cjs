@@ -343,23 +343,57 @@ test('the route: the sentence states exactly what the data says', () => {
   assert.ok(Lab.sayRoute(Lab.KINDS.route.state()).always.includes(`${Math.round(b.routeTail * 100)}%`));
 });
 
-test('the route: nothing runs off the drawing at any width', () => {
-  const { OB } = Lab;
-  for (const w of [320, 375, 620, 1000, 1040]) {
-    const h = Lab.KINDS.route.height(Lab.KINDS.route.state(), w);
-    for (let s = 0; s < OB.seeds.length; s++) for (const pull of ['none', 'strong']) {
-      const svg = Lab.renderRoute({ s, pull, k: 5 }, { w, h, full: true });
-      for (const m of svg.matchAll(/c[xy]="(-?[\d.]+)"/g)) assert.ok(+m[1] >= 0 && +m[1] <= Math.max(w, h), `${w}: ${m[0]}`);
-      for (const m of svg.matchAll(/<text[^>]*x="([\d.]+)"[^>]*>([^<]*)</g)) {
-        const anchorEnd = /text-anchor="end"/.test(m[0]), mid = /text-anchor="middle"/.test(m[0]);
-        const len = m[2].length * 6.65, x = +m[1];
-        const right = anchorEnd ? x : mid ? x + len / 2 : x + len;
-        const left = anchorEnd ? x - len : mid ? x - len / 2 : x;
-        assert.ok(right <= w + 1, `${w} ${s} ${pull}: "${m[2]}" runs off the right edge`);
-        assert.ok(left >= -1, `${w} ${s} ${pull}: "${m[2]}" runs off the left edge`);
+// every piece of text on a drawing, as a box: mono type is 0.6 em wide, tracked capitals wider
+const textBoxes = (svg) => [...svg.matchAll(/<text([^>]*)>([^<]*)</g)].map((m) => {
+  const text = m[2].replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+  const x = +/ x="(-?[\d.]+)"/.exec(m[1])[1], y = +/ y="(-?[\d.]+)"/.exec(m[1])[1];
+  const len = text.length * (/sp-level/.test(m[1]) ? 8.1 : 6.65);
+  const x0 = /text-anchor="end"/.test(m[1]) ? x - len : /text-anchor="middle"/.test(m[1]) ? x - len / 2 : x;
+  return { text, x0, x1: x0 + len, y0: y - 9, y1: y + 3 };
+});
+
+test('the route: nothing runs off the drawing, and no two labels collide, at any width', () => {
+  const { OB, RT } = Lab, k0 = Lab.KINDS.route;
+  const sizes = [[320, 0, true], [375, 0, true], [343, 257, false], [620, 0, true], [760, 0, true], [860, 0, true], [900, 0, true], [1000, 540, false], [1040, 0, true]];
+  for (const [w, tileH, full] of sizes) {
+    const h = tileH || k0.height(k0.state(), w);
+    const o = { w, h, full, tagRoom: !full && w >= 720 ? 30 : 0 };
+    if (!full && w >= 720) o.full = true;                 // a large tile carries the labelled figure
+    for (let s = 0; s < OB.seeds.length; s++) for (const pull of ['none', 'strong']) for (let k = 0; k <= RT.STEPS; k++) {
+      const svg = Lab.renderRoute({ s, pull, k }, o), where = `${w}px seed ${s} ${pull} step ${k}`;
+      assert.ok(svg.startsWith('<svg') && svg.endsWith('</svg>') && !/NaN|undefined/.test(svg), where);
+      for (const m of svg.matchAll(/c[xy]="(-?[\d.]+)"/g)) assert.ok(+m[1] >= 0 && +m[1] <= Math.max(w, h), `${where}: ${m[0]}`);
+      const boxes = textBoxes(svg);
+      for (const b of boxes) {
+        assert.ok(b.x0 >= -1 && b.x1 <= w + 1, `${where}: "${b.text}" runs off the side`);
+        assert.ok(b.y0 >= 0 && b.y1 <= h, `${where}: "${b.text}" runs off the top or foot`);
+        if (o.tagRoom) assert.ok(b.y0 >= 36 || b.x0 > 520, `${where}: "${b.text}" sits under the tile's tag`);
+      }
+      for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+        const a = boxes[i], b = boxes[j];
+        const apart = a.x1 <= b.x0 || b.x1 <= a.x0 || a.y1 <= b.y0 || b.y1 <= a.y0;
+        assert.ok(apart, `${where}: "${a.text}" and "${b.text}" collide`);
       }
     }
   }
+});
+
+test('the route: both ends are named, with how many people play them', () => {
+  const { OB, RT } = Lab, k0 = Lab.KINDS.route;
+  for (const w of [343, 1000]) {
+    const h = w < 620 ? 257 : 540, o = { w, h, full: w >= 720, tagRoom: w >= 720 ? 30 : 0 };
+    OB.seeds.forEach((seed, s) => {
+      const end = seed.routes.none[RT.STEPS - 1];
+      const said = textBoxes(Lab.renderRoute({ s, pull: 'none', k: RT.STEPS }, o)).map((b) => b.text);
+      const named = (t) => said.some((x) => x === t || (x.endsWith('…') && t.startsWith(x.slice(0, -1))));
+      assert.ok(named(seed.t), `${w}: the start, ${seed.t}, is not named`);
+      assert.ok(named(end.t), `${w}: the end, ${end.t}, is not named`);
+      assert.ok(said.includes(`${seed.n.toLocaleString('en-GB')} listeners`) && said.includes(`${end.n.toLocaleString('en-GB')} ${end.n === 1 ? 'listener' : 'listeners'}`), `${w}: counts missing`);
+    });
+  }
+  // on the home tile there is no second line to explain, so none is drawn
+  assert.ok(!Lab.renderRoute(k0.state(), { w: 1000, h: 540, full: true, tagRoom: 30 }).includes('rt-ghost'));
+  assert.ok(Lab.renderRoute(k0.state(), { w: 1040, h: 460, full: true }).includes('rt-ghost'));
 });
 
 /* ---------------------------------------------------------------- the globe (Numit) */
