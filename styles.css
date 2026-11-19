@@ -282,10 +282,10 @@ body {
 }
 
 /* -------------------------------------------------------------
-   Hero: the first sheet (design.md §14.16, quieted in §14.17)
-   One statement, with a redline under what it is for, and beneath it
-   who is speaking and how to reach them. No figure, no frame: the
-   working models start one scroll down, in the reel.
+   Hero: the first sheet (design.md §14.16, §14.17, §14.24, §14.25)
+   The name, then one statement with a redline under what the work is
+   for, then two sentences of proof. Role and links along the foot.
+   No figure, no frame: the working models start one scroll down.
    ------------------------------------------------------------- */
 .hero {
   position: relative;
@@ -304,25 +304,35 @@ body {
   justify-content: space-between;
   gap: var(--space-16);
 }
-/* the line and its proof travel together, centred in the space above the name (§14.24) */
+/* the name, the line and its proof travel together, centred above the foot (§14.25) */
 .hero-say { margin-top: auto; margin-bottom: auto; }
 .hero-proof {
-  margin-top: var(--space-8);
+  margin-top: var(--space-6);
   max-width: 58ch;
   font-size: var(--text-lg);
   line-height: 1.5;
   color: var(--ink-soft);
 }
-.thesis {
-  max-width: 19ch;
+.hero-name {
   font-family: var(--font-sans);
   font-weight: 300;
-  font-size: clamp(var(--text-4xl), 7.4vw, var(--text-8xl));
+  /* one line at every width: it eases down below 375px, and grows with the sheet above 660px */
+  font-size: max(clamp(var(--text-3xl), 13vw, var(--text-4xl)), min(7.4vw, var(--text-8xl)));
   line-height: 1;
   letter-spacing: -0.04em;
   color: var(--ink);
   text-wrap: balance;
 }
+.thesis {
+  margin-top: var(--space-6);
+  max-width: 30ch;
+  font-weight: 300;
+  font-size: clamp(22px, 2.7vw, var(--text-3xl));
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.thesis .redline { white-space: nowrap; }             /* the mark is one stroke, never broken over two lines */
 /* the redline: one mark, under the words the sentence is for */
 .redline {
   text-decoration: underline;
@@ -338,8 +348,6 @@ body {
   justify-content: space-between;
   gap: var(--space-4) var(--space-12);
 }
-.hero-who { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-4); }
-.hero-name { font-size: var(--text-lg); font-weight: 500; letter-spacing: -0.01em; color: var(--ink); }
 .hero-role { font-size: var(--text-base); color: var(--ink-soft); }
 .hero-links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); }
 .hero-links a {
@@ -839,7 +847,7 @@ body {
    ------------------------------------------------------------- */
 .contact-title {
   grid-column: 1 / -1;
-  font-size: clamp(var(--text-5xl), 9vw, var(--text-8xl));   /* answers the thesis at the other end */
+  font-size: clamp(var(--text-5xl), 9vw, var(--text-8xl));   /* answers the name at the other end */
   font-weight: 300;
   letter-spacing: -0.04em;
   max-width: none;
@@ -1418,7 +1426,6 @@ html.lenis, html.lenis body { height: auto; }
    Last among the screen rules so it wins over the sizes set above. */
 @media (max-width: 640px) {
   .prose, .project-body-prose, .lab-lede, .contact-line, .hero-proof { font-size: var(--text-md); }
-  .hero-proof { margin-top: var(--space-6); }
 }
 
 /* -------------------------------------------------------------
@@ -1445,11 +1452,11 @@ html.lenis, html.lenis body { height: auto; }
   .th-m .dot { box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 4px var(--mark) !important; }
   .hero { min-height: 0; padding: 0 0 10pt; display: block; }
   .hero-inner { display: block; }
-  .thesis { max-width: none; font-size: 21pt; line-height: 1.12; margin: 0 0 6pt; }
+  .hero-name { font-size: 21pt; line-height: 1.12; margin: 0 0 3pt; }
+  .thesis { max-width: none; font-size: 12pt; line-height: 1.3; margin: 0 0 5pt; letter-spacing: 0; }
   .hero-say { margin: 0; }
   .hero-proof { display: none; }                      /* the printed page keeps to two sheets; the résumé itself is resume.html */
   .hero-id { display: block; }
-  .hero-name { font-size: 13pt; }
   .hero-role { font-size: 10pt; }
   .hero-links { margin-top: 4pt; gap: 2pt 14pt; }
   .hero-links a { border: 0; padding: 0; font-size: 8.5pt; }

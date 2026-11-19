@@ -1230,3 +1230,35 @@ the résumé (it needed 8pt type or cuts the owner has not asked for).
 
 **Open with the owner.** Every new line is a draft, the résumé in full. The résumé's
 two judgement calls: no phone number, and two pages.
+
+### 14.25 — The name leads the hero
+*Changes: §14.24 (the hero's line), §14.17 (the id line). (2026-11-19)*
+
+**Why.** The owner, a day after §14.24 went live: "I want to edit the Data science and
+AI that people can trust line. Perhaps, just Sarvesh Vishnu?" Shown three mock-ups
+(name then the line; name then the role; name only), the owner chose the first.
+
+**What changed.** The name is the large line and the page's one `h1`. A name is the
+most confident way to open and narrows nothing, which was the worry behind §14.24.
+"Data science and AI that people can trust." stays, a step down in size (22px to 39px),
+where it reads as a description of the work and not as a slogan. It keeps the redline,
+which never breaks across two lines. The two sentences of proof follow. The foot of the
+sheet carries the role on the left and the links on the right; the name no longer
+repeats there. The name stays on one line at every width (it eases down under 375px).
+In print the name is the heading and the line sits under it; the page is still two
+sheets. The share card follows the hero: name, the line, role, address.
+
+**The résumé's profile.** The owner chose the methods-and-scale version from three
+drafts: end-to-end ownership (pipelines, models, reporting), then three pieces of
+recent work with the counts already stated in the bullets below it (75+ territory
+managers, 25+ product lines, 100K+ records), then the Duke degree. The undergraduate
+degree leaves the profile; it is in Education. Still two pages.
+
+**Considered and rejected.** Name then role as the second line (conventional, but it
+drops the one sentence that says what the work is for, and the redline with it). Name
+only (the jump from a 107px name to a 20px paragraph is abrupt, and the paragraph has
+to do all the explaining). Leaving the statement large with the name small (the
+arrangement the owner asked to change).
+
+**Open with the owner.** The résumé still spells "specialization" while the site uses
+British spellings; the owner has not said which to keep.

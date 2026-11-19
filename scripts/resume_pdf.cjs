@@ -31,7 +31,7 @@ const pages = (pdf) => Math.max(0, ...[...Buffer.from(pdf).toString('latin1').ma
   }
 
   if (want('--card')) {
-    // the card says what the home page says: its line, the redline, the name and the role
+    // the card says what the home page says: the name, its line with the redline, and the role
     const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
     const thesis = /<p class="thesis">([\s\S]*?)<\/p>/.exec(index)[1];
     const name = /class="hero-name">([^<]*)</.exec(index)[1];
@@ -42,15 +42,15 @@ const pages = (pdf) => Math.max(0, ...[...Buffer.from(pdf).toString('latin1').ma
       <style>
         * { margin: 0; box-sizing: border-box; }
         body { width: 1200px; height: 630px; padding: 76px 80px 70px; background: #0A2240; color: #F3F6FA; font-family: 'IBM Plex Sans', sans-serif; display: flex; flex-direction: column; justify-content: space-between; }
-        .thesis { max-width: 17ch; font-weight: 300; font-size: 96px; line-height: 1.04; letter-spacing: -0.04em; }
+        .name { font-weight: 300; font-size: 124px; line-height: 1; letter-spacing: -0.04em; }
+        .thesis { margin-top: 30px; font-weight: 300; font-size: 44px; line-height: 1.2; letter-spacing: -0.02em; }
         .redline { text-decoration: underline; text-decoration-color: #FF7A59; text-decoration-thickness: 0.055em; text-underline-offset: 0.14em; text-decoration-skip-ink: none; }
         .foot { display: flex; justify-content: space-between; align-items: baseline; font-size: 24px; }
-        .foot b { font-weight: 500; margin-right: 18px; }
         .foot span { color: #CBD7E7; }
         .foot code { font-family: 'IBM Plex Mono', monospace; font-size: 17px; letter-spacing: 0.08em; color: #A9BED8; }
       </style></head><body>
-        <p class="thesis">${thesis}</p>
-        <p class="foot"><span><b style="color:#F3F6FA">${name}</b>Senior Data Scientist</span><code>sarvesh-vishnu.github.io</code></p>
+        <div><p class="name">${name}</p><p class="thesis">${thesis}</p></div>
+        <p class="foot"><span>Senior Data Scientist</span><code>sarvesh-vishnu.github.io</code></p>
       </body></html>`, { waitUntil: 'load' });
     await card.evaluate(() => document.fonts.ready);
     await card.screenshot({ path: path.join(ROOT, 'assets', 'og-image.png'), type: 'png' });
