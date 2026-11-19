@@ -31,9 +31,9 @@ const pages = (pdf) => Math.max(0, ...[...Buffer.from(pdf).toString('latin1').ma
   }
 
   if (want('--card')) {
-    // the card says what the home page says: the name, its line with the redline, and the role
+    // the card says what the home page says: the name, and the paragraph under it with its redline
     const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-    const thesis = /<p class="thesis">([\s\S]*?)<\/p>/.exec(index)[1];
+    const proof = /<p class="hero-proof">([\s\S]*?)<\/p>/.exec(index)[1];
     const name = /class="hero-name">([^<]*)</.exec(index)[1];
     const card = await browser.newPage();
     await card.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 });
@@ -43,13 +43,13 @@ const pages = (pdf) => Math.max(0, ...[...Buffer.from(pdf).toString('latin1').ma
         * { margin: 0; box-sizing: border-box; }
         body { width: 1200px; height: 630px; padding: 76px 80px 70px; background: #0A2240; color: #F3F6FA; font-family: 'IBM Plex Sans', sans-serif; display: flex; flex-direction: column; justify-content: space-between; }
         .name { font-weight: 300; font-size: 124px; line-height: 1; letter-spacing: -0.04em; }
-        .thesis { margin-top: 30px; font-weight: 300; font-size: 44px; line-height: 1.2; letter-spacing: -0.02em; }
-        .redline { text-decoration: underline; text-decoration-color: #FF7A59; text-decoration-thickness: 0.055em; text-underline-offset: 0.14em; text-decoration-skip-ink: none; }
+        .proof { margin-top: 36px; max-width: 54ch; font-size: 31px; line-height: 1.42; color: #CBD7E7; }
+        .redline { text-decoration: underline; text-decoration-color: #FF7A59; text-decoration-thickness: 2.5px; text-underline-offset: 0.2em; text-decoration-skip-ink: none; }
         .foot { display: flex; justify-content: space-between; align-items: baseline; font-size: 24px; }
         .foot span { color: #CBD7E7; }
         .foot code { font-family: 'IBM Plex Mono', monospace; font-size: 17px; letter-spacing: 0.08em; color: #A9BED8; }
       </style></head><body>
-        <div><p class="name">${name}</p><p class="thesis">${thesis}</p></div>
+        <div><p class="name">${name}</p><p class="proof">${proof}</p></div>
         <p class="foot"><span>Senior Data Scientist</span><code>sarvesh-vishnu.github.io</code></p>
       </body></html>`, { waitUntil: 'load' });
     await card.evaluate(() => document.fonts.ready);

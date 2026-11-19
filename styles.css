@@ -282,10 +282,11 @@ body {
 }
 
 /* -------------------------------------------------------------
-   Hero: the first sheet (design.md §14.16, §14.17, §14.24, §14.25)
-   The name, then one statement with a redline under what the work is
-   for, then two sentences of proof. Role and links along the foot.
-   No figure, no frame: the working models start one scroll down.
+   Hero: the first sheet (design.md §14.16, §14.17, §14.24 to §14.26)
+   The name, then two sentences on what the work has done, with the
+   redline under one phrase. Role and links along the foot. No claim
+   about the work is made here (§14.26): the working models start one
+   scroll down and make it themselves.
    ------------------------------------------------------------- */
 .hero {
   position: relative;
@@ -304,14 +305,19 @@ body {
   justify-content: space-between;
   gap: var(--space-16);
 }
-/* the name, the line and its proof travel together, centred above the foot (§14.25) */
+/* the name and the paragraph travel together, centred above the foot (§14.26) */
 .hero-say { margin-top: auto; margin-bottom: auto; }
 .hero-proof {
-  margin-top: var(--space-6);
-  max-width: 58ch;
-  font-size: var(--text-lg);
-  line-height: 1.5;
+  margin-top: var(--space-8);
+  max-width: 54ch;
+  font-size: clamp(var(--text-lg), 1.7vw, var(--text-xl));   /* it follows the name directly, so it steps up on a wide sheet */
+  line-height: 1.45;
   color: var(--ink-soft);
+}
+.hero-proof .redline {                               /* the mark is one stroke, never broken over two lines, */
+  white-space: nowrap;
+  text-decoration-thickness: max(0.055em, 2px);        /* and at reading size it keeps its weight */
+  text-underline-offset: 0.2em;
 }
 .hero-name {
   font-family: var(--font-sans);
@@ -323,16 +329,6 @@ body {
   color: var(--ink);
   text-wrap: balance;
 }
-.thesis {
-  margin-top: var(--space-6);
-  max-width: 30ch;
-  font-weight: 300;
-  font-size: clamp(22px, 2.7vw, var(--text-3xl));
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-}
-.thesis .redline { white-space: nowrap; }             /* the mark is one stroke, never broken over two lines */
 /* the redline: one mark, under the words the sentence is for */
 .redline {
   text-decoration: underline;
@@ -1453,7 +1449,6 @@ html.lenis, html.lenis body { height: auto; }
   .hero { min-height: 0; padding: 0 0 10pt; display: block; }
   .hero-inner { display: block; }
   .hero-name { font-size: 21pt; line-height: 1.12; margin: 0 0 3pt; }
-  .thesis { max-width: none; font-size: 12pt; line-height: 1.3; margin: 0 0 5pt; letter-spacing: 0; }
   .hero-say { margin: 0; }
   .hero-proof { display: none; }                      /* the printed page keeps to two sheets; the résumé itself is resume.html */
   .hero-id { display: block; }

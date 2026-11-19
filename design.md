@@ -1262,3 +1262,34 @@ arrangement the owner asked to change).
 
 **Open with the owner.** The résumé still spells "specialization" while the site uses
 British spellings; the owner has not said which to keep.
+
+### 14.26 — No stated claim in the hero
+*Changes: §14.24 and §14.25 (the hero's line). (2026-11-19)*
+
+**Why.** The owner, on seeing §14.25 built: remove "Data science and AI that people can
+trust." "I want it to reflect through the work and not something we draw out. We can
+use the underline accent to mark the text block underneath." This is the same call as
+the removal of "The rules I build by" in §14.17: a value is shown, not announced.
+
+**What changed.** The hero is the name, then the two sentences on what the work has
+done, then role and links along the foot. The paragraph follows the name directly, so
+on a wide sheet it steps up (20px to 25px) and its measure narrows to 54ch. The redline
+moves into the paragraph, under "one sourced event at a time": the one phrase in it
+that says how the work is done, in the work's own terms. It never breaks across two
+lines and keeps a 2px weight at reading size. The page description and the share
+description drop the sentence too. The share card is the name and the same paragraph,
+read from the page. Print: name, role, links (the paragraph was already left out).
+
+**Rule.** The site does not say that the work can be trusted. It names sources, labels
+what is invented, shows method without employer data, and computes the numbers it
+quotes. Do not bring back a values line in the hero or anywhere else without the
+owner asking for one.
+
+**Considered and rejected.** The redline under the range ("forecasting and experiments
+to language models and recommender systems": two lines of underline, heavy). Under "My
+work" (marks the block but says nothing). A short red rule above the paragraph (a new
+device; the redline is defined as a mark under words). Keeping the paragraph at 20px on
+a wide sheet (the drop from a 107px name was abrupt, the reason "name only" lost in
+§14.25).
+
+**Open with the owner.** Which words the redline sits under is my choice.
