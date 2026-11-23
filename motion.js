@@ -20,7 +20,7 @@
   /* ---- Smooth scroll. With GSAP, Lenis rides its ticker so scroll-linked work
      stays in sync; without it (project pages), Lenis runs its own frame loop. */
   if (window.Lenis) {
-    const lenis = new window.Lenis({ autoRaf: !(g && ScrollTrigger) });
+    const lenis = new window.Lenis({ autoRaf: !(g && ScrollTrigger), lerp: 0.14 });   // a shorter tail than the default 0.1 (§14.27)
     if (g && ScrollTrigger) {
       lenis.on('scroll', ScrollTrigger.update);
       g.ticker.add((t) => lenis.raf(t * 1000));
@@ -34,7 +34,7 @@
         const target = id === '#top' ? 0 : id.length > 1 && document.querySelector(id);
         if (target === false || target === null) return;
         e.preventDefault();
-        lenis.scrollTo(target, { offset: target === 0 ? 0 : -72 });
+        lenis.scrollTo(target, { duration: 0.8 });   // lands by the page's scroll-padding-top, so the section's rule tucks under the header
         history.pushState(null, '', id);
       });
     });
@@ -53,8 +53,8 @@
       SplitText.create(title, {
         type: 'lines', mask: 'lines', linesClass: 'split-line', autoSplit: true,
         onSplit: (self) => g.from(self.lines, {
-          yPercent: 110, duration: 1, ease: 'expo.out', stagger: 0.09,
-          scrollTrigger: { trigger: title, start: 'top 88%', once: true },
+          yPercent: 110, duration: 0.6, ease: 'expo.out', stagger: 0.06,
+          scrollTrigger: { trigger: title, start: 'top 96%', once: true },
         }),
       });
     });
@@ -62,11 +62,11 @@
 
   /* ---- Everything else marked .reveal: batched fade-up as it enters ----------- */
   const rows = g.utils.toArray('.reveal').filter((el) => !el.matches('.section-head'));
-  g.set(rows, { opacity: 0, y: 16 });
+  g.set(rows, { opacity: 0, y: 10 });
   ScrollTrigger.batch(rows, {
-    start: 'top 90%', once: true,
+    start: 'top 97%', once: true,
     // 'auto' only overrides opacity/y, so a timeline row's line-drawing tween survives
-    onEnter: (batch) => g.to(batch, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.07, overwrite: 'auto' }),
+    onEnter: (batch) => g.to(batch, { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', stagger: 0.04, overwrite: 'auto' }),
   });
 
   /* ---- The path: both threads draw as you read down them, and the merge

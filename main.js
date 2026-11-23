@@ -44,6 +44,26 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
+  /* The header marks the section being read (§14.27): whichever one crosses a line a
+     little above the middle of the screen. Nothing is marked over the hero. */
+  const navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+  const spied = navLinks.map((a) => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  if (spied.length && 'IntersectionObserver' in window) {
+    const inView = new Set();
+    const mark = () => {
+      const now = spied.filter((s) => inView.has(s)).pop();
+      navLinks.forEach((a) => {
+        if (now && a.getAttribute('href') === '#' + now.id) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    };
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) inView.add(e.target); else inView.delete(e.target); });
+      mark();
+    }, { rootMargin: '-42% 0px -58% 0px' });
+    spied.forEach((s) => spy.observe(s));
+  }
+
   /* The reel (design.md §14.15): a native scroll-snap row. This only adds the buttons,
      the index and the counter; swiping, scrolling and tabbing work without it. */
   document.querySelectorAll('[data-reel]').forEach((reel) => {

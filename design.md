@@ -1293,3 +1293,54 @@ a wide sheet (the drop from a 107px name was abrupt, the reason "name only" lost
 §14.25).
 
 **Open with the owner.** Which words the redline sits under is my choice.
+
+### 14.27 — Space that groups, and motion that keeps up
+*Changes: §14.9 (motion timings), §14.15 (the reel is untouched), the section rhythm set
+in v3. (2026-11-23)*
+
+**Why.** The owner: "We need to do a better job at handling whitespace within the
+portfolio. Kindly review the whitespace and the scrolling, interactivity dynamics."
+Measured before changing anything, at 1440 by 900:
+- Every section had 192px of padding above and below, so four bands of about 400px held
+  nothing but a hairline floating in the middle, belonging to neither side. Only 41% of
+  the page's height carried anything. The page ran 6.7 screens.
+- A heading stood 96 to 120px from the thing it introduced.
+- Scrolling at a brisk pace, blocks finished fading in when their top was already a
+  quarter to a third of the way down the screen: the reader arrived before the content.
+- A header link took about 1.3 seconds to travel, and nothing in the header said which
+  section was on screen.
+- The hero and the footer sat 24px left of every section and of the header.
+
+**Space.** The hairline opens a section. Its label sits close under it (64px; 32px on a
+phone) and the room goes above the line, after the previous section's last words (128px;
+64px on a phone). So the largest gap on the page still falls between sections, about
+200px, but it now reads as a pause before a new sheet and not as an empty screen. A
+heading is 48px from its content (32px on a phone). In the contact section the note and
+its buttons are one group. The page is 5.6 screens at 1440 and about 10% shorter on a
+phone, with nothing removed. One left edge: the hero and footer now align with the
+sections and the header at every width.
+
+**Scrolling.**
+- Reveals arrive before the reader does: rows fade over 0.45s from 10px (was 0.9s from
+  16px) and start as soon as they enter; titles rise over 0.6s (was 1s). At the same
+  brisk scroll, blocks now settle with their top between half and two thirds of the way
+  down the screen.
+- Smooth scrolling keeps a shorter tail: a wheel notch settles in about 0.5s (was 0.75s).
+- A header link travels in 0.8s and lands with the section's rule tucked under the
+  header and its label 64px below. The same landing holds without JavaScript and with
+  reduced motion, through `scroll-padding-top`.
+- The header marks the section being read (`aria-current`, the same linework underline
+  as hover, never the redline). Nothing is marked over the hero.
+
+**Left alone, on purpose.** The hero's own proportions (one screen, the name and the
+paragraph centred above the foot). The reel: sideways scrolling, snap, buttons and keys
+all measured as working; a swipe must pass half a sheet to advance, which is how native
+snap behaves. The path's scrubbed line. The case-study pages, where the largest gap is
+169px and 60% of the height carries content.
+
+**Considered and rejected.** Equal, smaller padding on both sides of the rule (the rule
+still floats). Removing the rules (they are the sheet edges of the drawing set).
+Dropping smooth scrolling altogether (the path's scrubbed line reads better with it; the
+tail was the fault). A scroll-progress bar (a second indicator for what the header mark
+already says). Shrinking the hero to pull the work above the fold (the first screen is
+the one place the page is allowed to be quiet).
