@@ -1545,7 +1545,8 @@ Owner chose cyanotype photos and a colour per subject.
 - Subject colours: business amber, health rose, public and civic teal, culture violet; darker
   variants on the white print. Used only on the Range row swatches and the sheet dots (filled for
   work, hollow for personal). The redline keeps its job.
-- Three cyanotypes (Prussian to paper, the process behind real blueprints) under the path story:
+- Photos: built, then REMOVED before release at the owner's word ("remove the pictures for this
+  round"). Kept here for the next round: three cyanotypes (Prussian to paper, the process behind real blueprints) under the path story:
   the owner with a dog, Lane the service-dog puppy, the owner on campus at night. Cropped from the
   old Wix collage at low resolution; to be replaced by originals. Only photos of the owner alone
   or with animals: the collage's group photos show people who have not agreed to appear.
