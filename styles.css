@@ -1395,6 +1395,45 @@ html.lenis, html.lenis body { height: auto; }
    White print tokens, everything revealed and drawn, the sheet index laid
    out as a list, links spelled out, instruments and controls left off.
    ------------------------------------------------------------- */
+
+/* -------------------------------------------------------------
+   Range: subjects by methods (§14.31). A real table, ruled like the
+   sheet index. Numbered names point back at the sheets; plain names are
+   live personal projects; grey ones are in progress and carry no link.
+   Below 768px each subject becomes a short list, its method beside it.
+   ------------------------------------------------------------- */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.range-grid { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.range-grid th, .range-grid td { text-align: left; vertical-align: top; padding: var(--space-4) var(--space-3) var(--space-4) 0; border-bottom: 1px solid var(--line); }
+.range-grid thead th, .range-grid thead td {
+  padding-top: 0;
+  font-family: var(--font-mono); font-size: var(--text-2xs); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.4; color: var(--ink-muted);
+}
+.range-grid thead td { width: 9.5rem; }
+.range-grid tbody th { font-size: var(--text-md); font-weight: 400; letter-spacing: -0.01em; color: var(--ink); }
+.range-grid td + td, .range-grid th + td, .range-grid thead th { border-left: 1px solid var(--line); padding-left: var(--space-3); }
+.rg-item { display: block; font-size: var(--text-sm); line-height: 1.35; color: var(--ink-soft); }
+.rg-item + .rg-item { margin-top: var(--space-2); }
+a.rg-item { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 0.2em; transition: color var(--duration-fast) ease; }
+a.rg-item:hover, a.rg-item:focus-visible { color: var(--accent); text-decoration-color: currentColor; }
+.rg-item.is-sel { color: var(--ink); }
+.rg-no { display: block; font-family: var(--font-mono); font-size: var(--text-2xs); font-variant-numeric: tabular-nums; color: var(--ink-muted); }
+.rg-item.is-wip { color: var(--ink-muted); }
+.rg-item.is-wip em { font-style: normal; font-family: var(--font-mono); font-size: var(--text-2xs); }
+@media (max-width: 768px) {
+  .range-grid, .range-grid tbody, .range-grid tr, .range-grid th, .range-grid td { display: block; width: auto; }
+  .range-grid thead { display: none; }
+  .range-grid tr { padding: var(--space-4) 0; border-bottom: 1px solid var(--line); }
+  .range-grid tbody tr:first-child { border-top: 1px solid var(--line); }
+  .range-grid th, .range-grid td { border: 0 !important; padding: 0 !important; }
+  .range-grid tbody th { margin-bottom: var(--space-2); }
+  .range-grid td.is-empty { display: none; }
+  .range-grid td { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: var(--space-1) var(--space-4); padding: var(--space-2) 0 !important; }
+  .range-grid td::before { content: attr(data-m); grid-row: 1 / span 4; font-family: var(--font-mono); font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.6; color: var(--ink-muted); }
+  .rg-item + .rg-item { margin-top: 0; }
+}
+
 @media print {
   @page { margin: 14mm 15mm; }
   :root, :root[data-theme] {
@@ -1404,7 +1443,7 @@ html.lenis, html.lenis body { height: auto; }
   }
   html { font-size: 10pt; }
   body { background: #FFFFFF; color: var(--ink); }
-  .site-header, .skip, .tile-fig, .sheets-note, .section-note,
+  .site-header, .skip, .tile-fig, .range, .sheets-note, .section-note,
   .contact-links, .contact-line, .lab, .sheet-nav, .theme-toggle, .foot-meta, .section-title,
   .hero-links a:not([data-print]) { display: none !important; }
   .reveal, .js .reveal { opacity: 1 !important; transform: none !important; }
