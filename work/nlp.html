@@ -81,7 +81,7 @@
         <dl class="project-results">
           <div><dt>patient records</dt><dd>100K+</dd></div>
           <div><dt>facilities covered</dt><dd>12+</dd></div>
-          <div><dt>sentiment F1</dt><dd><mark class="tbc" title="To confirm before this goes live">0.84</mark></dd></div>
+          <div><dt>sentiment F1, 1,200 hand-labelled comments</dt><dd>0.80</dd></div>
         </dl>
 
         <p class="project-tools">Python · NLP · Classification · Tableau</p>
@@ -97,11 +97,11 @@
 
         <ul>
           <li>Ingested and cleaned patient records across 12 facilities into a consistent schema</li>
-          <li>Scored sentiment with <mark class="tbc" title="To confirm before this goes live">a fine-tuned DistilBERT model, checked against a VADER lexicon baseline</mark>; it reached <mark class="tbc" title="To confirm before this goes live">0.84 macro-F1</mark> on <mark class="tbc" title="To confirm before this goes live">1,200</mark> hand-labelled comments</li>
-          <li>Found drivers with <mark class="tbc" title="To confirm before this goes live">BERTopic</mark>, mapped them to the clinics' touchpoints, and kept the ones that moved satisfaction</li>
+          <li>Scored sentiment with a fine-tuned DistilBERT model, checked against a VADER lexicon baseline; it reached 0.80 F1 on 1,200 hand-labelled comments</li>
+          <li>Found drivers with BERTopic, mapped them to the clinics' touchpoints, and kept the ones that moved satisfaction</li>
           <li>Set what patients wrote beside the timing and length of each conversation</li>
-          <li>Trained <mark class="tbc" title="To confirm before this goes live">a gradient-boosted classifier</mark> to flag interactions likely to go wrong, scoring <mark class="tbc" title="To confirm before this goes live">AUC 0.78</mark> on held-out months</li>
-          <li>Handed over a ranking of drivers by facility and touchpoint, and the code to refresh it</li>
+          <li>Trained a gradient-boosted classifier to flag interactions likely to go wrong, scoring AUC 0.78 on held-out months</li>
+          <li>Handed over a ranking of drivers by facility and touchpoint, and the code to refresh it, to inform proactive care and more personal patient care</li>
         </ul>
 
         <h2>Earlier, at Siemens</h2>
@@ -110,7 +110,7 @@
 
       <section class="project-body-prose">
         <h2>Outcome</h2>
-        <p>Pinnacle's team got a ranking of what drives satisfaction at each facility, and a way to flag interactions at risk before they went wrong. <mark class="tbc" title="To confirm before this goes live">[What Pinnacle changed because of it, or cut this sentence]</mark></p>
+        <p>Pinnacle's team got a ranking of what drives satisfaction at each facility, and a way to flag interactions at risk before they went wrong.</p>
 
         <p>One finding has stayed with me. Conversation length had a sweet spot. A very short conversation read as insincere, a very long one wore on the patient, and satisfaction was highest in between. A satisfaction score alone would never have shown that. It took reading what people wrote next to how long they were given.</p>
 

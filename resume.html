@@ -79,12 +79,12 @@
         <div class="head"><h3>Cooper Surgical</h3><span class="when">Trumbull, CT · Jul 2025 – Present</span></div>
         <p class="title">Senior Data Scientist, Strategy &amp; Market Insights. Earlier: Data Scientist, Commercial Excellence.</p>
         <ul>
-          <li>Own the analytics behind the Annual Operating Plan for three business units (US medical devices; contraception and <mark class="tbc" title="To confirm before this goes live">stem-cell storage</mark> worldwide): quota allocation for their sales teams and ensemble demand forecasts (ARIMA, SARIMAX, Prophet, gradient boosting) across 25+ product lines. Modelling unconstrained demand (open, cancelled, returned and backordered orders) cut WAPE from about 18% to 8% against the linear forecasts it replaced; full-year product-line actuals landed within 5%.</li>
-          <li>Built the data spine the plan runs on with Python pipelines, Microsoft Fabric, SQL and Azure, and the Power BI views that moved executive reporting from days of ad-hoc pulls to live monitoring.</li>
-          <li>Led a cross-sell initiative end to end: target customers, an account-level A/B test (about 2,000 accounts across ten territories, four months, metrics ranked in advance), the compensation plan and the evaluation. It found no meaningful lift, which informed a move to a single lead product for that sales group.</li>
-          <li>Forecast demand by SKU and country for supply and demand planning, and support long-range planning with price-elasticity and market analysis.</li>
-          <li>Built a research assistant on LangGraph with hybrid keyword and semantic retrieval that drafts a weekly market brief for leadership from public sources. Every statistic links to its source, and every story is validated before it is sent.</li>
-          <li>Present scenario and sensitivity analysis to the directors of Marketing, Sales and Business Analytics, so product-launch decisions are tested against the forecast before they become commitments.</li>
+          <li>Own the analytics behind the Annual Operating Plan for three business units (US medical devices; contraception and stem-cell storage worldwide): sales quotas and ensemble forecasts (ARIMA, SARIMAX, Prophet, boosting) across 25+ product lines. Modelling unconstrained demand cut monthly WAPE from about 18% to 8%; full-year actuals landed within 5%.</li>
+          <li>Built the data spine under the plan (Python, Microsoft Fabric, SQL, Azure) and the Power BI views that replaced ad-hoc reporting pulls.</li>
+          <li>Led a cross-sell A/B test end to end (about 2,000 accounts, ten territories, four months, metrics ranked in advance). It found no meaningful lift and informed a move to a single lead product.</li>
+          <li>Forecast demand by SKU and country for supply planning; price elasticity, including for the fertility business; long-range planning.</li>
+          <li>Built a LangGraph research companion (hybrid retrieval, cited drafting, code checks, a second model as critic) that sends five executives a sourced brief every Monday.</li>
+          <li>Present scenario analysis to the directors of Marketing, Sales and Business Analytics before launch decisions.</li>
         </ul>
       </div>
 
@@ -102,8 +102,8 @@
         <div class="head"><h3>Pinnacle Fertility, Duke Fuqua capstone</h3><span class="when">Scottsdale, AZ · Mar 2024 – May 2024</span></div>
         <p class="title">Data Scientist</p>
         <ul>
-          <li>Built an NLP pipeline over 100K+ patient records from 12 facilities: sentiment by facility and by touchpoint, and the operational drivers behind it.</li>
-          <li>Added a predictive layer that flags interactions likely to go wrong, and showed that conversation length has a sweet spot for patient satisfaction.</li>
+          <li>Built an NLP pipeline over 100K+ patient records from 12 facilities: sentiment by facility and touchpoint (fine-tuned DistilBERT, 0.80 F1 on 1,200 labelled comments) and its drivers (BERTopic).</li>
+          <li>Forecast how interactions would be felt with a gradient-boosted model (AUC 0.78 on held-out months), and found a sweet spot in conversation length.</li>
         </ul>
       </div>
 

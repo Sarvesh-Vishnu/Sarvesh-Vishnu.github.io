@@ -1392,3 +1392,13 @@ local build are quoted: they come from ~35 synthetic documents and would oversta
 line on the page is a draft; adoption numbers are a placeholder.
 Considered and rejected: reusing the spine renderer for a node graph (sheet 1 is already a
 graph; two in a row read as the same picture).
+
+**Nov 24, owner's answers (§14.28–29 closed).** Stem-cell storage confirmed; fertility price
+elasticity added to the Strategy paragraph and résumé. WAPE monthly / 5% full-year confirmed.
+Companion: started 2026, five executive readers (senior directors to the Head of Sales); the
+results row now leads with "5 executive readers". NLP: fine-tuned DistilBERT vs a VADER
+baseline, 0.80 F1 on 1,200 hand-labelled comments, BERTopic drivers, gradient-boosted
+classifier AUC 0.78 on held-out months; no known change at Pinnacle, so the sentence is cut.
+The owner's old résumé line "improving patient satisfaction" was NOT used: nothing shows it
+happened. All placeholders cleared; copy gate passes. Résumé bullets tightened to hold two
+pages; home print hides `.slide-why` to hold six sheets on two pages.

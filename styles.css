@@ -1471,7 +1471,8 @@ html.lenis, html.lenis body { height: auto; }
   .th-merge { min-height: 26pt; }
   .section-title { font-size: 13pt; margin-top: 2pt; max-width: none; }
   .reel-track { display: block; overflow: visible; }
-  .slide { margin: 0 0 5pt; break-inside: avoid; }   /* five sheets on two pages (§14.22) */
+  .slide { margin: 0 0 5pt; break-inside: avoid; }   /* six sheets on two pages (§14.22, §14.29) */
+  .slide-why { display: none; }                       /* the reason lines give way in print; the case studies keep them */
   .slide-text { margin-top: 0; grid-template-columns: 1fr; gap: 2pt; }
   .project-name, .slide-desc, .project-meta, .slide-why { grid-column: 1; grid-row: auto; }
   .project-name { font-size: 12pt; }
