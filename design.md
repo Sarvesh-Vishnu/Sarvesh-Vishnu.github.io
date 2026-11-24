@@ -1362,3 +1362,33 @@ ensemble" stat is gone); water label "external study brought in house"; NLP adds
 test size and length, what Pinnacle changed). They are `<mark class="tbc">`, drawn with a
 dashed accent outline, and `tests/copy.test.cjs` fails while any remain, so none can ship.
 Removed: "No single model owns the truth…" (its committee figure left in §14.18).
+
+### 14.29 Cooper rescoped; the research companion gets its own sheet (Nov 23, 2026; `blueprint`)
+
+**Cooper scope.** Owner: the plan covers three business units, US medical devices plus
+contraception and stem cell worldwide, "much more than the 75+ team". "75+ territory managers"
+is gone everywhere (results row, AOP paragraph, home slide, résumé); the row now reads
+"3 business units on plan, two of them global". No headcount is stated until the owner
+gives one. "Stem-cell storage" is a placeholder for the owner's wording.
+
+**Two facts reconciled.** WAPE 18% → 8% and "actuals within 5%" read as a contradiction
+(an 8% typical miss cannot sit inside a 5% band) unless they are at different grains. The
+page now says the WAPE is month by month and the 5% is each product line's full-year total,
+where misses cancel. Both grains are placeholders until the owner confirms them. The
+A/B test: ten territories, about 200 accounts each, about four months, five metrics ranked
+before the test started (owner confirmed).
+
+**The research companion** (`work/research-companion.html`, sheet 2 of 6, `brief` kind in
+lab.js): the owner's weekly brief to leadership, in their inbox every Monday, plus ad hoc
+questions on a topic. Method from the owner's own build (LangGraph graph, hybrid BM25 +
+dense retrieval fused by RRF, story joining and repeat detection, source-tier confidence,
+citations restricted to given passages by schema, code checks then a second model as critic,
+human routing, source text as data). The internal name is NOT used on the site (§14.15 rule
+stands: method only). The figure takes one invented public story (a state IVF mandate)
+through Gather, Join, Weigh, Draft, Check, Send; the Check step strikes a date found in no
+source. Wide (≥760): sources and brief side by side; narrower: one panel at a time, and a
+compact mode drops source kinds on short tiles. No seed-corpus evaluation numbers from the
+local build are quoted: they come from ~35 synthetic documents and would overstate. Every
+line on the page is a draft; adoption numbers are a placeholder.
+Considered and rejected: reusing the spine renderer for a node graph (sheet 1 is already a
+graph; two in a row read as the same picture).

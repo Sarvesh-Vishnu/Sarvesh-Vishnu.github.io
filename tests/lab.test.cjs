@@ -523,3 +523,44 @@ test('the globe: nothing runs off the drawing at any width, plate included', () 
     }
   } finally { delete globalThis.NUMIT_EVENTS; }
 });
+
+test('the brief: nothing runs off the drawing, at any width or step', () => {
+  const widths = [264, 288, 320, 343, 480, 620, 720, 759, 760, 900, 1000, 1040, 1280];
+  for (const w of widths) for (const full of [true, false]) for (let step = 0; step < Lab.BR_STEPS.length; step++) {
+    const h = full ? Lab.KINDS.brief.height({}, w) : Math.round(w * (w < 700 ? 0.75 : 0.54));
+    const svg = Lab.renderBrief({ step }, { w, h, full, tagRoom: !full && w >= 720 ? 30 : 0 });
+    for (const m of svg.matchAll(/<text class="([^"]*)"(?: font-size="([\d.]+)")? x="([\d.]+)" y="([\d.]+)">([^<]+)</g)) {
+      const [, cls, F, x, y, txt] = m;
+      const ch = F ? 0.6 * +F : cls.includes('sp-level') ? 8.1 : 6.7;
+      const len = txt.replace(/&amp;/g, '&').length;
+      assert.ok(+x >= 4 && +x + len * ch <= w, `@${w} ${full ? 'full' : 'tile'} step ${step}: “${txt}” is clipped`);
+      if (full || w >= 288) assert.ok(+y <= h, `@${w} ${full ? 'full' : 'tile'} step ${step}: “${txt}” falls below the drawing`);
+    }
+  }
+});
+
+test('the brief: each step adds to the last, and the sentence follows the drawing', () => {
+  const at = (step) => Lab.renderBrief({ step }, { w: 1000, h: 540, full: false });
+  assert.ok(at(0).includes('THIS WEEK') && !at(0).includes('ONE STORY'));
+  assert.ok(at(1).includes('ONE STORY · THREE SOURCES') && !at(1).includes('CONFIDENCE'));
+  assert.ok(at(2).includes('CONFIDENCE') && !at(2).includes('>require<'));
+  assert.ok(at(3).includes('>require<') && !at(3).includes('CHECKED'));
+  assert.ok(at(4).includes('CHECKED') && at(4).includes('rd-acc') && at(4).includes('is-acc'));
+  assert.ok(at(5).includes('MONDAY') && at(5).includes('ASK LATER'));
+  // the bad date is struck only once it has been checked
+  const bad = Lab.BR_DRAFT.body.find((x) => x.bad);
+  const fixed = '>' + bad.fix.t.split(' ').pop() + bad.fix.cite + '<';          // the redrafted date, as drawn
+  assert.ok(!at(3).includes(fixed) && at(4).includes(fixed));
+  for (let step = 0; step < 6; step++) {
+    const said = Lab.sayBrief({ step }).now;
+    assert.match(said, new RegExp('^' + Lab.BR_STEPS[step] + '\\.'));
+    assert.ok(!/\d/.test(said), `step ${step} carries a number`);
+  }
+  // the three joined sources are the ones the draft cites
+  const cited = new Set(Lab.BR_DRAFT.body.flatMap((x) => [x.cite, x.fix && x.fix.cite]).join('').split('').filter(Boolean));
+  const story = Lab.BR_SOURCES.map((x, i) => (x.story ? '¹²³⁴'[i] : null)).filter(Boolean);
+  assert.deepEqual([...cited].sort(), story.sort());
+  const st = Lab.KINDS.brief.state();
+  Lab.KINDS.brief.travel(st, 0.5); assert.equal(st.step, 5);
+  Lab.KINDS.brief.travel(st, 0); assert.equal(st.step, 0);
+});

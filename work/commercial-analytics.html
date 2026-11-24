@@ -7,14 +7,14 @@
   <meta name="color-scheme" content="dark light" />
 
   <title>Commercial operations and analytics, Cooper Surgical · Sarvesh Vishnu</title>
-  <meta name="description" content="Commercial operations and analytics at Cooper Surgical: one data spine under the annual operating plan, territory quotas, a cross-sell experiment, demand planning and a LangGraph research companion." />
+  <meta name="description" content="Commercial operations and analytics at Cooper Surgical: one data spine under the annual operating plan for three business units, sales quotas, a cross-sell experiment, demand planning and a LangGraph research companion." />
 
   <link rel="canonical" href="https://sarvesh-vishnu.github.io/work/commercial-analytics.html" />
 
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://sarvesh-vishnu.github.io/work/commercial-analytics.html" />
   <meta property="og:title" content="Commercial operations and analytics, Cooper Surgical · Sarvesh Vishnu" />
-  <meta property="og:description" content="Commercial operations and analytics at Cooper Surgical: one data spine under the annual operating plan, territory quotas, a cross-sell experiment, demand planning and a LangGraph research companion." />
+  <meta property="og:description" content="Commercial operations and analytics at Cooper Surgical: one data spine under the annual operating plan for three business units, sales quotas, a cross-sell experiment, demand planning and a LangGraph research companion." />
   <meta property="og:image" content="https://sarvesh-vishnu.github.io/assets/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -79,8 +79,8 @@
       <div class="project-facts">
 
         <dl class="project-results">
-          <div><dt>territory managers on plan</dt><dd>75+</dd></div>
-          <div><dt>forecast error (WAPE), before → after</dt><dd><mark class="tbc" title="To confirm before this goes live">18% → 8%</mark></dd></div>
+          <div><dt>business units on plan, two of them global</dt><dd>3</dd></div>
+          <div><dt>forecast error (WAPE), before → after</dt><dd>18% → 8%</dd></div>
           <div><dt>product-line actuals vs forecast</dt><dd>±5%</dd></div>
         </dl>
 
@@ -90,13 +90,13 @@
       <div class="paper">
       <section class="project-body-prose">
         <h2>Objective</h2>
-        <p>Annual planning at a global medical-device business is a needle-threading exercise between top-line growth targets, sales-force capacity, and product-mix reality. The team required a data spine that could support all of these facets while enabling predictive and prescriptive analytics.</p>
+        <p>Annual planning across several business units of a global medical-device company is a needle-threading exercise between top-line growth targets, sales-force capacity, and product-mix reality. The team required a data spine that could support all of these facets while enabling predictive and prescriptive analytics.</p>
 
         <h2>Building the spine</h2>
         <p>I started as a Data Scientist on the Commercial Excellence team. I built the Python pipelines and Microsoft Fabric repositories that became the data spine, organised the team's analytics resources in one place, and built Power BI reporting for each sales team, while supporting marketing analytics.</p>
 
         <h2>The annual operating plan</h2>
-        <p>I own the analytics behind the Annual Operating Plan end to end: quota allocation across 75+ territory managers, ensemble forecasting across 25+ product lines, and the pipelines and executive surfaces that hold all of it together for the Medical Device business.</p>
+        <p>I own the analytics behind the Annual Operating Plan end to end for three business units: medical devices in the United States, and contraception and <mark class="tbc" title="To confirm before this goes live">stem-cell storage</mark> worldwide. That covers quota allocation for each unit's sales teams, ensemble forecasting across 25+ product lines, and the pipelines and executive surfaces that hold all of it together.</p>
         <p>The forecasts it replaced were largely linear. Shipments also understate demand: an order that is cancelled, returned or left on backorder never shows up as a sale. So I rebuilt an unconstrained demand series from sales orders together with open, cancelled, returned and backordered lines, and let product characteristics into the models.</p>
         <ul>
           <li>Rebuilt the AOP process end to end, from transaction records to executive readouts</li>
@@ -108,7 +108,7 @@
 
         <h2>A cross-sell experiment, end to end</h2>
         <p>The Total Orders dashboard was the first business view of products being sold across business units, which made cross-selling opportunities visible for the first time. I led the initiative that followed from start to finish: identifying the target customers, setting up the experiment as an A/B test, building the compensation plan, and evaluating the outcome.</p>
-        <p>Accounts were randomised within territories, about 200 accounts per territory, across <mark class="tbc" title="To confirm before this goes live">[N] territories over [N] months</mark>. Cross-sell orders were the primary metric, then new-product orders, revenue per account, time to first order and attach rate, in that order.</p>
+        <p>Accounts were randomised within ten territories, about 200 accounts in each, and the test ran for about four months. The five metrics were ranked before it started: cross-sell orders first, then new-product orders, revenue per account, time to first order and attach rate, so no metric could be promoted after the results came in.</p>
         <p>The test found no meaningful lift. Read alongside a bundling analysis across the organisation and a change in leadership, that result helped move the strategy: the sales group now leads with a single product, and the other products moved to other sales teams.</p>
         <p>Alongside it: customer segmentation for a product line, regulatory analytics support, and data extractions to support organisational compliance.</p>
 
@@ -116,13 +116,12 @@
         <p>I then moved to the Strategy and Market Insights team as a Senior Data Scientist. The questions are a level up: how the largest businesses are doing, what external projects are worth, SKU-by-country forecasts for supply chain and demand planning, long-range business planning, price elasticity, and market research.</p>
 
         <h2>The research companion</h2>
-        <p>Alongside the planning work I built a research intelligence companion for the team on LangGraph. Each week it gathers public sources (regulatory filings, clinical-trial registries, published research and news), retrieves with hybrid keyword and semantic search, and drafts a short market brief for leadership.</p>
-        <p>Three rules are enforced in code: nothing internal goes in, every statistic links to its source, and each story is validated before it is sent.</p>
+        <p>Alongside the planning work I built a research companion on LangGraph that writes leadership a sourced brief every Monday from public sources only. <a href="research-companion.html">It has its own case study.</a></p>
       </section>
 
       <section class="project-body-prose">
         <h2>Outcome</h2>
-        <p>Forecast error fell from about <mark class="tbc" title="To confirm before this goes live">18% to 8% WAPE</mark> against the linear forecasts it replaced, mostly from modelling the demand customers asked for rather than the demand that shipped. Product-line actuals landed within 5% of <mark class="tbc" title="To confirm before this goes live">the forecast</mark>, and demand planning and manufacturing now plan from intervals instead of single numbers.</p>
+        <p>Forecast error fell from about 18% to 8% WAPE against the linear forecasts it replaced, mostly from modelling the demand customers asked for rather than the demand that shipped. That is error <mark class="tbc" title="To confirm before this goes live">month by month</mark>; over <mark class="tbc" title="To confirm before this goes live">the full year</mark>, misses in either direction largely cancel, and each product line's actuals landed within 5% of its forecast, and demand planning and manufacturing now plan from intervals instead of single numbers.</p>
         <p>The cross-sell test answered its question before a plan was scaled up: no meaningful lift. The sales structure changed with that evidence in hand.</p>
         <p>Reporting moved from ad-hoc pulls to live Power BI views, and product-launch decisions are tested against the forecast before they become commitments.</p>
 
@@ -134,7 +133,7 @@
 
     <nav class="project-next" aria-label="Next project">
       <span class="label">Next · Work</span>
-      <a href="nlp.html">Natural language processing</a>
+      <a href="research-companion.html">Research companion</a>
     </nav>
   </main>
 

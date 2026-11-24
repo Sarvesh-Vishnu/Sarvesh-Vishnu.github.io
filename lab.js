@@ -5,6 +5,7 @@
      committee — four forecasters and their ensemble, refit from any starting month
      list      — a ranked replacement list against a fixed budget
      reading   — one comment, marked up the way the pipeline reads it (mounted)
+     brief     — one public story taken from sources to the Monday brief (mounted)
      plan      — a pipe network, listed by a model or by age (mounted)
      route     — five real steps from a known song to the long tail (mounted, real data)
      globe     — Numit's curated events on a turning globe (mounted, real data)
@@ -960,6 +961,198 @@
     };
   }
 
+  /* ------------------------------------------------------------------ the brief
+     Not a model: one story taken the way the research companion takes each item in a
+     week (design.md §14.29). Six steps: gather, join, weigh, draft, check, send. The
+     sources and the draft are written for the page; no company news, no internal
+     data and no outputs of the real system appear. The picture and the sentence are
+     both read from BR_SOURCES and BR_DRAFT, so they cannot disagree. */
+  const BR_STEPS = ['Gather', 'Join', 'Weigh', 'Draft', 'Check', 'Send'];
+  const BR = { WIDE: 760 };
+  const BR_SOURCES = [
+    { kind: 'Legislature', title: 'Insurers must cover IVF from 2027', story: true },
+    { kind: 'Trade press', title: 'Second state this year mandates IVF', story: true },
+    { kind: 'Advocacy group', title: 'What the IVF law means for patients', story: true },
+    { kind: 'Press release', title: 'Device maker opens a training centre', story: false },
+  ];
+  const BR_WEIGH = [
+    ['Confidence', 'high: the bill text agrees'],
+    ['Materiality', 'touches a product line'],
+    ['Place', 'the brief, not the watchlist'],
+  ];
+  const BR_DRAFT = {
+    head: 'A second state will require insurers to cover IVF',
+    body: [
+      { t: 'Insurers there must cover IVF', cite: '¹²' },
+      { t: 'from this year.', bad: true, fix: { t: 'from 2027.', cite: '¹' } },
+      { t: 'More patients may be able to afford treatment.', cite: '³' },
+    ],
+  };
+  const brStep = (st) => clamp(Math.round(st.step), 0, BR_STEPS.length - 1);
+  const brLabW = (txt) => txt.length * (SP_CH + 1.4);    // tracked capitals
+  function brWrap(toks, max) {
+    const lines = [];
+    let cur = [], len = 0;
+    toks.forEach((t) => {
+      if (cur.length && len + 1 + t.text.length > max) { lines.push(cur); cur = []; len = 0; }
+      len += t.text.length + (cur.length ? 1 : 0);
+      cur.push(t);
+    });
+    if (cur.length) lines.push(cur);
+    return lines;
+  }
+  const brWords = (text, cls) => text.split(' ').map((w) => ({ text: w, cls }));
+
+  /** Columns for a width: two side by side when wide, one panel at a time when not. */
+  function brCols(w) {
+    const wide = w >= BR.WIDE;
+    const pad = wide ? Math.max(32, Math.round(w * 0.05)) : w < 300 ? 12 : 18;
+    const F = wide ? (w >= 900 ? 15 : 14) : (w < 340 ? 12 : 13);
+    if (!wide) return { wide, pad, F, cw: 0.6 * F, L: { x: pad, w: w - 2 * pad }, R: { x: pad, w: w - 2 * pad } };
+    const gap = Math.round(w * 0.06), lw = Math.round((w - 2 * pad - gap) * 0.46);
+    return { wide, pad, F, cw: 0.6 * F, L: { x: pad, w: lw }, R: { x: pad + lw + gap, w: w - 2 * pad - lw - gap } };
+  }
+  /** Rows for one column at one step. Each row is { h, draw(y) } with y the row's top. */
+  function brRows(side, step, g, r) {
+    const rows = [], fx = (v) => v.toFixed(1);
+    const fresh = (at) => (step === at ? ' rd-new' : '');
+    const lab = (txt, cls, x = g[side].x) => rows.push({ h: r.row, draw: (y) => `<text class="fig-lab sp-level${cls}" x="${fx(x)}" y="${fx(y + 12)}">${txt}</text>` });
+    const gap = (h) => rows.push({ h, draw: () => '' });
+    const words = (toks, col) => {
+      brWrap(toks, Math.floor(col.w / g.cw)).forEach((ln) => rows.push({ h: r.lh, draw: (y) => {
+        let s = '', x = col.x;
+        const base = y + g.F * 0.95;
+        ln.forEach((t) => {
+          s += `<text class="rd-word${t.cls || ''}" font-size="${g.F}" x="${fx(x)}" y="${fx(base)}">${esc(t.text)}</text>`;
+          if (t.strike) s += `<path class="rd-rule is-acc${t.strike}" d="M${fx(x)},${fx(base - g.F * 0.32)} L${fx(x + t.text.length * g.cw)},${fx(base - g.F * 0.32)}"/>`;
+          x += (t.text.length + 1) * g.cw;
+        });
+        return s;
+      } }));
+    };
+    if (side === 'L') {
+      lab(step === 0 ? 'THIS WEEK · PUBLIC ITEMS' : 'ONE STORY · THREE SOURCES', step === 0 ? ' fig-lab-quiet' : ' sp-on' + fresh(1));
+      gap(r.gap / 2);
+      BR_SOURCES.forEach((src, i) => {
+        const quiet = step >= 1 && !src.story;
+        const start = rows.length;
+        if (r.compact) words(brWords(`[${i + 1}] ${src.title}`, quiet ? ' rd-stop' : ''), g.L);   // a short tile: the kind gives way
+        else {
+          lab(`[${i + 1}] ${src.kind.toUpperCase()}`, quiet ? ' fig-lab-quiet' : '');
+          words(brWords(src.title, quiet ? ' rd-stop' : ''), g.L);
+        }
+        rows[start].src = i;                             // where the join bracket starts and ends
+        rows[rows.length - 1].srcEnd = i;
+        if (i < BR_SOURCES.length - 1) gap(r.gap);
+      });
+      return rows;
+    }
+    if (!g.wide) { lab('FROM [1] [2] [3]', ' fig-lab-quiet'); gap(r.gap / 2); }
+    const show = (at) => step >= at && (g.wide || step === at || (at === 3 && step === 4));
+    if (show(2)) {
+      BR_WEIGH.forEach(([k, v], i) => {
+        lab(k.toUpperCase(), ' fig-lab-quiet');
+        rows.push({ h: r.row, draw: (y) => `<text class="fig-lab sp-on${fresh(2)}" x="${fx(g.R.x)}" y="${fx(y + 12)}">${v}</text>` });
+        if (i < BR_WEIGH.length - 1) gap(r.gap / 2);
+      });
+    }
+    if (show(3)) {
+      if (rows.length > 2) gap(r.gap);
+      words(brWords(BR_DRAFT.head, ' br-head' + fresh(3)), g.R);
+      gap(r.gap / 2);
+      const toks = [];
+      BR_DRAFT.body.forEach((seg) => {
+        const fixed = seg.bad && step >= 4;
+        const ws = brWords(seg.t, fixed ? ' rd-stop' : fresh(3));
+        if (fixed) ws.forEach((t) => { t.strike = fresh(4) || ' '; });
+        else if (seg.cite) ws[ws.length - 1].text += seg.cite;
+        toks.push(...ws);
+        if (fixed) {
+          const fw = brWords(seg.fix.t, ' rd-acc' + fresh(4));
+          fw[fw.length - 1].text += seg.fix.cite;
+          toks.push(...fw);
+        }
+      });
+      words(toks, g.R);
+    }
+    if (step >= 4 && (g.wide || step === 4)) { gap(r.gap / 2); lab('CHECKED · ONE DATE SENT BACK', ' fig-lab-acc' + fresh(4), g.R.x); }
+    if (step >= 5) {
+      if (!g.wide) words(brWords(BR_DRAFT.head, ' br-head'), g.R);
+      gap(r.gap);
+      lab('MONDAY · LEADERSHIP INBOXES', ' fig-lab-acc' + fresh(5), g.R.x);
+      lab('ASK LATER · IT COMES BACK', ' sp-on' + fresh(5), g.R.x);
+    }
+    return rows;
+  }
+  const brHeight = (rows) => rows.reduce((n, q) => n + q.h, 0);
+  /** Everything a step needs at a width, tightened if the box is short. */
+  function brGeom(step, w, h, o) {
+    const g = brCols(w);
+    g.study = !!(o && o.full && !o.tagRoom);
+    g.rail = g.wide && !g.study;
+    const padT = g.study ? 16 : 44, padB = g.rail ? 40 : g.study ? 16 : 24;
+    const build = (r) => {
+      const sides = g.wide ? ['L', 'R'] : [step <= 1 ? 'L' : 'R'];
+      const cols = sides.map((sd) => ({ side: sd, rows: brRows(sd, step, g, r) }));
+      return { r, cols, need: Math.round(padT + padB + Math.max(...cols.map((c) => brHeight(c.rows)))) };
+    };
+    let b = build({ row: 17, lh: g.F * 1.45, gap: 14 });
+    if (h && b.need > h) b = build({ row: 15, lh: g.F * 1.25, gap: 8 });
+    if (h && b.need > h && !g.wide) b = build({ row: 15, lh: g.F * 1.2, gap: 5, compact: true });
+    Object.assign(g, b, { padT, padB });
+    g.top = padT + (h ? Math.max(0, (h - b.need) / 2) : 0);
+    return g;
+  }
+  function renderBrief(st, o) {
+    const step = brStep(st), { w } = o;
+    const g = brGeom(step, w, o.h, o), h = o.h || g.need;
+    const fx = (v) => v.toFixed(1);
+    let s = open(w, h);
+    g.cols.forEach((c) => {
+      let y = g.top, y0 = null, y1 = null;
+      c.rows.forEach((q) => {
+        if (q.src === 0) y0 = y;
+        if (q.srcEnd === 2) y1 = y + q.h;
+        s += q.draw(y);
+        y += q.h;
+      });
+      // the join: one bracket holds the three items that are one story
+      if (c.side === 'L' && step >= 1 && y0 !== null) {
+        const x = g.L.x - (g.wide ? 14 : 7);
+        s += `<path class="rd-rule${step === 1 ? ' rd-new' : ''}" d="M${fx(x + 5)},${fx(y0 + 3)} L${fx(x)},${fx(y0 + 3)} L${fx(x)},${fx(y1 - 4)} L${fx(x + 5)},${fx(y1 - 4)}"/>`;
+      }
+    });
+    if (g.rail) {
+      let x = g.pad;
+      const y = h - 18;
+      BR_STEPS.forEach((name, i) => {
+        const txt = name.toUpperCase();
+        s += `<text class="fig-lab sp-level ${i === step ? 'sp-on' : i < step ? '' : 'fig-lab-quiet'}" x="${fx(x)}" y="${fx(y)}">${txt}</text>`;
+        if (i === step) s += `<path class="rd-rule" d="M${fx(x)},${fx(y + 6)} L${fx(x + brLabW(txt) - 1.4)},${fx(y + 6)}"/>`;
+        x += brLabW(txt) + 26;
+      });
+    }
+    return s + '</svg>';
+  }
+  function sayBrief(st, o) {
+    const step = brStep(st);
+    const story = BR_SOURCES.filter((x) => x.story).length;
+    const bad = BR_DRAFT.body.find((x) => x.bad);
+    const now = [
+      'Gather. Each week the companion collects public items: legislation, regulators, trial registries, research and trade press. Four of this week’s are shown here.',
+      `Join. ${numWord(story)[0].toUpperCase() + numWord(story).slice(1)} items are one story told ${numWord(story)} times, found by what they say rather than by matching headlines. The last is a different story and waits for its own turn.`,
+      'Weigh. Confidence comes from the kind of source, not from how often a claim is repeated: the bill itself is a primary source. The story touches a product line, so it goes in the brief rather than the watchlist.',
+      'Draft. A model writes the item from these passages only, and every sentence has to cite the passages it was given.',
+      `Check. Code compares every claim and date with the sources before a second model critiques the draft. “${bad.t.replace(/\.$/, '')}” is in none of them, so the draft goes back and returns with the date the bill gives.`,
+      'Send. The item reaches leadership’s inboxes on Monday morning. It also stays searchable, so a leader can ask about the topic later and get the story back with its sources.',
+    ][step];
+    return {
+      now,
+      always: 'One story is shown. Every item in the Monday brief goes through the same steps, and nothing internal goes into any of them.',
+      tag: o && o.w && o.w < BR.WIDE ? 'Written for this page' : `Written for this page · ${BR_STEPS[step]}`,
+    };
+  }
+
   /* ------------------------------------------------------------------ the plan
      A small pipe network drawn for the page (design.md §14.20). It is not the
      Authority's network and every attribute on it is invented. It shows one idea from
@@ -1474,6 +1667,16 @@
       leave: (st) => { st.focus = null; },
       height: (st, w) => Math.round(w >= PL.WIDE ? clamp(w * 0.48, 340, 500) : w * 0.86 + 40),
     },
+    brief: {
+      state: () => ({ step: BR_STEPS.length - 1 }),
+      render: renderBrief, say: sayBrief,
+      // across the figure, or up the screen: the story moves a step at a time
+      scrub: (st, u) => { st.step = Math.min(BR_STEPS.length - 1, Math.floor(clamp(u, 0, 1) * BR_STEPS.length)); },
+      // on scroll the story is sent by the time the slide is centred
+      travel: (st, u) => { st.step = Math.min(BR_STEPS.length - 1, Math.floor(clamp(u * 2.4, 0, 1) * BR_STEPS.length)); },
+      unit: (st) => brStep(st) / (BR_STEPS.length - 1),
+      height: (st, w) => Math.max(...BR_STEPS.map((_, i) => brGeom(i, w, 0, { full: true }).need)),
+    },
     reading: {
       state: () => ({ c: 0, step: RD_STEPS.length - 1 }),
       render: renderReading, say: sayReading,
@@ -1700,6 +1903,9 @@
       controls.append(group);
       return () => btns.forEach((b, i) => b.setAttribute('aria-pressed', isOn(i) ? 'true' : 'false'));
     };
+    if (name === 'brief') {
+      sync = picks('Step', BR_STEPS, (i) => i === brStep(st), (i) => { st.step = i; });
+    }
     if (name === 'reading') {
       const syncStep = picks('Step', RD_STEPS, (i) => i === st.step, (i) => { st.step = i; });
       const syncComment = picks('Comment', RD_COMMENTS.map((c) => c.name), (i) => i === st.c, (i) => { st.c = i; });
@@ -1817,6 +2023,7 @@
     PL, plan, renderPlan, sayPlan, planNearest, share, place,
     OB, RT, rtGeom, renderRoute, sayRoute,
     NM, GL, globe, globeView, renderGlobe, sayGlobe, globeNearest, globeStep, globeTravel,
+    BR_STEPS, BR_SOURCES, BR_DRAFT, BR, brCols, brGeom, renderBrief, sayBrief,
     RD_STEPS, RD_COMMENTS, RD_STOP, RD_WIDE, rdParse, rdLayout, rdGeom, renderReading, sayReading,
     sayCommittee, sayList, saySample, KINDS,
   };
