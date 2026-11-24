@@ -6,6 +6,27 @@
 /* -------------------------------------------------------------
    §2  Color · §3 Typography · §4 Spacing · §7 Motion
    ------------------------------------------------------------- */
+/* Metric-matched fallbacks (§14.35). Until Plex arrives the page sets in Arial, or its
+   metric twins Liberation Sans and Arimo on Linux, scaled to Plex's width and given Plex's
+   ascent and descent, so the swap does not rewrap the hero and push the index down.
+   Measured: Plex Sans 400 runs 1.0% wider than Arial, 300 runs 0.2% narrower. */
+@font-face {
+  font-family: 'Plex Sans Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('Arimo');
+  size-adjust: 100.5%;
+  ascent-override: 102%;
+  descent-override: 27.4%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Plex Mono Fallback';
+  src: local('Courier New'), local('CourierNewPSMT'), local('Liberation Mono'), local('Cousine');
+  size-adjust: 100%;
+  ascent-override: 102.5%;
+  descent-override: 27.5%;
+  line-gap-override: 0%;
+}
+
 :root {
   /* Blueprint (design.md §14.16, deepened in §14.17). The ground is a deep Prussian,
      close to ink: the pigment's own masstone. Linework is near-white, and one
@@ -27,8 +48,8 @@
   --error:           #9F2B2B;
 
   /* Type stacks */
-  --font-sans: 'IBM Plex Sans', 'Helvetica Neue', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', 'SF Mono', ui-monospace, monospace;
+  --font-sans: 'IBM Plex Sans', 'Plex Sans Fallback', 'Helvetica Neue', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Plex Mono Fallback', 'SF Mono', ui-monospace, monospace;
 
   /* Type scale (1.250 modular) */
   --text-2xs:  11px;
@@ -62,7 +83,8 @@
 
   /* Layout */
   --content-max: 1200px;
-  --reading-max: 56ch;   /* about 70 characters of running text; a ch is wider than the average letter (§14.23) */
+  --ch: 0.6em;           /* Plex's "0" is 0.6em in Sans and Mono: measures stay put while a fallback font shows (§14.35) */
+  --reading-max: calc(56 * var(--ch));   /* about 70 characters of running text; a ch is wider than the average letter (§14.23) */
   --gutter:      24px;
   --header-h:    64px;
 
@@ -169,7 +191,7 @@ body {
   letter-spacing: -0.035em;
   color: var(--ink);
   margin-top: var(--space-6);
-  max-width: 18ch;
+  max-width: calc(18 * var(--ch));
   text-wrap: balance;
 }
 
@@ -305,7 +327,7 @@ body {
 .hero-say { margin: 0; }
 .hero-proof {
   margin-top: var(--space-8);
-  max-width: 54ch;
+  max-width: calc(54 * var(--ch));
   font-size: clamp(var(--text-lg), 1.7vw, var(--text-xl));   /* it follows the name directly, so it steps up on a wide sheet */
   line-height: 1.45;
   color: var(--ink-soft);
@@ -403,7 +425,7 @@ body {
   --lane-b: 79.1667%;              /* 38 / 48 */
   --lane-m: 50%;
   margin-top: var(--space-8);
-  max-width: 76ch;
+  max-width: calc(76 * var(--ch));
 }
 .path-grid {
   display: grid;
@@ -504,7 +526,7 @@ body {
   line-height: 1.6;
   color: var(--ink-soft);
   padding: 0 0 var(--space-8);
-  max-width: 60ch;
+  max-width: calc(60 * var(--ch));
 }
 .th-body strong { font-weight: 500; color: var(--ink); }
 
@@ -546,7 +568,7 @@ body {
   margin-bottom: var(--space-6);
 }
 .sheets-title { font-size: var(--text-xl); font-weight: 500; letter-spacing: -0.01em; color: var(--ink); }
-.sheets-note { max-width: 62ch; font-size: var(--text-sm); line-height: 1.5; color: var(--ink-muted); }
+.sheets-note { max-width: calc(62 * var(--ch)); font-size: var(--text-sm); line-height: 1.5; color: var(--ink-muted); }
 .sheets { position: relative; }
 .sheet-list { border-top: 1px solid var(--line); }
 .sheet { border-bottom: 1px solid var(--line); }
@@ -593,8 +615,8 @@ body {
   text-wrap: balance;
   transition: color var(--duration-fast) ease;
 }
-.sheet-desc { max-width: 52ch; font-size: var(--text-sm); line-height: 1.5; color: var(--ink-soft); text-wrap: pretty; }
-.sheet-result { display: grid; justify-items: end; gap: var(--space-1); text-align: right; max-width: 15ch; }
+.sheet-desc { max-width: calc(52 * var(--ch)); font-size: var(--text-sm); line-height: 1.5; color: var(--ink-soft); text-wrap: pretty; }
+.sheet-result { display: grid; justify-items: end; gap: var(--space-1); text-align: right; max-width: calc(15 * var(--ch)); }
 .sheet-result b {
   font-size: clamp(var(--text-2xl), 2.6vw, var(--text-4xl));
   font-weight: 400;
@@ -971,7 +993,7 @@ body {
   line-height: 1;
   letter-spacing: -0.03em;
   margin-top: var(--space-6);
-  max-width: 18ch;
+  max-width: calc(18 * var(--ch));
   text-wrap: balance;
 }
 
@@ -985,7 +1007,7 @@ body {
   letter-spacing: 0.12em;
   line-height: 1.7;
   color: var(--ink-muted);
-  max-width: 60ch;
+  max-width: calc(60 * var(--ch));
 }
 .project-byline a {
   display: inline-block;                                /* taller to tap, same line height */
@@ -1037,7 +1059,7 @@ body {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--ink-muted);
-  max-width: 60ch;
+  max-width: calc(60 * var(--ch));
 }
 @media (max-width: 640px) {
   .project-results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1190,7 +1212,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 .project-hero--lead h1 {
   font-size: clamp(var(--text-3xl), 4.6vw, var(--text-6xl));
-  max-width: 22ch;
+  max-width: calc(22 * var(--ch));
 }
 .project-facts {
   max-width: var(--content-max);
@@ -1222,7 +1244,7 @@ html.lenis, html.lenis body { height: auto; }
   color: var(--ink);
 }
 .lab-lede {
-  max-width: 56ch;
+  max-width: calc(56 * var(--ch));
   font-size: var(--text-lg);
   line-height: 1.5;
   color: var(--ink-soft);
@@ -1299,7 +1321,7 @@ html.lenis, html.lenis body { height: auto; }
 .lab-range { display: flex; align-items: center; gap: var(--space-3); flex: 1 1 320px; min-width: 0; }
 .lab-range span { white-space: nowrap; }
 .lab-range input { flex: 1 1 auto; min-width: 80px; min-height: 28px; accent-color: var(--accent); }
-.lab-range output { min-width: 9ch; color: var(--accent-deep); font-variant-numeric: tabular-nums; text-align: right; }
+.lab-range output { min-width: calc(9 * var(--ch)); color: var(--accent-deep); font-variant-numeric: tabular-nums; text-align: right; }
 .lab-checks { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); border: 0; padding: 0; margin: 0; }
 .lab-checks legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .lab-checks label { display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; }
@@ -1342,7 +1364,7 @@ html.lenis, html.lenis body { height: auto; }
 }
 .lab-always {
   margin-top: var(--space-4);
-  max-width: 62ch;
+  max-width: calc(62 * var(--ch));
   font-size: var(--text-base);
   line-height: 1.6;
   color: var(--ink-soft);
@@ -1353,7 +1375,7 @@ html.lenis, html.lenis body { height: auto; }
   margin-top: var(--space-6);
   padding-left: var(--space-4);
   border-left: 2px solid var(--mark);
-  max-width: 68ch;
+  max-width: calc(68 * var(--ch));
   font-family: var(--font-mono);
   font-size: 13px;                                      /* the notes say what is invented: not the smallest type (§14.23) */
   line-height: 1.7;
@@ -1388,7 +1410,7 @@ html.lenis, html.lenis body { height: auto; }
 .contact-links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-8); margin-top: var(--space-8); font-size: var(--text-lg); }
 .contact-links a { padding-bottom: 2px; color: var(--mark); border-bottom: 1px solid currentColor; transition: color var(--duration-fast) ease; }
 .contact-links a:hover { color: var(--accent); }
-.contact-line { grid-column: 1 / -1; margin-top: calc(var(--space-4) - var(--gutter)); max-width: 52ch; font-size: var(--text-lg); line-height: 1.5; color: var(--ink-soft); }
+.contact-line { grid-column: 1 / -1; margin-top: calc(var(--space-4) - var(--gutter)); max-width: calc(52 * var(--ch)); font-size: var(--text-lg); line-height: 1.5; color: var(--ink-soft); }
 
 /* Long reading follows the sheet the reader chose (§14.23): a hairline and room above it set it apart */
 .paper { margin-top: var(--space-16); padding: var(--space-24) 0; }
@@ -1484,7 +1506,7 @@ a.rg-item:hover, a.rg-item:focus-visible { color: var(--accent); text-decoration
   :root, :root[data-theme] {
     --canvas: #FFFFFF; --surface: #FFFFFF; --ink: #0A2240; --ink-soft: #23406A; --ink-muted: #4E6A8E;
     --line: #C9D4E2; --mark: #0A2240; --accent: #C93B1A; --tint: #FFFFFF;
-    --reading-max: 65ch;                                /* paper is read closer than a screen; the wider measure keeps two pages */
+    --reading-max: calc(65 * var(--ch));                                /* paper is read closer than a screen; the wider measure keeps two pages */
   }
   html { font-size: 10pt; }
   body { background: #FFFFFF; color: var(--ink); }

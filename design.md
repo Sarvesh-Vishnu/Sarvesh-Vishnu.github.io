@@ -1495,3 +1495,17 @@ themes, visible focus, skip link, reduced motion, no sideways scroll at 320. Fiv
    3 methods: …") follows pointer and focus; lit cells get a ruled inset box as well as the tint,
    and lit headers an accent underline, so nothing depends on colour alone. Hidden below 769px.
 Also: `a.rg-item` tap height 19 → 25px. Not done: axe/Lighthouse (not installed), a VoiceOver pass.
+
+### 14.35 Font swap no longer shifts the home page (Nov 24, 2026; `blueprint`)
+
+Lighthouse on live v3.5 (PageSpeed web UI): home mobile 99/100/100/100, desktop 83/100/100/100;
+Cooper and Numit 100 on all four, both form factors. The desktop loss was CLS 0.338, all on
+`#work`: since §14.30 the hero is no longer a full screen, so when Plex replaced the fallback the
+hero rewrapped and pushed the index down. Two causes, two fixes:
+- Measures were in `ch`, the width of "0" in the current font. Plex's "0" is 0.6em; Arial's
+  0.556em. Every `Nch` is now `calc(N * var(--ch))` with `--ch: 0.6em`: identical under Plex,
+  unchanged under any fallback.
+- `'Plex Sans Fallback'` / `'Plex Mono Fallback'`: local Arial / Liberation Sans / Arimo and
+  Courier New / Liberation Mono / Cousine with Plex's size, ascent and descent, placed second in
+  both stacks (Lighthouse runs on Linux, where Helvetica Neue is absent).
+Measured at 1350×940: `#work` top 506px under Plex and under the fallback (was 506 vs 540).
