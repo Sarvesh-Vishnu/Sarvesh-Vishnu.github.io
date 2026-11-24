@@ -604,7 +604,7 @@ body {
   white-space: nowrap;
   color: var(--ink);
 }
-.sheet-result span { font-family: var(--font-mono); font-size: var(--text-2xs); line-height: 1.4; color: var(--ink-muted); }
+.sheet-result > span { font-family: var(--font-mono); font-size: var(--text-2xs); line-height: 1.4; color: var(--ink-muted); }
 .sheet-link:hover .sheet-name, .sheet-link:focus-visible .sheet-name { color: var(--mark); }
 .sheet-link:focus-visible { outline: 2px solid var(--mark); outline-offset: 4px; }
 .sheet.is-active .sheet-no { color: var(--accent-deep); }
