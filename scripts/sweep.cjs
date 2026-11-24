@@ -49,7 +49,7 @@ const PAGES = ['/', '/work/commercial-analytics.html', '/work/nlp.html', '/work/
       const vw = document.documentElement.clientWidth; const over = [];
       const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       while (walk.nextNode()) { const node = walk.currentNode; if (!node.textContent.trim()) continue; const el = node.parentElement;
-        if (!el || el.closest('svg, script, style, noscript, .skip, .reel-track, [hidden]') || getComputedStyle(el).visibility === 'hidden') continue;
+        if (!el || el.closest('svg, script, style, noscript, .skip, .sr-only, .reel-track, [hidden]') || getComputedStyle(el).visibility === 'hidden') continue;
         const rg = document.createRange(); rg.selectNodeContents(node);
         for (const b of rg.getClientRects()) if (b.width > 1 && (b.right > vw + 1 || b.left < -1)) { over.push((el.className || el.tagName) + ' "' + node.textContent.trim().slice(0, 24) + '"'); break; } }
       if (over.length) out.push('text off the page: ' + over.slice(0, 3).join('; '));

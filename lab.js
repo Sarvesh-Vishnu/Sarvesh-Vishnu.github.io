@@ -1845,6 +1845,13 @@
     const always = rootEl.querySelector('.lab-always');
     const controls = rootEl.querySelector('.lab-controls');
     let w = 0, raf = 0, figH = 0, drawn = '';
+    // The sentence is announced when a button, slider or key changed it, never while a
+    // pointer sweeps the figure: that would read a new sentence every few pixels.
+    let byPointer = false;
+    [fig, field].forEach((n) => n && ['pointermove', 'pointerdown'].forEach((t) =>
+      n.addEventListener(t, (e) => { if (e.pointerType !== 'touch') byPointer = true; }, true)));
+    if (controls) ['input', 'change', 'click', 'keydown'].forEach((t) =>
+      controls.addEventListener(t, () => { byPointer = false; }, true));
     let legend = null;
     if (name === 'committee') {
       legend = document.createElement('ul');
@@ -1871,6 +1878,7 @@
           '<li class="is-quiet">Dotted: what happened</li>';
       }
       const said = kind.say(st);
+      now.setAttribute('aria-live', byPointer ? 'off' : 'polite');
       now.textContent = said.now;
       always.textContent = said.always;
       sync();

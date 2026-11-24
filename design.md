@@ -1473,3 +1473,25 @@ the range lights, plus the native crosshair over every live figure stage.
   its row. ≥769px only (the phone table is a list). Keyboard focus does the same.
 Considered and rejected: a site-wide custom cursor (slows reading, no touch equivalent), a
 trailing cursor, magnetic buttons, scroll-jacking and any loop.
+
+### 14.34 Accessibility pass (Nov 24, 2026; `blueprint`)
+
+Audit: one h1 and ordered headings, named controls, no duplicate ids, AA contrast in both
+themes, visible focus, skip link, reduced motion, no sideways scroll at 320. Five fixes:
+
+1. **Case-study figures are images described by their sentences.** `.lab-fig` carries
+   `role="img" aria-labelledby="lab-title" aria-describedby="lab-now lab-always"`, so a screen
+   reader no longer reads the SVG's axis labels and ticks as a jumble. Controls sit outside it.
+2. **Project rows.** Each name is an `h3` (heading navigation reaches every project); the
+   row link is named by the name alone and described by kind, line and result. "18% → 8%" is
+   read as "from 18% to 8%".
+3. **Quiet pointer.** The live sentence under a figure (`.lab-now`) is set `aria-live="off"`
+   while a pointer is driving it and `polite` when a button, slider or key is; same rule for
+   the Range readout. A pointer sweep no longer reads a new sentence every few pixels.
+4. **The project list is an `<ol>` again at every width.** §14.32's `display: contents` grid
+   is replaced: each `.sheet-fig` is now an empty column as tall as the list (absolute, top 0,
+   bottom 0) and its `.tile-fig` is sticky inside it. Same behaviour, list semantics kept.
+5. **Range says what lights.** A readout under the table ("Public and civic: 4 projects, across
+   3 methods: …") follows pointer and focus; lit cells get a ruled inset box as well as the tint,
+   and lit headers an accent underline, so nothing depends on colour alone. Hidden below 769px.
+Also: `a.rg-item` tap height 19 → 25px. Not done: axe/Lighthouse (not installed), a VoiceOver pass.

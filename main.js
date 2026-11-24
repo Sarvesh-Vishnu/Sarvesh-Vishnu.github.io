@@ -96,7 +96,7 @@
       restore();
     };
     markerBase = current ? label(current) : '';
-    // on a wide screen the sheet itself has no box (display: contents), so its link stands for it
+    // the link is the row the reader sees, so it is what the pointer and the observer watch
     const link = (sh) => sh.querySelector('.sheet-link') || sh;
     sheets.forEach((sh) => {
       link(sh).addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') { pointed = Date.now(); show(sh); } });
@@ -142,18 +142,51 @@
         cell.classList.add('is-lit');
       }
     };
-    const cite = (item) => {
+    const read = t.parentElement.querySelector('.range-read');
+    const rest = read ? read.textContent : '';
+    const lower = (x) => x.charAt(0).toLowerCase() + x.slice(1);
+    const list = (xs) => (xs.length < 2 ? xs.join('') : xs.slice(0, -1).join(', ') + ' and ' + xs[xs.length - 1]);
+    const plural = (n) => `${n} project${n === 1 ? '' : 's'}`;
+    const itemName = (it) => it.lastChild.nodeType === 3 ? it.lastChild.textContent.trim() : it.childNodes[0].textContent.trim();
+    // the written readout: what lights, said in words, so nothing is carried by colour alone
+    const describe = (cell, item) => {
+      if (!cell) return rest;
+      const row = cell.parentElement, col = cell.cellIndex;
+      if (item) {
+        const no = item.querySelector('.rg-no');
+        const tail = item.classList.contains('is-wip') ? 'in progress' : no ? `sheet ${no.textContent.trim()}` : 'live';
+        return `${itemName(item)}: ${row.cells[0].textContent.trim()}, ${lower(heads[col].textContent.trim())}, ${tail}.`;
+      }
+      if (row.parentElement === t.tHead) {
+        if (!col) return rest;
+        const where = rows.filter((r) => r.cells[col] && r.cells[col].querySelector('.rg-item'));
+        const n = where.reduce((k, r) => k + r.cells[col].querySelectorAll('.rg-item').length, 0);
+        return `${heads[col].textContent.trim()}: ${plural(n)}, in ${list(where.map((r) => r.cells[0].textContent.trim()))}.`;
+      }
+      if (!col) {
+        const used = Array.from(row.cells).slice(1).filter((c) => c.querySelector('.rg-item'));
+        const n = used.reduce((k, c) => k + c.querySelectorAll('.rg-item').length, 0);
+        return `${cell.textContent.trim()}: ${plural(n)}, across ${used.length === 1 ? 'one method' : used.length + ' methods'}: ${used.map((c) => lower(heads[c.cellIndex].textContent.trim())).join('; ')}.`;   // the method names hold their own "and"
+      }
+      return rest;
+    };
+    const say = (cell, item, spoken) => {
+      if (read && tableWide.matches) {
+        read.setAttribute('aria-live', spoken ? 'polite' : 'off');   // a pointer sweep is not read aloud
+        read.textContent = describe(cell, item);
+      }
       const no = item && item.querySelector('.rg-no');
-      if (no) paint(`Sheet ${no.textContent.trim()} · ${item.lastChild.textContent.trim()}`); else restore();
+      if (no) paint(`Sheet ${no.textContent.trim()} · ${itemName(item)}`); else restore();
     };
     t.addEventListener('pointerover', (e) => {
       if (e.pointerType === 'touch') return;
-      light(e.target.closest('th, td'));
-      cite(e.target.closest('.rg-item'));
+      const cell = e.target.closest('th, td');
+      light(cell);
+      say(cell, e.target.closest('.rg-item'), false);
     });
-    t.addEventListener('pointerleave', () => { clear(); restore(); });
-    t.addEventListener('focusin', (e) => { light(e.target.closest('td')); cite(e.target.closest('.rg-item')); });
-    t.addEventListener('focusout', () => { clear(); restore(); });
+    t.addEventListener('pointerleave', () => { clear(); say(null, null, false); });
+    t.addEventListener('focusin', (e) => { const cell = e.target.closest('td'); light(cell); say(cell, e.target.closest('.rg-item'), true); });
+    t.addEventListener('focusout', () => { clear(); say(null, null, false); });
   });
 
   /* Motion handoff. When GSAP is present and motion is welcome, motion.js owns the
