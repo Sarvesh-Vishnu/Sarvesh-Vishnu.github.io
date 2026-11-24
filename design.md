@@ -1524,3 +1524,28 @@ GoatCounter, because Cloudflare names the network a visit came from.
 - The résumé's site link is `?via=resume`. Footer line: "Visits are counted without cookies or
   stored IP addresses." Nothing about the counter is visible otherwise (job search stays private).
 Rejected: visitor-to-company identification services (Leadfeeder, Clearbit Reveal): invasive.
+
+### 14.37 Sheet 07: Emissions and profitability (Nov 24, 2026; `blueprint`)
+
+Owner shared a 2024 Duke team deck (ESG scores vs S&P 500 stock price: OLS, MatchIt full
+matching, company and time FE) and asked for a from-scratch rendition. Built in
+Munnetrum/esg-causal on public data (EPA GHGRP + Envirofacts parents, SEC XBRL, Wikipedia
+constituents): 122 firms, 1,145 firm-years. Treatment emissions intensity; outcome next-year ROA.
+The deck's flaws are named on the page in a neutral voice (matching CI spanned zero though
+reported as significant; stock price as outcome; risk-score direction), as "what the first study
+taught me". Kind `forest`: one interval per estimator, views "Three estimators" / "The checks",
+row buttons rebuilt per view, sentences computed from `ES` (copied from data/esg-results.json,
+test checks they agree). Added to the index as sheet 07 (personal), to Range under Business ×
+"Experiments and causal inference", to every case study's sheet list (now "of 07"), sitemap and
+COPY.md drafts. The owner's own part of the team project is not stated: unknown.
+
+### 14.38 Colour and photos (Nov 24, 2026; `blueprint`)
+
+Owner chose cyanotype photos and a colour per subject.
+- Subject colours: business amber, health rose, public and civic teal, culture violet; darker
+  variants on the white print. Used only on the Range row swatches and the sheet dots (filled for
+  work, hollow for personal). The redline keeps its job.
+- Three cyanotypes (Prussian to paper, the process behind real blueprints) under the path story:
+  the owner with a dog, Lane the service-dog puppy, the owner on campus at night. Cropped from the
+  old Wix collage at low resolution; to be replaced by originals. Only photos of the owner alone
+  or with animals: the collage's group photos show people who have not agreed to appear.

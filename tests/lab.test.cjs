@@ -576,3 +576,25 @@ test('the spine: the whole map holds from tablet width up, labels wrapping inste
     }
   }
 });
+
+test('the estimates: every number in the figure is the study output, and it fits', () => {
+  const R = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'data', 'esg-results.json'), 'utf8'));
+  const all = [...R.results, ...R.checks];
+  for (const r of [...Lab.ES.main, ...Lab.ES.checks]) {
+    const src = all.find((x) => x.method === r.method);
+    assert.ok(src, `${r.method} is in the study output`);
+    for (const [a, b] of [['eff', 'effect_pp'], ['lo', 'lo'], ['hi', 'hi']]) assert.equal(r[a], src[b], `${r.method} ${a}`);
+    assert.ok(r.lo <= r.eff && r.eff <= r.hi, `${r.method} point inside its interval`);
+    assert.ok(r.lo >= -0.6 && r.hi <= 0.9, `${r.method} inside the axis`);
+  }
+  assert.equal(Lab.ES.desc.firms, R.desc.firms);
+  for (const view of [0, 1]) for (const w of [264, 343, 560, 760, 1040]) {
+    const n = Lab.esRows({ view }).length, h = Lab.KINDS.forest.height({ view }, w);
+    const svg = Lab.renderForest({ view, focus: n - 1 }, { w, h, full: true });
+    for (const m of svg.matchAll(/ (?:x|cx)="(-?[\d.]+)"/g)) assert.ok(+m[1] >= 0 && +m[1] <= w, `x ${m[1]} inside ${w}`);
+    for (const m of svg.matchAll(/ (?:y|cy)="(-?[\d.]+)"/g)) assert.ok(+m[1] >= 0 && +m[1] <= h, `y ${m[1]} inside ${h}`);
+    const said = Lab.sayForest({ view, focus: 0 }, { w });
+    assert.match(said.now, /percentage points/);
+    assert.ok(!/undefined|NaN/.test(said.now + said.always));
+  }
+});

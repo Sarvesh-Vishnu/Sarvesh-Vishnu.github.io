@@ -19,7 +19,7 @@ const fluid = (svg) => svg.replace(/ width="\d+" height="\d+"/, '');   // let CS
 
 // home page: the work figures
 const TILE = { w: 1000, h: 540, full: false };
-const tiles = { commercial: 'spine', companion: 'brief', nlp: 'reading', water: 'plan', obscure: 'route', numit: 'globe' };
+const tiles = { commercial: 'spine', companion: 'brief', nlp: 'reading', water: 'plan', obscure: 'route', numit: 'globe', esg: 'forest' };
 let index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 for (const [marker, kind] of Object.entries(tiles)) {
   const k = Lab.KINDS[kind];
@@ -29,7 +29,7 @@ fs.writeFileSync(path.join(ROOT, 'index.html'), index);
 
 // case studies: the full instrument, its field (list only) and both sentences
 const FULL = { w: 1040, h: 420, full: true };
-const pages = { 'commercial-analytics': 'spine', 'research-companion': 'brief', nlp: 'reading', 'wv-water': 'plan', obscure: 'route', numit: 'globe' };
+const pages = { 'commercial-analytics': 'spine', 'research-companion': 'brief', nlp: 'reading', 'wv-water': 'plan', obscure: 'route', numit: 'globe', 'esg-causal': 'forest' };
 for (const [page, kind] of Object.entries(pages)) {
   const file = path.join(ROOT, 'work', `${page}.html`);
   const k = Lab.KINDS[kind];

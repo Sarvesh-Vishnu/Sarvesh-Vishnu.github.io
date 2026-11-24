@@ -778,6 +778,66 @@
     };
   }
 
+
+  /* ------------------------------------------------------------------ the estimates
+     ESG case study (design.md §14.37): three estimators of one effect, and the checks that
+     undo it. ES is copied from data/esg-results.json, which Munnetrum/esg-causal writes;
+     tests/lab.test.cjs checks the two agree. Effect = change in next year's return on assets
+     (percentage points) from halving emissions intensity (tCO2e per $1M revenue). */
+  const ES = /* es:data */{"main": [{"label": "OLS", "method": "OLS", "eff": 0.131, "lo": -0.105, "hi": 0.366, "n": 1145, "firms": 122, "note": "Compares firms with each other, within sector and year."}, {"label": "Matching", "method": "Matching", "eff": 0.13, "lo": -0.191, "hi": 0.425, "n": 403, "firms": 70, "note": "Low-intensity firm-years against look-alike high-intensity ones, same sector and year."}, {"label": "Fixed effects", "method": "Fixed effects", "eff": 0.243, "lo": -0.007, "hi": 0.493, "n": 1145, "firms": 122, "note": "Compares each firm with itself in other years."}], "checks": [{"label": "Fixed effects", "method": "Fixed effects", "eff": 0.243, "lo": -0.007, "hi": 0.493, "n": 1145, "firms": 122, "note": "Compares each firm with itself in other years."}, {"label": "Revenue held fixed", "method": "Emissions, revenue held fixed", "eff": -0.019, "lo": -0.281, "hi": 0.243, "n": 1145, "firms": 122, "note": "Halving emissions at the same revenue, so revenue growth cannot make a firm look cleaner."}, {"label": "Without utilities", "method": "Without utilities", "eff": 0.261, "lo": -0.285, "hi": 0.808, "n": 843, "firms": 93, "note": "Utilities earn regulated returns; 29 of the firms are utilities."}, {"label": "Placebo: past ROA", "method": "Placebo: last year's ROA", "eff": 0.163, "lo": -0.154, "hi": 0.479, "n": 1140, "firms": 122, "note": "Intensity should not predict the past. If it does, the link is not running from emissions to profit."}], "desc": {"firms": 122, "firmYears": 1145, "years": [2011, 2022], "roa": 5.5}}/* /es:data */;
+  const ES_VIEWS = ['Three estimators', 'The checks'];
+  const ES_DOM = [-0.6, 0.9];
+  const ES_NARROW = 560;
+  const esRows = (st) => (st.view ? ES.checks : ES.main);
+  const esFmt = (v) => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(2);
+  function esGeom(n, w, o) {
+    const narrow = w < ES_NARROW;
+    const padL = narrow ? 14 : 150, padR = narrow ? 14 : 168, top = 54 + ((o && o.tagRoom) || 0) * 0.6;
+    let row = narrow ? 64 : 58;
+    if (o && o.h) row = clamp((o.h - top - 44) / n, narrow ? 40 : 30, row);   // a small tile squeezes the rows, never the type
+    return { narrow, padL, padR, top, row, need: top + n * row + 44 };
+  }
+  function renderForest(st, o) {
+    const { w } = o;
+    const rows = esRows(st), g = esGeom(rows.length, w, o);
+    const h = Math.max(o.h || 0, g.need);
+    const x = (v) => g.padL + ((v - ES_DOM[0]) / (ES_DOM[1] - ES_DOM[0])) * (w - g.padL - g.padR);
+    const focus = clamp(st.focus | 0, 0, rows.length - 1);
+    let s = open(w, h);
+    s += `<text class="fig-lab fig-lab-quiet sp-level" x="${g.padL}" y="${g.top - 30}">${g.narrow ? 'NEXT YEAR’S ROA, PP' : 'CHANGE IN NEXT YEAR’S RETURN ON ASSETS, PERCENTAGE POINTS'}</text>`;
+    const bottom = g.top + rows.length * g.row;
+    [-0.5, 0, 0.5].forEach((t) => {
+      s += `<path class="${t === 0 ? 'es-zero' : 'es-grid'}" d="M${x(t).toFixed(1)},${g.top - 14} L${x(t).toFixed(1)},${bottom}"/>`;
+      s += `<text class="fig-lab fig-lab-quiet" text-anchor="middle" x="${x(t).toFixed(1)}" y="${bottom + 18}">${t === 0 ? '0' : esFmt(t)}</text>`;
+    });
+    s += `<text class="fig-lab fig-lab-quiet" text-anchor="middle" x="${x(0).toFixed(1)}" y="${bottom + 34}">no effect</text>`;
+    rows.forEach((r, i) => {
+      const y = g.top + i * g.row + g.row / 2, on = i === focus;
+      const cls = on ? ' fig-lab-acc' : (st.view && i === 0 ? ' fig-lab-quiet' : '');
+      if (g.narrow) s += `<text class="fig-lab${cls}" x="${g.padL}" y="${(y - 14).toFixed(1)}">${r.label}  ${esFmt(r.eff)}</text>`;
+      else {
+        s += `<text class="fig-lab${cls}" text-anchor="end" x="${g.padL - 16}" y="${(y + 4).toFixed(1)}">${r.label}</text>`;
+        s += `<text class="fig-lab${cls}" x="${w - g.padR + 16}" y="${(y + 4).toFixed(1)}">${esFmt(r.eff)} <tspan class="fig-lab-quiet">[${esFmt(r.lo)}, ${esFmt(r.hi)}]</tspan></text>`;
+      }
+      s += `<path class="es-ci${on ? ' is-on' : ''}" d="M${x(r.lo).toFixed(1)},${y.toFixed(1)} L${x(r.hi).toFixed(1)},${y.toFixed(1)}"/>`;
+      s += `<path class="es-cap${on ? ' is-on' : ''}" d="M${x(r.lo).toFixed(1)},${(y - 5).toFixed(1)} L${x(r.lo).toFixed(1)},${(y + 5).toFixed(1)} M${x(r.hi).toFixed(1)},${(y - 5).toFixed(1)} L${x(r.hi).toFixed(1)},${(y + 5).toFixed(1)}"/>`;
+      s += `<circle class="es-pt${on ? ' is-on' : ''}" cx="${x(r.eff).toFixed(1)}" cy="${y.toFixed(1)}" r="${on ? 5 : 4}"/>`;
+    });
+    return s + '</svg>';
+  }
+  function sayForest(st, o) {
+    const rows = esRows(st), r = rows[clamp(st.focus | 0, 0, rows.length - 1)];
+    const zero = rows.filter((q) => q.lo <= 0 && q.hi >= 0).length;
+    const words = ['None', 'One', 'Two', 'Three', 'Four'];
+    const cause = /^Emissions/.test(r.method) ? 'halving emissions at the same revenue' : 'halving emissions intensity';
+    const when = /^Placebo/.test(r.method) ? 'last' : 'next';
+    const note = /^Emissions/.test(r.method) ? 'Revenue growth can no longer make a firm look cleaner.' : r.note;
+    const now = `${r.method.replace(/:.*$/, '')}: ${cause} goes with ${esFmt(r.eff)} percentage points of ${when} year’s return on assets, 95% interval ${esFmt(r.lo)} to ${esFmt(r.hi)}. ${note}`;
+    const share = zero === rows.length ? `All ${words[rows.length].toLowerCase()}` : `${words[zero] || zero} of the ${words[rows.length].toLowerCase()}`;
+    const always = `${ES.desc.firms} S&P 500 firms, ${ES.desc.firmYears.toLocaleString('en-US')} firm-years, ${ES.desc.years[0]} to ${ES.desc.years[1]}. ${share} intervals shown include zero. For scale, the average return on assets is ${ES.desc.roa}%.`;
+    return { now, always, tag: o && o.w && o.w < ES_NARROW ? 'Real data · EPA, SEC' : `Real data · EPA, SEC · ${r.label}` };
+  }
+
   /* ------------------------------------------------------------------ the reading
      Not a model either: one comment, marked up the way the Pinnacle pipeline read each
      record (design.md §14.19). Five steps: as written, cleaned, tone, touchpoint,
@@ -1705,6 +1765,18 @@
       leave: (st) => { st.focus = null; },
       height: (st, w) => Math.round(w >= PL.WIDE ? clamp(w * 0.48, 340, 500) : w * 0.86 + 40),
     },
+    forest: {
+      state: () => ({ view: 0, focus: 0 }),
+      render: renderForest, say: sayForest,
+      scrub: (st, u) => { st.focus = Math.min(esRows(st).length - 1, Math.floor(clamp(u, 0, 1) * esRows(st).length)); },
+      unit: (st) => (st.focus | 0) / Math.max(1, esRows(st).length - 1),
+      height: (st, w) => Math.max(esGeom(ES.main.length, w, {}).need, esGeom(ES.checks.length, w, {}).need),
+      point: (st, x, y, w, h, o) => {
+        const g = esGeom(esRows(st).length, w, { ...o, h });
+        const i = Math.floor((y - g.top) / g.row);
+        if (i >= 0 && i < esRows(st).length) st.focus = i;
+      },
+    },
     brief: {
       state: () => ({ step: BR_STEPS.length - 1 }),
       render: renderBrief, say: sayBrief,
@@ -1949,6 +2021,33 @@
       controls.append(group);
       return () => btns.forEach((b, i) => b.setAttribute('aria-pressed', isOn(i) ? 'true' : 'false'));
     };
+    if (name === 'forest') {
+      const syncView = picks('Show', ES_VIEWS, (i) => i === st.view, (i) => { st.view = i; st.focus = i ? 1 : 0; });
+      // one button per estimate in the current view, rebuilt when the view changes
+      const rowGroup = el('<div class="lab-picks" role="group" aria-label="Estimate"><span class="lab-picks-label" aria-hidden="true">Estimate</span></div>');
+      controls.append(rowGroup);
+      let built = -1, rowBtns = [];
+      const syncRow = () => {
+        if (built !== st.view) {
+          rowGroup.querySelectorAll('button').forEach((b) => b.remove());
+          rowBtns = esRows(st).map((r, i) => {
+            const b = el(`<button type="button" class="lab-btn">${r.label}</button>`);
+            b.addEventListener('click', () => { st.focus = i; queue(); });
+            rowGroup.append(b);
+            return b;
+          });
+          built = st.view;
+        }
+        rowBtns.forEach((b, i) => b.setAttribute('aria-pressed', i === st.focus ? 'true' : 'false'));
+      };
+      sync = () => { syncView(); syncRow(); };
+      fig.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'touch') return;
+        const b = fig.getBoundingClientRect(), before = st.focus;
+        kind.point(st, e.clientX - b.left, e.clientY - b.top, w, figH, { full: true });
+        if (st.focus !== before) queue();
+      });
+    }
     if (name === 'brief') {
       sync = picks('Step', BR_STEPS, (i) => i === brStep(st), (i) => { st.step = i; });
     }
@@ -2069,6 +2168,7 @@
     PL, plan, renderPlan, sayPlan, planNearest, share, place,
     OB, RT, rtGeom, renderRoute, sayRoute,
     NM, GL, globe, globeView, renderGlobe, sayGlobe, globeNearest, globeStep, globeTravel,
+    ES, esRows, esGeom, renderForest, sayForest,
     BR_STEPS, BR_SOURCES, BR_DRAFT, BR, brCols, brGeom, renderBrief, sayBrief,
     RD_STEPS, RD_COMMENTS, RD_STOP, RD_WIDE, rdParse, rdLayout, rdGeom, renderReading, sayReading,
     sayCommittee, sayList, saySample, KINDS,

@@ -27,10 +27,10 @@ DRAFTS = [
  'A schematic of the system', 'The system', 'Building the spine', 'A cross-sell experiment, end to end', 'Strategy and Market Insights',
  'Commercial Excellence, then Senior', 'Microsoft Fabric · Azure',
  'Six sheets, each with its result', 'The data spine and the forecasts under', 'A sourced brief from public sources', 'Sentiment and what drives it', 'A failure risk score for every water main', 'A recommender that walks from a hit', 'A globe of the world’s crises and repairs', 'monthly forecast error', 'executives read it', 'sentiment F1, hand', 'consultancy study brought', 'more real listener steps', 'hand-sourced events', 'end to end for three business units', 'Accounts were randomised within ten', 'That is error', 'business units on plan', 'writes leadership a sourced brief every Monday', 'A weekly brief for leadership, written by an agent graph', 'A summary nobody can check', 'Annual planning across several business units', 'The forecasts it replaced were largely linear', 'Gave demand planning and manufacturing', 'Accounts were randomised within territories', 'The test found no meaningful lift', 'Forecast error fell from', 'The cross-sell test answered', 'Reporting moved from ad-hoc', 'An outside consultancy had proposed', 'external study brought in house', 'I built the NLP layer end to end', 'Scored sentiment with', 'Found drivers with', 'Trained <mark', 'Handed over a ranking', 'got a ranking of what drives', 'sentiment F1', 'forecast error (WAPE)', 'product-line actuals vs forecast',
- 'Subjects and methods', 'Rows are what the work is about', 'Range',
+ 'Subjects and methods', 'Emissions and profitability', 'Does a cleaner company earn more', 'Seven sheets', 'Experiments and causal inference', 'points of ROA once revenue', 'Rows are what the work is about', 'Range',
  'Obscure', 'A recommender that walks', 'Most recommenders keep you', 'Python · PyTorch · implicit', 'Five steps to the long tail',
 ]
-ALL_DRAFT = {'work/obscure.html', 'resume.html', 'work/research-companion.html'}     # every line on these pages is a draft for the owner
+ALL_DRAFT = {'work/obscure.html', 'resume.html', 'work/research-companion.html', 'work/esg-causal.html'}     # every line on these pages is a draft for the owner
 CLASSES = ('sheets-title|sheets-note|sheet-desc|sheet-result|thesis|hero-name|hero-role|eyebrow|section-title|section-note|reel-kind|reel-jump|slide-kind|project-name|slide-desc|slide-why|'
            'project-meta|slide-open|th-when|th-body|project-byline|project-tools|lab-title|lab-lede|lab-note|lab-key|label|contact-title|contact-line|foot-line')
 A = re.compile(r'<(\w+)\b([^>]*class="(?:[^"]* )?(' + CLASSES + r')(?: [^"]*)?"[^>]*)>(.*?)</\1>', re.S)
@@ -46,7 +46,7 @@ out = ['# Site copy', '',
        'Unmarked lines are your own words, carried over unchanged.',
        'The hero sentence and the sentences under each instrument are built by `lab.js` from the models. '
        'In the hero only the words between the numbers are editable; the instrument sentences live in `lab.js` (`sayCommittee`, `saySample`, `sayRoute`).', '']
-for f in ['index.html', 'work/commercial-analytics.html', 'work/nlp.html', 'work/wv-water.html', 'work/obscure.html', 'work/numit.html', 'resume.html']:
+for f in ['index.html', 'work/commercial-analytics.html', 'work/research-companion.html', 'work/esg-causal.html', 'work/nlp.html', 'work/wv-water.html', 'work/obscure.html', 'work/numit.html', 'resume.html']:
     src = (ROOT / f).read_text()
     out += [f'## {f}', '']
     for label, pat in (('Browser title', r'<title>(.*?)</title>'), ('Search description', r'<meta name="description" content="(.*?)"')):

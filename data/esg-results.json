@@ -1,0 +1,103 @@
+{
+ "results": [
+  {
+   "method": "OLS",
+   "effect_pp": 0.131,
+   "lo": -0.105,
+   "hi": 0.366,
+   "p": 0.2744,
+   "n": 1145,
+   "firms": 122,
+   "note": "Compares firms with each other, within sector and year."
+  },
+  {
+   "method": "Matching",
+   "effect_pp": 0.13,
+   "lo": -0.191,
+   "hi": 0.425,
+   "p": null,
+   "n": 403,
+   "firms": 70,
+   "note": "Low-intensity firm-years against look-alike high-intensity ones, same sector and year. Raw gap 0.44 pp at an average intensity gap of 10.6x.",
+   "balance": {
+    "log_assets": {
+     "before": 0.045,
+     "after": 0.028
+    },
+    "lev": {
+     "before": 0.127,
+     "after": 0.085
+    },
+    "log_int": {
+     "before": -0.809,
+     "after": -0.96
+    }
+   }
+  },
+  {
+   "method": "Fixed effects",
+   "effect_pp": 0.243,
+   "lo": -0.007,
+   "hi": 0.493,
+   "p": 0.0563,
+   "n": 1145,
+   "firms": 122,
+   "note": "Compares each firm with itself in other years."
+  }
+ ],
+ "desc": {
+  "firm_years": 1145,
+  "firms": 122,
+  "years": [
+   2011,
+   2022
+  ],
+  "roa_mean_pp": 5.5,
+  "intensity_median": 87.0,
+  "sectors": {
+   "Communication Services": 3,
+   "Consumer Discretionary": 4,
+   "Consumer Staples": 10,
+   "Energy": 13,
+   "Financials": 7,
+   "Health Care": 11,
+   "Industrials": 17,
+   "Information Technology": 10,
+   "Materials": 17,
+   "Real Estate": 1,
+   "Utilities": 29
+  }
+ },
+ "checks": [
+  {
+   "method": "Emissions, revenue held fixed",
+   "effect_pp": -0.019,
+   "lo": -0.281,
+   "hi": 0.243,
+   "p": 0.8868,
+   "n": 1145,
+   "firms": 122,
+   "note": "Halving emissions at the same revenue, so revenue growth cannot make a firm look cleaner."
+  },
+  {
+   "method": "Without utilities",
+   "effect_pp": 0.261,
+   "lo": -0.285,
+   "hi": 0.808,
+   "p": 0.3446,
+   "n": 843,
+   "firms": 93,
+   "note": "Utilities earn regulated returns; 29 of the firms are utilities."
+  },
+  {
+   "method": "Placebo: last year's ROA",
+   "effect_pp": 0.163,
+   "lo": -0.154,
+   "hi": 0.479,
+   "p": 0.311,
+   "n": 1140,
+   "firms": 122,
+   "note": "Intensity should not predict the past. If it does, the link is not running from emissions to profit."
+  }
+ ]
+}

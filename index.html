@@ -100,12 +100,12 @@
     <section class="section work" id="work" aria-labelledby="work-title">
       <header class="sheets-head">
         <h2 id="work-title" class="sheets-title">Selected work</h2>
-        <p class="sheets-note">Six sheets, each with its result and a working figure. Figures from employer work show the method and never company data; my own projects run on real, public data.</p>
+        <p class="sheets-note">Seven sheets, each with its result and a working figure. Figures from employer work show the method and never company data; my own projects run on real, public data.</p>
       </header>
 
       <div class="sheets" data-sheets>
         <ol class="sheet-list" role="list">
-          <li class="sheet is-active" id="p-commercial" data-kind="work">
+          <li class="sheet is-active" id="p-commercial" data-kind="work" data-subject="business">
             <a class="sheet-link" aria-labelledby="p-commercial-name" aria-describedby="p-commercial-kind p-commercial-desc p-commercial-res" href="work/commercial-analytics.html">
               <span class="sheet-no" aria-hidden="true">01</span>
               <div class="sheet-main">
@@ -120,7 +120,7 @@
               <span class="tile-tag">Schematic</span>
             </span></span>
           </li>
-          <li class="sheet" id="p-companion" data-kind="work">
+          <li class="sheet" id="p-companion" data-kind="work" data-subject="business">
             <a class="sheet-link" aria-labelledby="p-companion-name" aria-describedby="p-companion-kind p-companion-desc p-companion-res" href="work/research-companion.html">
               <span class="sheet-no" aria-hidden="true">02</span>
               <div class="sheet-main">
@@ -135,7 +135,7 @@
               <span class="tile-tag">Written for this page</span>
             </span></span>
           </li>
-          <li class="sheet" id="p-nlp" data-kind="work">
+          <li class="sheet" id="p-nlp" data-kind="work" data-subject="health">
             <a class="sheet-link" aria-labelledby="p-nlp-name" aria-describedby="p-nlp-kind p-nlp-desc p-nlp-res" href="work/nlp.html">
               <span class="sheet-no" aria-hidden="true">03</span>
               <div class="sheet-main">
@@ -150,7 +150,7 @@
               <span class="tile-tag">Written for this page</span>
             </span></span>
           </li>
-          <li class="sheet" id="p-water" data-kind="work">
+          <li class="sheet" id="p-water" data-kind="work" data-subject="civic">
             <a class="sheet-link" aria-labelledby="p-water-name" aria-describedby="p-water-kind p-water-desc p-water-res" href="work/wv-water.html">
               <span class="sheet-no" aria-hidden="true">04</span>
               <div class="sheet-main">
@@ -165,7 +165,7 @@
               <span class="tile-tag">Drawn for this page</span>
             </span></span>
           </li>
-          <li class="sheet" id="p-obscure" data-kind="personal">
+          <li class="sheet" id="p-obscure" data-kind="personal" data-subject="culture">
             <a class="sheet-link" aria-labelledby="p-obscure-name" aria-describedby="p-obscure-kind p-obscure-desc p-obscure-res" href="work/obscure.html">
               <span class="sheet-no" aria-hidden="true">05</span>
               <div class="sheet-main">
@@ -180,7 +180,7 @@
               <span class="tile-tag">Real data · ListenBrainz</span>
             </span></span>
           </li>
-          <li class="sheet" id="p-numit" data-kind="personal">
+          <li class="sheet" id="p-numit" data-kind="personal" data-subject="civic">
             <a class="sheet-link" aria-labelledby="p-numit-name" aria-describedby="p-numit-kind p-numit-desc p-numit-res" href="work/numit.html">
               <span class="sheet-no" aria-hidden="true">06</span>
               <div class="sheet-main">
@@ -195,6 +195,21 @@
               <span class="tile-tag">Real events</span>
             </span></span>
           </li>
+          <li class="sheet" id="p-esg" data-kind="personal" data-subject="business">
+            <a class="sheet-link" aria-labelledby="p-esg-name" aria-describedby="p-esg-kind p-esg-desc p-esg-res" href="work/esg-causal.html">
+              <span class="sheet-no" aria-hidden="true">07</span>
+              <div class="sheet-main">
+                <span class="sheet-kind" id="p-esg-kind">Personal project · rebuilt from a Duke team study</span>
+                <h3 class="sheet-name" id="p-esg-name">Emissions and profitability</h3>
+                <span class="sheet-desc" id="p-esg-desc">Does a cleaner company earn more? Three causal estimators on EPA emissions and SEC filings for 122 S&amp;P 500 firms.</span>
+              </div>
+              <span class="sheet-result" id="p-esg-res"><b>−0.02</b> <span>points of ROA once revenue is held fixed</span></span>
+            </a>
+            <span class="sheet-fig" aria-hidden="true"><span class="tile-fig" data-lab="forest">
+              <!-- fig:esg --><svg viewBox="0 0 1000 540" preserveAspectRatio="xMidYMid meet" focusable="false"><text class="fig-lab fig-lab-quiet sp-level" x="150" y="24">CHANGE IN NEXT YEAR’S RETURN ON ASSETS, PERCENTAGE POINTS</text><path class="es-grid" d="M195.5,40 L195.5,228"/><text class="fig-lab fig-lab-quiet" text-anchor="middle" x="195.5" y="246">−0.50</text><path class="es-zero" d="M422.8,40 L422.8,228"/><text class="fig-lab fig-lab-quiet" text-anchor="middle" x="422.8" y="246">0</text><path class="es-grid" d="M650.1,40 L650.1,228"/><text class="fig-lab fig-lab-quiet" text-anchor="middle" x="650.1" y="246">+0.50</text><text class="fig-lab fig-lab-quiet" text-anchor="middle" x="422.8" y="262">no effect</text><text class="fig-lab fig-lab-acc" text-anchor="end" x="134" y="87.0">OLS</text><text class="fig-lab fig-lab-acc" x="848" y="87.0">+0.13 <tspan class="fig-lab-quiet">[−0.10, +0.37]</tspan></text><path class="es-ci is-on" d="M375.1,83.0 L589.2,83.0"/><path class="es-cap is-on" d="M375.1,78.0 L375.1,88.0 M589.2,78.0 L589.2,88.0"/><circle class="es-pt is-on" cx="482.4" cy="83.0" r="5"/><text class="fig-lab" text-anchor="end" x="134" y="145.0">Matching</text><text class="fig-lab" x="848" y="145.0">+0.13 <tspan class="fig-lab-quiet">[−0.19, +0.42]</tspan></text><path class="es-ci" d="M336.0,141.0 L616.0,141.0"/><path class="es-cap" d="M336.0,136.0 L336.0,146.0 M616.0,136.0 L616.0,146.0"/><circle class="es-pt" cx="481.9" cy="141.0" r="4"/><text class="fig-lab" text-anchor="end" x="134" y="203.0">Fixed effects</text><text class="fig-lab" x="848" y="203.0">+0.24 <tspan class="fig-lab-quiet">[−0.01, +0.49]</tspan></text><path class="es-ci" d="M419.6,199.0 L647.0,199.0"/><path class="es-cap" d="M419.6,194.0 L419.6,204.0 M647.0,194.0 L647.0,204.0"/><circle class="es-pt" cx="533.3" cy="199.0" r="4"/></svg><!-- /fig:esg -->
+              <span class="tile-tag">Real data · EPA, SEC</span>
+            </span></span>
+          </li>
         </ol>
       </div>
     </section>
@@ -207,12 +222,12 @@
       </header>
       <table class="range-grid reveal">
         <caption class="sr-only">Projects by subject and by method</caption>
-        <thead><tr><td></td><th scope="col">Forecasting and risk</th><th scope="col">Experiments</th><th scope="col">Language models</th><th scope="col">Ranking and recommending</th><th scope="col">Maps and events</th><th scope="col">Products and essays</th></tr></thead>
+        <thead><tr><td></td><th scope="col">Forecasting and risk</th><th scope="col">Experiments and causal inference</th><th scope="col">Language models</th><th scope="col">Ranking and recommending</th><th scope="col">Maps and events</th><th scope="col">Products and essays</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Business</th><td data-m="Forecasting and risk"><a class="rg-item is-sel" href="work/commercial-analytics.html"><span class="rg-no">01</span>Cooper operating plan</a></td><td data-m="Experiments"><a class="rg-item is-sel" href="work/commercial-analytics.html"><span class="rg-no">01</span>Cooper cross-sell test</a></td><td data-m="Language models"><a class="rg-item is-sel" href="work/research-companion.html"><span class="rg-no">02</span>Research companion</a></td><td class="is-empty"></td><td class="is-empty"></td><td class="is-empty"></td></tr>
-          <tr><th scope="row">Health</th><td class="is-empty"></td><td class="is-empty"></td><td data-m="Language models"><a class="rg-item is-sel" href="work/nlp.html"><span class="rg-no">03</span>Patient comments</a></td><td class="is-empty"></td><td class="is-empty"></td><td class="is-empty"></td></tr>
-          <tr><th scope="row">Public and civic</th><td data-m="Forecasting and risk"><a class="rg-item is-sel" href="work/wv-water.html"><span class="rg-no">04</span>Water main failure</a></td><td class="is-empty"></td><td class="is-empty"></td><td class="is-empty"></td><td data-m="Maps and events"><a class="rg-item is-sel" href="work/numit.html"><span class="rg-no">06</span>Numit</a></td><td data-m="Products and essays"><a class="rg-item" href="https://sarvesh-vishnu.github.io/on-paper/" rel="noopener">On Paper</a><span class="rg-item is-wip">Grid <em>in progress</em></span></td></tr>
-          <tr><th scope="row">Culture</th><td class="is-empty"></td><td class="is-empty"></td><td class="is-empty"></td><td data-m="Ranking and recommending"><a class="rg-item is-sel" href="work/obscure.html"><span class="rg-no">05</span>Obscure Music</a><span class="rg-item is-wip">Palette <em>in progress</em></span></td><td class="is-empty"></td><td class="is-empty"></td></tr>
+          <tr data-subject="business"><th scope="row">Business</th><td data-m="Forecasting and risk"><a class="rg-item is-sel" href="work/commercial-analytics.html"><span class="rg-no">01</span>Cooper operating plan</a></td><td data-m="Experiments and causal inference"><a class="rg-item is-sel" href="work/commercial-analytics.html"><span class="rg-no">01</span>Cooper cross-sell test</a><a class="rg-item is-sel" href="work/esg-causal.html"><span class="rg-no">07</span>Emissions and profitability</a></td><td data-m="Language models"><a class="rg-item is-sel" href="work/research-companion.html"><span class="rg-no">02</span>Research companion</a></td><td class="is-empty"></td><td class="is-empty"></td><td class="is-empty"></td></tr>
+          <tr data-subject="health"><th scope="row">Health</th><td class="is-empty"></td><td class="is-empty"></td><td data-m="Language models"><a class="rg-item is-sel" href="work/nlp.html"><span class="rg-no">03</span>Patient comments</a></td><td class="is-empty"></td><td class="is-empty"></td><td class="is-empty"></td></tr>
+          <tr data-subject="civic"><th scope="row">Public and civic</th><td data-m="Forecasting and risk"><a class="rg-item is-sel" href="work/wv-water.html"><span class="rg-no">04</span>Water main failure</a></td><td class="is-empty"></td><td class="is-empty"></td><td class="is-empty"></td><td data-m="Maps and events"><a class="rg-item is-sel" href="work/numit.html"><span class="rg-no">06</span>Numit</a></td><td data-m="Products and essays"><a class="rg-item" href="https://sarvesh-vishnu.github.io/on-paper/" rel="noopener">On Paper</a><span class="rg-item is-wip">Grid <em>in progress</em></span></td></tr>
+          <tr data-subject="culture"><th scope="row">Culture</th><td class="is-empty"></td><td class="is-empty"></td><td class="is-empty"></td><td data-m="Ranking and recommending"><a class="rg-item is-sel" href="work/obscure.html"><span class="rg-no">05</span>Obscure Music</a><span class="rg-item is-wip">Palette <em>in progress</em></span></td><td class="is-empty"></td><td class="is-empty"></td></tr>
         </tbody>
       </table>
       <p class="range-read" id="range-read" aria-live="polite">Point at or tab to a subject, a method or a project to see where it sits.</p>
@@ -276,6 +291,12 @@
         <p>I work where data science meets strategy. The work I value most is where both meet people: a sales team’s targets, a city’s water mains, a patient’s experience of care.</p>
         <p>The throughline: technical depth that survives a C-suite conversation, and a preference for pragmatic decisions over clever models. The best models I've built have always come out of taking a non-technical question seriously first.</p>
         <p>Outside work I volunteer in animal welfare. In college I led a 150-person non-profit working towards the UN Sustainable Development Goals. I read social science alongside the statistics: causal inference, behavioural economics and strategy.</p>
+        <figure class="snaps" aria-label="Off the clock">
+          <img src="assets/photos/dog.jpg" width="480" height="600" loading="lazy" decoding="async" alt="Sarvesh lying on grass, smiling, one hand on a black and white dog resting beside him.">
+          <img src="assets/photos/lane.jpg" width="480" height="600" loading="lazy" decoding="async" alt="Lane, a yellow Labrador puppy in a blue collar, looking straight at the camera.">
+          <img src="assets/photos/chapel.jpg" width="480" height="600" loading="lazy" decoding="async" alt="Sarvesh at night on a lamplit campus road.">
+          <figcaption>Off the clock: animal welfare, and Lane, a future service dog I helped with at Duke. Printed as cyanotypes, the process behind the original blueprints.</figcaption>
+        </figure>
       </div>
       </div>
     </section>
