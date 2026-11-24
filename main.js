@@ -75,32 +75,6 @@
   };
   const restore = () => paint(inWork ? markerBase : '');
 
-  /* A figure redraws when its sheet comes up (§14.33): its lines are drawn in as by a
-     pen and its labels follow. Off with reduced motion; very busy figures only fade. */
-  const wide = window.matchMedia('(min-width: 1024px)');
-  const redraw = (fig) => {
-    if (reduceMotion || !fig || !fig.animate) return;
-    const svg = fig.querySelector('svg');
-    if (!svg) return;
-    const ease = 'cubic-bezier(0.16, 1, 0.3, 1)';
-    const strokes = svg.querySelectorAll('path, line, polyline');
-    if (strokes.length > 260) { svg.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: ease }); return; }
-    strokes.forEach((el) => {
-      const cs = getComputedStyle(el);
-      if (cs.stroke === 'none' || (cs.strokeDasharray && cs.strokeDasharray !== 'none')) return;
-      let len = 0;
-      try { len = el.getTotalLength(); } catch (e) { return; }
-      if (!len) return;
-      el.animate([
-        { strokeDasharray: `${len} ${len}`, strokeDashoffset: len },
-        { strokeDasharray: `${len} ${len}`, strokeDashoffset: 0 },
-      ], { duration: 480, easing: ease });
-    });
-    svg.querySelectorAll('text, circle, rect').forEach((el) => {
-      el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, delay: 160, easing: 'ease-out', fill: 'backwards' });
-    });
-  };
-
   /* The sheet index (design.md §14.30). On a wide screen the figure beside the list
      follows the sheet you point at or focus; with no pointer, the sheet you are
      reading past. CSS already shows the first figure and lets hover switch it, so
@@ -118,7 +92,6 @@
       if (sh !== current) {
         sheets.forEach((x) => x.classList.toggle('is-active', x === sh));
         current = sh;
-        if (wide.matches) redraw(sh.querySelector('.sheet-fig'));
       }
       restore();
     };
@@ -142,27 +115,6 @@
     }
     box.classList.add('is-live');
   });
-
-  /* Drafting guides over figures (§14.33): two hairlines follow a fine pointer across
-     the whole stage, as on a drawing board. The native crosshair stays the cursor. */
-  if (window.matchMedia('(pointer: fine)').matches) {
-    document.querySelectorAll('.tile-fig[data-lab], .lab-stage').forEach((stage) => {
-      let gx = null, gy = null;
-      stage.addEventListener('pointermove', (e) => {
-        if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
-        if (!gx) {
-          gx = document.createElement('span'); gx.className = 'guide guide-x'; gx.setAttribute('aria-hidden', 'true');
-          gy = document.createElement('span'); gy.className = 'guide guide-y'; gy.setAttribute('aria-hidden', 'true');
-          stage.append(gx, gy);
-        }
-        const b = stage.getBoundingClientRect();
-        gx.style.transform = `translateY(${Math.round(e.clientY - b.top)}px)`;
-        gy.style.transform = `translateX(${Math.round(e.clientX - b.left)}px)`;
-        stage.classList.add('is-guided');
-      });
-      stage.addEventListener('pointerleave', () => stage.classList.remove('is-guided'));
-    });
-  }
 
   /* The range grid lights its row and column (§14.33). Point at a project and its
      subject and method light; point at a method and its whole column lights, empty

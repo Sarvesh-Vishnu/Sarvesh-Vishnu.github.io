@@ -1456,16 +1456,18 @@ IntersectionObserver). Below 1024px nothing changed.
 
 ### 14.33 Small instruments (Nov 24, 2026; `blueprint`)
 
-Owner asked for playful touches that stay useful. Four built, each pointing at something:
+Owner asked for playful touches that stay useful. Four built; the owner then cut two (redraw
+made the figures look empty between sheets; the guide lines were noise). Kept: the marker and
+the range lights, plus the native crosshair over every live figure stage.
 
 - **Sheet marker.** At ≥1200px the header shows "02 / 06 · Research companion" in mono while
   the index is on screen (fades out elsewhere). Pointing at a numbered Range item shows
   "Sheet 05 · Obscure Music". `aria-hidden`: it repeats what the page already says.
-- **Redraw.** At ≥1024px, when the active sheet changes, the figure's strokes draw in by
-  dash offset (480ms) and its labels and dots fade in after. Off with reduced motion; a figure
-  with more than 260 strokes only fades. Lines already dashed are left alone.
-- **Drafting guides.** Over any live figure, with a mouse or pen, two hairlines (ink-muted at
-  40%) cross the stage at the pointer. The native crosshair from §14.6 stays the cursor.
+- **Removed: redraw** (strokes drawn in on sheet change) and **drafting guides** (hairlines
+  following the pointer). Content must be fully visible at every moment.
+- **Crosshair.** `cursor: crosshair` now covers every live case-study stage, not only the plan;
+  the globe and committee keep grab, buttons keep pointer.
+- **Marker** capped at 15rem with an ellipsis: at 1440 a long name ran into the menu.
 - **Range lights.** Pointing at a project lights its subject and method headers and its cell;
   pointing at a method header lights the whole column, empty cells included; a subject lights
   its row. ≥769px only (the phone table is a list). Keyboard focus does the same.
