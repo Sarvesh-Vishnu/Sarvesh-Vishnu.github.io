@@ -26,6 +26,7 @@ DRAFTS = [
  'One data spine under a medical-device business', 'The figures respond', 'One spine, six decisions', 'Most of what I built here',
  'A schematic of the system', 'The system', 'Building the spine', 'A cross-sell experiment, end to end', 'Strategy and Market Insights',
  'Commercial Excellence, then Senior', 'Microsoft Fabric · Azure',
+ 'The forecasts it replaced were largely linear', 'Gave demand planning and manufacturing', 'Accounts were randomised within territories', 'The test found no meaningful lift', 'Forecast error fell from', 'The cross-sell test answered', 'Reporting moved from ad-hoc', 'An outside consultancy had proposed', 'external study brought in house', 'I built the NLP layer end to end', 'Scored sentiment with', 'Found drivers with', 'Trained <mark', 'Handed over a ranking', 'got a ranking of what drives', 'sentiment F1', 'forecast error (WAPE)', 'product-line actuals vs forecast',
  'Obscure', 'A recommender that walks', 'Most recommenders keep you', 'Python · PyTorch · implicit', 'Five steps to the long tail',
 ]
 ALL_DRAFT = {'work/obscure.html', 'resume.html'}     # every line on these pages is a draft for the owner

@@ -1485,3 +1485,12 @@ html.lenis, html.lenis body { height: auto; }
   .site-footer { border: 0; padding: 6pt 0 0; }
 }
 
+
+/* A number or phrase awaiting the owner's confirmation. Visible on purpose;
+   tests/copy.test.cjs fails while any remain, so none can ship. design.md §14.28 */
+mark.tbc {
+  background: none;
+  color: inherit;
+  outline: 1px dashed var(--accent);
+  outline-offset: 2px;
+}

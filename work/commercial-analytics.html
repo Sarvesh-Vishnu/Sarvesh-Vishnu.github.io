@@ -80,8 +80,8 @@
 
         <dl class="project-results">
           <div><dt>territory managers on plan</dt><dd>75+</dd></div>
-          <div><dt>product lines forecast</dt><dd>25+</dd></div>
-          <div><dt>model ensemble</dt><dd>4-way</dd></div>
+          <div><dt>forecast error (WAPE), before → after</dt><dd><mark class="tbc" title="To confirm before this goes live">18% → 8%</mark></dd></div>
+          <div><dt>product-line actuals vs forecast</dt><dd>±5%</dd></div>
         </dl>
 
         <p class="project-tools">Python · SQL · Microsoft Fabric · Azure · Power BI · ARIMA / SARIMAX / Prophet / Boosting · LangGraph · hybrid retrieval</p>
@@ -96,16 +96,20 @@
         <p>I started as a Data Scientist on the Commercial Excellence team. I built the Python pipelines and Microsoft Fabric repositories that became the data spine, organised the team's analytics resources in one place, and built Power BI reporting for each sales team, while supporting marketing analytics.</p>
 
         <h2>The annual operating plan</h2>
-        <p>I own the analytics behind the Annual Operating Plan end to end: quota allocation across 75+ territory managers, ensemble forecasting across 25+ product lines, and the pipelines and executive surfaces that hold all of it together for the Medical Device business. No single model owns the truth. The forecast is a committee, and the committee shows its work.</p>
+        <p>I own the analytics behind the Annual Operating Plan end to end: quota allocation across 75+ territory managers, ensemble forecasting across 25+ product lines, and the pipelines and executive surfaces that hold all of it together for the Medical Device business.</p>
+        <p>The forecasts it replaced were largely linear. Shipments also understate demand: an order that is cancelled, returned or left on backorder never shows up as a sale. So I rebuilt an unconstrained demand series from sales orders together with open, cancelled, returned and backordered lines, and let product characteristics into the models.</p>
         <ul>
           <li>Rebuilt the AOP process end to end, from transaction records to executive readouts</li>
           <li>Created a Power BI, SQL and Azure surface that replaced ad-hoc pulls with multiple live views</li>
           <li>Standardized ensemble forecasting (ARIMA, SARIMAX, Prophet, boosting algorithms) across 25+ product lines</li>
           <li>Ran scenario and sensitivity analysis to stress-test decisions before they hit a slide</li>
+          <li>Gave demand planning and manufacturing a planning interval for each product line, not a single number</li>
         </ul>
 
         <h2>A cross-sell experiment, end to end</h2>
         <p>The Total Orders dashboard was the first business view of products being sold across business units, which made cross-selling opportunities visible for the first time. I led the initiative that followed from start to finish: identifying the target customers, setting up the experiment as an A/B test, building the compensation plan, and evaluating the outcome.</p>
+        <p>Accounts were randomised within territories, about 200 accounts per territory, across <mark class="tbc" title="To confirm before this goes live">[N] territories over [N] months</mark>. Cross-sell orders were the primary metric, then new-product orders, revenue per account, time to first order and attach rate, in that order.</p>
+        <p>The test found no meaningful lift. Read alongside a bundling analysis across the organisation and a change in leadership, that result helped move the strategy: the sales group now leads with a single product, and the other products moved to other sales teams.</p>
         <p>Alongside it: customer segmentation for a product line, regulatory analytics support, and data extractions to support organisational compliance.</p>
 
         <h2>Strategy and Market Insights</h2>
@@ -118,7 +122,9 @@
 
       <section class="project-body-prose">
         <h2>Outcome</h2>
-        <p>The AOP now runs on a data spine that leadership can use live. Product-launch decisions get vetted against the forecasting stack before they become commitments, and executive reporting time collapsed from days of ad-hoc pulls into real-time performance monitoring. The executive team trusts the numbers because they accurately reflect the work: every forecast and scenario model tags the assumptions it hangs on and states its confidence plainly.</p>
+        <p>Forecast error fell from about <mark class="tbc" title="To confirm before this goes live">18% to 8% WAPE</mark> against the linear forecasts it replaced, mostly from modelling the demand customers asked for rather than the demand that shipped. Product-line actuals landed within 5% of <mark class="tbc" title="To confirm before this goes live">the forecast</mark>, and demand planning and manufacturing now plan from intervals instead of single numbers.</p>
+        <p>The cross-sell test answered its question before a plan was scaled up: no meaningful lift. The sales structure changed with that evidence in hand.</p>
+        <p>Reporting moved from ad-hoc pulls to live Power BI views, and product-launch decisions are tested against the forecast before they become commitments.</p>
 
         <h2>What I'd do next</h2>
         <p>A closed loop between the forecast and the sales system so drift is caught within a cycle instead of at year-end reconciliation. And more automated attribution, separating pricing, mix, and volume effects at the product-line level, so when a number moves, we know <em>why</em>.</p>

@@ -1344,3 +1344,21 @@ Dropping smooth scrolling altogether (the path's scrubbed line reads better with
 tail was the fault). A scroll-progress bar (a second indicator for what the header mark
 already says). Shrinking the hero to pull the work above the fold (the first screen is
 the one place the page is allowed to be quiet).
+
+### 14.28 Outcomes on the work case studies (Nov 23, 2026; `blueprint`)
+
+The owner's review found every number on the site was scope, not result. Owner's answers
+now carry the outcomes: Cooper forecast error (WAPE) about 18% → 8% against the linear
+forecasts it replaced, from modelling unconstrained demand (orders incl. open, cancelled,
+returned, backordered); product-line actuals within 5%; planning intervals for demand
+planning and manufacturing; the cross-sell A/B test randomised accounts within territories
+(~200 per territory), primary metric cross-sell orders, found no meaningful lift, and fed the
+move to a single lead product. Water: the $150K is the in-house build of a likelihood-of-
+failure study an outside consultancy proposed (CORRECTS the old "avoided emergency repairs"
+wording on the case study and résumé). Results rows: Cooper 75+ / WAPE / ±5% (the "4-way
+ensemble" stat is gone); water label "external study brought in house"; NLP adds sentiment F1.
+
+**Placeholders.** The owner asked for stand-in numbers to edit (NLP models and scores,
+test size and length, what Pinnacle changed). They are `<mark class="tbc">`, drawn with a
+dashed accent outline, and `tests/copy.test.cjs` fails while any remain, so none can ship.
+Removed: "No single model owns the truth…" (its committee figure left in §14.18).
