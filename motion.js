@@ -28,7 +28,7 @@
     }
     // Same-page links glide and land clear of the fixed header. The skip link is
     // left native so keyboard focus still moves to <main>.
-    document.querySelectorAll('a[href^="#"]:not(.skip):not(.reel-jump)').forEach((a) => {
+    document.querySelectorAll('a[href^="#"]:not(.skip)').forEach((a) => {
       a.addEventListener('click', (e) => {
         const id = a.getAttribute('href');
         const target = id === '#top' ? 0 : id.length > 1 && document.querySelector(id);

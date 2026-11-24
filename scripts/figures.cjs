@@ -55,4 +55,10 @@ for (const [page, kind] of Object.entries(pages)) {
   html = between(html, 'nm:asof', `${d} ${month} ${y}`, 'numit');
   fs.writeFileSync(file, html);
 }
+// the home index shows the same count as the globe
+{
+  const { NM } = Lab;
+  const file = path.join(ROOT, 'index.html');
+  fs.writeFileSync(file, between(fs.readFileSync(file, 'utf8'), 'nm:total', String((NM.shadow.length + NM.light.length) / 4), 'index.html'));
+}
 console.log(`figures written: ${Object.keys(tiles).length} work figures, ${Object.keys(pages).length} case studies`);

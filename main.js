@@ -64,43 +64,26 @@
     spied.forEach((s) => spy.observe(s));
   }
 
-  /* The reel (design.md §14.15): a native scroll-snap row. This only adds the buttons,
-     the index and the counter; swiping, scrolling and tabbing work without it. */
-  document.querySelectorAll('[data-reel]').forEach((reel) => {
-    const track = reel.querySelector('.reel-track');
-    const slides = Array.from(track.children);
-    const jumps = Array.from(reel.querySelectorAll('.reel-jump'));
-    const prev = reel.querySelector('[data-step="-1"]');
-    const next = reel.querySelector('[data-step="1"]');
-    const count = reel.querySelector('.reel-count b');
-    let current = 0;
-    const show = (i) => {
-      current = i;
-      jumps.forEach((j, k) => { if (k === i) j.setAttribute('aria-current', 'true'); else j.removeAttribute('aria-current'); });
-      if (count) count.textContent = i + 1;
-      if (prev) prev.disabled = i === 0;
-      if (next) next.disabled = i === slides.length - 1;
-    };
-    const go = (i) => {
-      const k = Math.max(0, Math.min(slides.length - 1, i));
-      track.scrollTo({ left: slides[k].offsetLeft, behavior: reduceMotion ? 'auto' : 'smooth' });
-      show(k);                                           // answer at once; the observer confirms
-    };
-    if ('IntersectionObserver' in window) {
-      const seen = new IntersectionObserver((entries) => {
-        entries.forEach((e) => { if (e.isIntersecting) show(slides.indexOf(e.target)); });
-      }, { root: track, threshold: 0.6 });
-      slides.forEach((sl) => seen.observe(sl));
-    }
-    jumps.forEach((j, k) => j.addEventListener('click', (e) => { e.preventDefault(); go(k); }));
-    if (prev) prev.addEventListener('click', () => go(current - 1));
-    if (next) next.addEventListener('click', () => go(current + 1));
-    track.addEventListener('keydown', (e) => {
-      if (e.target !== track) return;                    // leave keys alone inside a slide
-      if (e.key === 'ArrowRight') { go(current + 1); e.preventDefault(); }
-      if (e.key === 'ArrowLeft') { go(current - 1); e.preventDefault(); }
+  /* The sheet index (design.md §14.30). On a wide screen the figure beside the list
+     follows the sheet you point at or focus; with no pointer, the sheet you are
+     reading past. CSS already shows the first figure and lets hover switch it, so
+     this only makes the choice stick and adds the keyboard and scroll paths. */
+  document.querySelectorAll('[data-sheets]').forEach((box) => {
+    const sheets = Array.from(box.querySelectorAll('.sheet'));
+    let pointed = 0;
+    const show = (sh) => sheets.forEach((x) => x.classList.toggle('is-active', x === sh));
+    sheets.forEach((sh) => {
+      sh.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') { pointed = Date.now(); show(sh); } });
+      sh.addEventListener('focusin', () => show(sh));
     });
-    show(0);
+    if ('IntersectionObserver' in window) {
+      const read = new IntersectionObserver((entries) => {
+        if (Date.now() - pointed < 1500) return;           // the pointer has the say while it is moving
+        entries.forEach((e) => { if (e.isIntersecting) show(e.target); });
+      }, { rootMargin: '-45% 0px -55% 0px' });
+      sheets.forEach((sh) => read.observe(sh));
+    }
+    box.classList.add('is-live');
   });
 
   /* Motion handoff. When GSAP is present and motion is welcome, motion.js owns the

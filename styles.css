@@ -290,9 +290,7 @@ body {
    ------------------------------------------------------------- */
 .hero {
   position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: calc(var(--header-h) + var(--space-16)) var(--gutter) var(--space-16);
+  padding: calc(var(--header-h) + var(--space-16)) var(--gutter) var(--space-12);   /* the index starts on the first screen (§14.30) */
   display: flex;
   align-items: stretch;
 }
@@ -302,11 +300,9 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: var(--space-16);
+  gap: var(--space-8);
 }
-/* the name and the paragraph travel together, centred above the foot (§14.26) */
-.hero-say { margin-top: auto; margin-bottom: auto; }
+.hero-say { margin: 0; }
 .hero-proof {
   margin-top: var(--space-8);
   max-width: 54ch;
@@ -341,7 +337,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: var(--space-4) var(--space-12);
 }
 .hero-role { font-size: var(--text-base); color: var(--ink-soft); }
@@ -534,94 +530,104 @@ body {
 }
 
 /* -------------------------------------------------------------
-   §6  The reel: three projects, one at a time, large (design.md §14.15)
-   A native scroll-snap row: swipe, scroll, arrow keys or the buttons.
-   Nothing moves by itself. Work and personal projects are told apart
-   by the index above the row and the kind line on each slide.
+   §6  The sheet index (design.md §14.30)
+   Every project at once, as the index of a drawing set: a number, the
+   project, one line, and its result in large type. On a wide screen the
+   figure of the sheet you point at (or are reading) stands beside the
+   list; narrower, each sheet carries its own figure under its row.
+   Without the script the first figure shows and hover still switches.
    ------------------------------------------------------------- */
-.reel-bar {
+.sheets-head {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: baseline;
   justify-content: space-between;
-  gap: var(--space-4) var(--space-8);
+  gap: var(--space-2) var(--space-12);
   margin-bottom: var(--space-6);
 }
-.reel-index { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-12); }
-.reel-group { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-6); }
-.reel-kind {
+.sheets-title { font-size: var(--text-xl); font-weight: 500; letter-spacing: -0.01em; color: var(--ink); }
+.sheets-note { max-width: 62ch; font-size: var(--text-sm); line-height: 1.5; color: var(--ink-muted); }
+.sheets { position: relative; }
+.sheet-list { border-top: 1px solid var(--line); }
+.sheet { border-bottom: 1px solid var(--line); }
+.sheet-link {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  gap: var(--space-1) var(--space-6);
+  align-items: baseline;
+  padding: var(--space-6) 0;
+  color: var(--ink);
+  outline: none;
+}
+.sheet-no {
   font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
   color: var(--ink-muted);
 }
-.reel-jump {
-  padding-bottom: 3px;
-  border-bottom: 2px solid transparent;
-  font-size: var(--text-base);
-  color: var(--ink-muted);
-  transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease;
-}
-.reel-jump:hover { color: var(--ink); }
-.reel-jump[aria-current="true"] { color: var(--ink); border-bottom-color: var(--accent); }
-.reel-nav {
-  display: none;                                        /* buttons need the script; the row scrolls without it */
+.sheet-main { display: grid; gap: var(--space-1); min-width: 0; }
+.sheet-kind {
+  display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--ink-muted);
+}
+/* the same marks as the path: filled for work, hollow for personal */
+.sheet-kind::before {
+  content: "";
+  flex: none;
+  width: 7px; height: 7px;
+  box-sizing: border-box;
+  border: 1.5px solid var(--mark);
+  border-radius: 50%;
+  background: var(--mark);
+}
+.sheet[data-kind="personal"] .sheet-kind::before { background: transparent; }
+.sheet-name {
+  font-size: clamp(var(--text-lg), 1.9vw, var(--text-2xl));
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-wrap: balance;
+  transition: color var(--duration-fast) ease;
+}
+.sheet-desc { max-width: 52ch; font-size: var(--text-sm); line-height: 1.5; color: var(--ink-soft); text-wrap: pretty; }
+.sheet-result { display: grid; justify-items: end; gap: var(--space-1); text-align: right; max-width: 15ch; }
+.sheet-result b {
+  font-size: clamp(var(--text-2xl), 2.6vw, var(--text-4xl));
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
   font-variant-numeric: tabular-nums;
-}
-.js .reel-nav { display: flex; }
-.reel-count b { font-weight: 500; color: var(--ink); }
-.reel-btn {
-  width: 44px; height: 44px;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  background: transparent;
+  white-space: nowrap;
   color: var(--ink);
-  font: inherit;
-  font-size: var(--text-lg);
-  cursor: pointer;
-  transition: border-color var(--duration-fast) ease, opacity var(--duration-fast) ease;
 }
-.reel-btn:hover:not(:disabled) { border-color: var(--mark); color: var(--mark); }
-.reel-btn:disabled { opacity: 0.35; cursor: default; }
-.reel-btn:focus-visible, .reel-jump:focus-visible, .reel-track:focus-visible { outline: 2px solid var(--mark); outline-offset: 3px; }
+.sheet-result span { font-family: var(--font-mono); font-size: var(--text-2xs); line-height: 1.4; color: var(--ink-muted); }
+.sheet-link:hover .sheet-name, .sheet-link:focus-visible .sheet-name { color: var(--mark); }
+.sheet-link:focus-visible { outline: 2px solid var(--mark); outline-offset: 4px; }
+.sheet.is-active .sheet-no { color: var(--accent-deep); }
 
-.reel-track {
-  position: relative;
-  display: flex;
-  gap: var(--space-8);
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  padding-bottom: var(--space-2);
-}
-.reel-track::-webkit-scrollbar { display: none; }
-.slide {
-  flex: 0 0 min(88%, 1040px);                           /* the next slide always shows its edge */
-  min-width: 0;
-  scroll-snap-align: start;
-}
-.slide:last-child { scroll-snap-align: end; }
-.slide-link { display: block; color: var(--ink); outline: none; }
-
+/* A figure is a sheet of the drawing set: no box, four corner ticks (§14.30) */
 .tile-fig {
   position: relative;
   display: block;
   aspect-ratio: 16 / 9;
-  max-height: min(54vh, 540px);
   width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  background: var(--surface);
   overflow: hidden;
-  transition: border-color var(--duration-base) var(--ease-out);
+  --tick: 14px;
+  --tc: var(--ink-muted);
+  background:
+    linear-gradient(var(--tc), var(--tc)) top left / var(--tick) 1px,
+    linear-gradient(var(--tc), var(--tc)) top left / 1px var(--tick),
+    linear-gradient(var(--tc), var(--tc)) top right / var(--tick) 1px,
+    linear-gradient(var(--tc), var(--tc)) top right / 1px var(--tick),
+    linear-gradient(var(--tc), var(--tc)) bottom left / var(--tick) 1px,
+    linear-gradient(var(--tc), var(--tc)) bottom left / 1px var(--tick),
+    linear-gradient(var(--tc), var(--tc)) bottom right / var(--tick) 1px,
+    linear-gradient(var(--tc), var(--tc)) bottom right / 1px var(--tick);
+  background-repeat: no-repeat;
 }
 .tile-fig svg { display: block; width: 100%; height: 100%; }
 .tile-tag {
@@ -629,84 +635,44 @@ body {
   top: var(--space-3);
   right: var(--space-3);
   padding: 3px 7px;
-  border-radius: 2px;
-  background: var(--surface);
+  background: var(--canvas);
   font-family: var(--font-mono);
   font-size: var(--text-2xs);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--ink-muted);
 }
-
-.slide-text {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: var(--space-3) var(--gutter);
-  margin-top: var(--space-6);
+/* narrower than a laptop: each sheet carries its own figure, under its row */
+.sheet-fig { margin-bottom: var(--space-6); }
+@media (max-width: 640px) {
+  .sheet-link { grid-template-columns: 1.75rem minmax(0, 1fr); }
+  .sheet-result { grid-column: 2; justify-items: start; text-align: left; max-width: none; grid-auto-flow: column; align-items: baseline; justify-content: start; gap: var(--space-3); margin-top: var(--space-2); }
+  .sheet-fig { aspect-ratio: 4 / 3; }
 }
-.slide-kind {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--ink-muted);
-}
-/* the same marks as the path: filled for work, hollow for personal */
-.slide-kind::before {
-  content: "";
-  width: 8px; height: 8px;
-  box-sizing: border-box;
-  border: 2px solid var(--mark);
-  border-radius: 50%;
-  background: var(--mark);
-}
-.slide[data-kind="personal"] .slide-kind::before { background: transparent; }
-.project-name {
-  grid-column: 1;
-  grid-row: 2 / span 3;
-  font-size: clamp(var(--text-2xl), 2.8vw, var(--text-3xl));
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 1.08;
-  text-wrap: balance;
-  transition: color var(--duration-base) var(--ease-out);
-}
-.slide-desc { grid-column: 2; max-width: 60ch; font-size: var(--text-base); line-height: 1.6; color: var(--ink-soft); }
-.project-meta {
-  grid-column: 2;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  line-height: 1.6;
-  color: var(--ink-muted);
-}
-.slide-open {
-  grid-column: 2;
-  justify-self: start;
-  margin-top: var(--space-2);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--mark);
-  border-bottom: 1px solid currentColor;
-}
-.slide-link:hover .tile-fig,
-.slide-link:focus-visible .tile-fig { border-color: var(--mark); }
-.slide-link:hover .project-name,
-.slide-link:focus-visible .project-name { color: var(--mark); }
-.slide-link:focus-visible .tile-fig { outline: 2px solid var(--mark); outline-offset: 3px; }
-@media (max-width: 900px) {
-  .reel-index { gap: var(--space-2) var(--space-8); }
-  .reel-group { gap: var(--space-1) var(--space-4); }
-  .reel-jump { font-size: var(--text-sm); }
-  .slide { flex-basis: 90%; }
-  .reel-track { gap: var(--space-4); }
-  .tile-fig { aspect-ratio: 4 / 3; }
-  .slide-text { grid-template-columns: 1fr; }
-  .project-name, .slide-desc, .project-meta, .slide-open { grid-column: 1; grid-row: auto; }
+/* a laptop and up: a narrow list on the left; the figure of the active sheet beside it,
+   running out to the page's right margin so a wide drawing keeps its wide form */
+@media (min-width: 1024px) {
+  .sheets { --list: calc((100% - var(--gutter)) * 4 / 12); }
+  .sheet-list { width: var(--list); }
+  .sheet-link { grid-template-columns: 2.25rem minmax(0, 1fr); padding: var(--space-4) 0; }
+  .sheet-result { grid-column: 2; justify-items: start; text-align: left; max-width: none; grid-auto-flow: column; align-items: baseline; justify-content: start; gap: var(--space-3); margin-top: var(--space-2); }
+  .sheet-result b { font-size: var(--text-2xl); }
+  .sheet-fig {
+    position: absolute;
+    top: 0;
+    left: calc(var(--list) + 2 * var(--gutter));
+    right: min(0px, calc((100% - 100vw) / 2 + var(--gutter)));
+    width: auto;
+    height: clamp(420px, 70vh, 600px);
+    aspect-ratio: auto;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--duration-base) var(--ease-out), visibility 0s linear var(--duration-base);
+  }
+  .sheet.is-active .sheet-fig,
+  .sheets:not(.is-live) .sheet:hover .sheet-fig { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .sheets:not(.is-live):has(.sheet:hover) .sheet.is-active:not(:hover) .sheet-fig { opacity: 0; visibility: hidden; }
 }
 
 /* Figure marks — ink for context, Prussian for the one thing each figure is about.
@@ -1156,40 +1122,32 @@ body {
   letter-spacing: 0.12em;
 }
 
-.project-next {
+/* The sheet index at the foot of a case study (§14.30): all six, this one marked,
+   then the neighbours either side */
+.sheet-nav {
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: var(--space-16) var(--gutter) var(--space-24);
+  padding: var(--space-12) var(--gutter) var(--space-24);
   border-top: 1px solid var(--line);
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--space-6);
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: var(--space-6) var(--gutter);
 }
-.project-next .label {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--ink-muted);
+.sheet-nav-here { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.sheet-nav-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-1) var(--gutter); }
+.sheet-nav-list a { display: flex; gap: var(--space-3); padding: var(--space-2) 0; color: var(--ink-soft); transition: color var(--duration-fast) ease; }
+.sheet-nav-list a span { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted); padding-top: 3px; font-variant-numeric: tabular-nums; }
+.sheet-nav-list a:hover { color: var(--mark); }
+.sheet-nav-list a[aria-current="page"] { color: var(--ink); }
+.sheet-nav-list a[aria-current="page"] span { color: var(--accent-deep); }
+.sheet-nav-step { grid-column: 2; display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3) var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--line); }
+.sheet-nav-step a { font-size: var(--text-lg); font-weight: 500; color: var(--mark); }
+.sheet-nav-step a:hover { color: var(--accent); }
+@media (max-width: 768px) {
+  .sheet-nav { grid-template-columns: 1fr; }
+  .sheet-nav-list { grid-template-columns: 1fr; }
+  .sheet-nav-step { grid-column: 1; }
 }
-.project-next a {
-  font-size: var(--text-2xl);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-  position: relative;
-  transition: color var(--duration-fast) ease;
-}
-.project-next a::after {
-  content: " →";
-  color: var(--mark);
-  transition: transform var(--duration-base) var(--ease-out);
-  display: inline-block;
-}
-.project-next a:hover { color: var(--mark); }
-.project-next a:hover::after { transform: translateX(6px); }
 
 /* -------------------------------------------------------------
    Motion (design.md §14.9). motion.js adds `.motion-gsap` only when
@@ -1261,9 +1219,18 @@ html.lenis, html.lenis body { height: auto; }
 .lab-stage {
   margin-top: var(--space-6);
   padding: var(--space-6);
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  background: var(--surface);
+  --tick: 14px;
+  --tc: var(--ink-muted);
+  background:
+    linear-gradient(var(--tc), var(--tc)) top left / var(--tick) 1px,
+    linear-gradient(var(--tc), var(--tc)) top left / 1px var(--tick),
+    linear-gradient(var(--tc), var(--tc)) top right / var(--tick) 1px,
+    linear-gradient(var(--tc), var(--tc)) top right / 1px var(--tick),
+    linear-gradient(var(--tc), var(--tc)) bottom left / var(--tick) 1px,
+    linear-gradient(var(--tc), var(--tc)) bottom left / 1px var(--tick),
+    linear-gradient(var(--tc), var(--tc)) bottom right / var(--tick) 1px,
+    linear-gradient(var(--tc), var(--tc)) bottom right / 1px var(--tick);
+  background-repeat: no-repeat;
 }
 .lab-fig { touch-action: pan-y; }
 .lab-fig svg { display: block; width: 100%; height: auto; }
@@ -1397,6 +1364,7 @@ html.lenis, html.lenis body { height: auto; }
 .tile-fig[data-lab="brief"],   .lab-stage:has(.lab-brief)   { view-transition-name: lab-brief; }
 .tile-fig[data-lab="plan"],    .lab-stage:has(.lab-plan)    { view-transition-name: lab-plan; }
 .tile-fig[data-lab="globe"],   .lab-stage:has(.lab-globe)   { view-transition-name: lab-globe; }
+@media (min-width: 1024px) { .sheet:not(.is-active) .tile-fig { view-transition-name: none; } }   /* only the figure on show travels (§14.30) */
 ::view-transition-group(*) { animation-duration: 420ms; animation-timing-function: var(--ease-out); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 220ms; }
 @media (prefers-reduced-motion: reduce) {
@@ -1406,18 +1374,9 @@ html.lenis, html.lenis body { height: auto; }
 /* -------------------------------------------------------------
    Blueprint pieces (design.md §14.16)
    ------------------------------------------------------------- */
-/* why the project mattered, in a sentence, under each slide's description */
-.slide-why {
-  grid-column: 2;
-  max-width: 60ch;
-  padding-left: var(--space-3);
-  border-left: 2px solid var(--accent);
-  font-size: var(--text-base);
-  line-height: 1.5;
-  color: var(--ink);
-}
-@media (max-width: 900px) { .slide-why { grid-column: 1; } }
-
+.contact-links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-8); margin-top: var(--space-8); font-size: var(--text-lg); }
+.contact-links a { padding-bottom: 2px; color: var(--mark); border-bottom: 1px solid currentColor; transition: color var(--duration-fast) ease; }
+.contact-links a:hover { color: var(--accent); }
 .contact-line { grid-column: 1 / -1; margin-top: calc(var(--space-4) - var(--gutter)); max-width: 52ch; font-size: var(--text-lg); line-height: 1.5; color: var(--ink-soft); }
 
 /* Long reading follows the sheet the reader chose (§14.23): a hairline and room above it set it apart */
@@ -1433,7 +1392,7 @@ html.lenis, html.lenis body { height: auto; }
 
 /* -------------------------------------------------------------
    Print: the page becomes a one-sheet résumé (design.md §14.16).
-   White print tokens, everything revealed and drawn, the reel laid
+   White print tokens, everything revealed and drawn, the sheet index laid
    out as a list, links spelled out, instruments and controls left off.
    ------------------------------------------------------------- */
 @media print {
@@ -1445,8 +1404,8 @@ html.lenis, html.lenis body { height: auto; }
   }
   html { font-size: 10pt; }
   body { background: #FFFFFF; color: var(--ink); }
-  .site-header, .skip, .tile-fig, .reel-bar, .slide-open, .section-note,
-  .contact-actions, .contact-line, .lab, .project-next, .theme-toggle, .foot-meta, .section-title,
+  .site-header, .skip, .tile-fig, .sheets-note, .section-note,
+  .contact-links, .contact-line, .lab, .sheet-nav, .theme-toggle, .foot-meta, .section-title,
   .hero-links a:not([data-print]) { display: none !important; }
   .reveal, .js .reveal { opacity: 1 !important; transform: none !important; }
   .ln::after { transform: none !important; }
@@ -1462,7 +1421,7 @@ html.lenis, html.lenis body { height: auto; }
   .hero-role { font-size: 10pt; }
   .hero-links { margin-top: 4pt; gap: 2pt 14pt; }
   .hero-links a { border: 0; padding: 0; font-size: 8.5pt; }
-  .slide-kind, .th-when, .stack-row dt { font-size: 11px; }
+  .sheet-kind, .th-when, .stack-row dt { font-size: 11px; }
   .stack-row dd a { display: inline; padding: 0; margin: 0; }
   .hero-links a::after { content: " " attr(data-print); font-weight: 400; color: var(--ink-soft); }
   .section { padding: 7pt 0 4pt; border-top: 0.5pt solid var(--line); }
@@ -1470,14 +1429,14 @@ html.lenis, html.lenis body { height: auto; }
   .th, .stack-row { break-inside: avoid; }
   .th-merge { min-height: 26pt; }
   .section-title { font-size: 13pt; margin-top: 2pt; max-width: none; }
-  .reel-track { display: block; overflow: visible; }
-  .slide { margin: 0 0 5pt; break-inside: avoid; }   /* six sheets on two pages (§14.22, §14.29) */
-  .slide-why { display: none; }                       /* the reason lines give way in print; the case studies keep them */
-  .slide-text { margin-top: 0; grid-template-columns: 1fr; gap: 2pt; }
-  .project-name, .slide-desc, .project-meta, .slide-why { grid-column: 1; grid-row: auto; }
-  .project-name { font-size: 12pt; }
-  .slide-desc, .slide-why, .th-body, .path-bio, .stack-row dd { font-size: 9.5pt; line-height: 1.4; }
-  .slide-why { border-left-width: 1.5pt; }
+  .sheets-head { margin-bottom: 4pt; }
+  .sheets-title { font-size: 13pt; }
+  .sheets { display: block; }
+  .sheet { break-inside: avoid; }
+  .sheet-link { padding: 4pt 0; gap: 1pt 10pt; }      /* six sheets, each with its result (§14.30) */
+  .sheet-name { font-size: 12pt; }
+  .sheet-result b { font-size: 14pt; }
+  .sheet-desc, .th-body, .path-bio, .stack-row dd { font-size: 9.5pt; line-height: 1.4; }
   .path-grid { display: block; }
   .threads { max-width: none; }
   .th-when, .th-body { padding-bottom: 4pt; }

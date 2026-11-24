@@ -1402,3 +1402,31 @@ classifier AUC 0.78 on held-out months; no known change at Pinnacle, so the sent
 The owner's old résumé line "improving patient satisfaction" was NOT used: nothing shows it
 happened. All placeholders cleared; copy gate passes. Résumé bullets tightened to hold two
 pages; home print hides `.slide-why` to hold six sheets on two pages.
+
+### 14.30 The sheet index replaces the reel (Nov 24, 2026; `blueprint`)
+
+The owner chose direction A after a critique that the site read as a standard portfolio
+(name hero, carousel, timeline, skills, contact buttons) and that the blueprint idea lived only
+in a "Sheet 1 of 5" counter. The idea now does the navigation.
+
+- **Home.** The reel, its arrows, counter and index chips are gone. `Selected work` is an
+  index of six hairline rows, all visible: sheet number, kind line (filled dot work, hollow
+  personal), name, one line, and the result in large type (18% → 8%, 5, 0.80, $150K, 2.4×,
+  Numit's event count generated into `<!-- nm:total -->` by figures.cjs). At ≥1024px the list
+  takes 4/12 and the figure of the active sheet stands beside it, bleeding to the page's right
+  margin so the wide drawings keep their wide form (spine's wide threshold lowered 900 → 840
+  to fit a 1440 screen). Active = pointer, focus, or with no pointer the row crossing the
+  middle of the screen (main.js). Without JS the first figure shows and hover switches (CSS
+  `:has`). Below 1024 each row carries its own figure under it.
+- **Hero.** No longer a full screen: the index starts on the first screen at 1440×900 and
+  at 375×812. Reverses §14.27's "the first screen is allowed to be quiet" at the owner's word.
+- **Figures.** No box and no fill; four corner ticks mark the sheet (`.tile-fig`, `.lab-stage`).
+- **Case studies.** The results row comes before the instrument. The single "Next" link is
+  replaced by a sheet index at the foot: all six, this one marked, previous and next.
+- **Contact.** The filled LinkedIn button and three outlined buttons became one line of links
+  with the email written out. "Let's connect." and its note stay (owner's earlier choice).
+- **Phone menu** keeps Path. **Slide reason lines** (`.slide-why`) are gone from the home page;
+  the case studies never had them. Print still fits two pages.
+Considered and rejected: a stage above the list (the figure leaves the screen when pointing at
+the last rows); a stage at half width (the spine and route fall back to their phone forms);
+hiding figures on phones (the home page would have no picture at all).

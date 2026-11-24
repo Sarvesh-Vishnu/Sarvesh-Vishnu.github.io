@@ -642,7 +642,7 @@
   }
 
   const SP_CH = 6.65;                                    // width of one 11px mono character
-  const SP_WIDE = 900;                                   // below this the map becomes a trace
+  const SP_WIDE = 840;                                   // below this the map becomes a trace
   /** Where each label sits on the wide map. */
   function spineLayout(w, h, o) {
     const padX = 22, padT = 62 + ((o && o.tagRoom) || 0) * 0.6, padB = 22;
