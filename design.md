@@ -1453,3 +1453,21 @@ every figure shares one cell spanning all six rows and is `position: sticky` und
 so it travels with the list and lets go where the list ends. Height is the screen less the header
 (max 600px). main.js listens on `.sheet-link` (a `display: contents` box has no geometry for the
 IntersectionObserver). Below 1024px nothing changed.
+
+### 14.33 Small instruments (Nov 24, 2026; `blueprint`)
+
+Owner asked for playful touches that stay useful. Four built, each pointing at something:
+
+- **Sheet marker.** At ≥1200px the header shows "02 / 06 · Research companion" in mono while
+  the index is on screen (fades out elsewhere). Pointing at a numbered Range item shows
+  "Sheet 05 · Obscure Music". `aria-hidden`: it repeats what the page already says.
+- **Redraw.** At ≥1024px, when the active sheet changes, the figure's strokes draw in by
+  dash offset (480ms) and its labels and dots fade in after. Off with reduced motion; a figure
+  with more than 260 strokes only fades. Lines already dashed are left alone.
+- **Drafting guides.** Over any live figure, with a mouse or pen, two hairlines (ink-muted at
+  40%) cross the stage at the pointer. The native crosshair from §14.6 stays the cursor.
+- **Range lights.** Pointing at a project lights its subject and method headers and its cell;
+  pointing at a method header lights the whole column, empty cells included; a subject lights
+  its row. ≥769px only (the phone table is a list). Keyboard focus does the same.
+Considered and rejected: a site-wide custom cursor (slows reading, no touch equivalent), a
+trailing cursor, magnetic buttons, scroll-jacking and any loop.

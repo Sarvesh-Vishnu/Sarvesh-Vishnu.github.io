@@ -64,14 +64,65 @@
     spied.forEach((s) => spy.observe(s));
   }
 
+  /* The sheet marker (§14.33): a quiet "05 / 06 · Obscure" in the header while the
+     index is on screen, so a reader always knows which sheet the figure belongs to. */
+  const marker = document.querySelector('.nav-sheet');
+  let markerBase = '', inWork = false;
+  const paint = (txt) => {
+    if (!marker) return;
+    marker.textContent = txt;
+    marker.classList.toggle('is-on', !!txt);
+  };
+  const restore = () => paint(inWork ? markerBase : '');
+
+  /* A figure redraws when its sheet comes up (§14.33): its lines are drawn in as by a
+     pen and its labels follow. Off with reduced motion; very busy figures only fade. */
+  const wide = window.matchMedia('(min-width: 1024px)');
+  const redraw = (fig) => {
+    if (reduceMotion || !fig || !fig.animate) return;
+    const svg = fig.querySelector('svg');
+    if (!svg) return;
+    const ease = 'cubic-bezier(0.16, 1, 0.3, 1)';
+    const strokes = svg.querySelectorAll('path, line, polyline');
+    if (strokes.length > 260) { svg.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: ease }); return; }
+    strokes.forEach((el) => {
+      const cs = getComputedStyle(el);
+      if (cs.stroke === 'none' || (cs.strokeDasharray && cs.strokeDasharray !== 'none')) return;
+      let len = 0;
+      try { len = el.getTotalLength(); } catch (e) { return; }
+      if (!len) return;
+      el.animate([
+        { strokeDasharray: `${len} ${len}`, strokeDashoffset: len },
+        { strokeDasharray: `${len} ${len}`, strokeDashoffset: 0 },
+      ], { duration: 480, easing: ease });
+    });
+    svg.querySelectorAll('text, circle, rect').forEach((el) => {
+      el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, delay: 160, easing: 'ease-out', fill: 'backwards' });
+    });
+  };
+
   /* The sheet index (design.md §14.30). On a wide screen the figure beside the list
      follows the sheet you point at or focus; with no pointer, the sheet you are
      reading past. CSS already shows the first figure and lets hover switch it, so
      this only makes the choice stick and adds the keyboard and scroll paths. */
   document.querySelectorAll('[data-sheets]').forEach((box) => {
     const sheets = Array.from(box.querySelectorAll('.sheet'));
-    let pointed = 0;
-    const show = (sh) => sheets.forEach((x) => x.classList.toggle('is-active', x === sh));
+    let pointed = 0, current = box.querySelector('.sheet.is-active');
+    const label = (sh) => {
+      const i = sheets.indexOf(sh) + 1, name = sh.querySelector('.sheet-name');
+      return `${String(i).padStart(2, '0')} / ${String(sheets.length).padStart(2, '0')} · ${name ? name.textContent.trim() : ''}`;
+    };
+    const show = (sh) => {
+      if (!sh) return;
+      markerBase = label(sh);
+      if (sh !== current) {
+        sheets.forEach((x) => x.classList.toggle('is-active', x === sh));
+        current = sh;
+        if (wide.matches) redraw(sh.querySelector('.sheet-fig'));
+      }
+      restore();
+    };
+    markerBase = current ? label(current) : '';
     // on a wide screen the sheet itself has no box (display: contents), so its link stands for it
     const link = (sh) => sh.querySelector('.sheet-link') || sh;
     sheets.forEach((sh) => {
@@ -84,8 +135,73 @@
         entries.forEach((e) => { if (e.isIntersecting) show(e.target.closest('.sheet')); });
       }, { rootMargin: '-45% 0px -55% 0px' });
       sheets.forEach((sh) => read.observe(link(sh)));
+      const section = box.closest('section');
+      if (section) new IntersectionObserver((entries) => {
+        entries.forEach((e) => { inWork = e.isIntersecting; restore(); });
+      }, { rootMargin: '-30% 0px -30% 0px' }).observe(section);
     }
     box.classList.add('is-live');
+  });
+
+  /* Drafting guides over figures (§14.33): two hairlines follow a fine pointer across
+     the whole stage, as on a drawing board. The native crosshair stays the cursor. */
+  if (window.matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll('.tile-fig[data-lab], .lab-stage').forEach((stage) => {
+      let gx = null, gy = null;
+      stage.addEventListener('pointermove', (e) => {
+        if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
+        if (!gx) {
+          gx = document.createElement('span'); gx.className = 'guide guide-x'; gx.setAttribute('aria-hidden', 'true');
+          gy = document.createElement('span'); gy.className = 'guide guide-y'; gy.setAttribute('aria-hidden', 'true');
+          stage.append(gx, gy);
+        }
+        const b = stage.getBoundingClientRect();
+        gx.style.transform = `translateY(${Math.round(e.clientY - b.top)}px)`;
+        gy.style.transform = `translateX(${Math.round(e.clientX - b.left)}px)`;
+        stage.classList.add('is-guided');
+      });
+      stage.addEventListener('pointerleave', () => stage.classList.remove('is-guided'));
+    });
+  }
+
+  /* The range grid lights its row and column (§14.33). Point at a project and its
+     subject and method light; point at a method and its whole column lights, empty
+     cells included, so the reader sees where a method recurs and where it does not.
+     A numbered project also names its sheet in the header marker. */
+  const tableWide = window.matchMedia('(min-width: 769px)');
+  document.querySelectorAll('.range-grid').forEach((t) => {
+    if (!t.tHead || !t.tBodies[0]) return;
+    const heads = t.tHead.rows[0].cells, rows = Array.from(t.tBodies[0].rows);
+    const clear = () => t.querySelectorAll('.is-hot, .is-lit').forEach((el) => el.classList.remove('is-hot', 'is-lit'));
+    const light = (cell) => {
+      clear();
+      if (!tableWide.matches || !cell) return;
+      const row = cell.parentElement, col = cell.cellIndex;
+      if (row.parentElement === t.tHead) {
+        if (!col) return;
+        heads[col].classList.add('is-hot');
+        rows.forEach((r) => r.cells[col] && r.cells[col].classList.add('is-lit'));
+      } else if (!col) {
+        cell.classList.add('is-hot');
+        Array.from(row.cells).slice(1).forEach((c) => c.classList.add('is-lit'));
+      } else {
+        row.cells[0].classList.add('is-hot');
+        heads[col].classList.add('is-hot');
+        cell.classList.add('is-lit');
+      }
+    };
+    const cite = (item) => {
+      const no = item && item.querySelector('.rg-no');
+      if (no) paint(`Sheet ${no.textContent.trim()} · ${item.lastChild.textContent.trim()}`); else restore();
+    };
+    t.addEventListener('pointerover', (e) => {
+      if (e.pointerType === 'touch') return;
+      light(e.target.closest('th, td'));
+      cite(e.target.closest('.rg-item'));
+    });
+    t.addEventListener('pointerleave', () => { clear(); restore(); });
+    t.addEventListener('focusin', (e) => { light(e.target.closest('td')); cite(e.target.closest('.rg-item')); });
+    t.addEventListener('focusout', () => { clear(); restore(); });
   });
 
   /* Motion handoff. When GSAP is present and motion is welcome, motion.js owns the

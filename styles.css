@@ -1444,6 +1444,47 @@ a.rg-item:hover, a.rg-item:focus-visible { color: var(--accent); text-decoration
   .rg-item + .rg-item { margin-top: 0; }
 }
 
+
+/* -------------------------------------------------------------
+   Small instruments (§14.33): the sheet marker in the header, drafting
+   guides over figures, and the range grid's row and column light.
+   ------------------------------------------------------------- */
+.nav { position: relative; }
+.nav-sheet {
+  position: absolute;
+  left: calc(var(--gutter) + 6.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+  pointer-events: none;
+}
+.nav-sheet.is-on { opacity: 1; }
+@media (max-width: 1199px) { .nav-sheet { display: none; } }
+
+.lab-stage { position: relative; }
+.guide {
+  position: absolute;
+  pointer-events: none;
+  background: var(--ink-muted);
+  opacity: 0;
+  transition: opacity var(--duration-fast) ease;
+}
+.guide-x { left: 0; right: 0; top: 0; height: 1px; }
+.guide-y { top: 0; bottom: 0; left: 0; width: 1px; }
+.is-guided > .guide { opacity: 0.4; }
+
+.range-grid th, .range-grid td { transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease; }
+.range-grid .is-lit { background: var(--tint); }
+.range-grid thead .is-hot { color: var(--ink); }
+.range-grid tbody th.is-hot { color: var(--accent-deep); }
+
 @media print {
   @page { margin: 14mm 15mm; }
   :root, :root[data-theme] {
@@ -1453,7 +1494,7 @@ a.rg-item:hover, a.rg-item:focus-visible { color: var(--accent); text-decoration
   }
   html { font-size: 10pt; }
   body { background: #FFFFFF; color: var(--ink); }
-  .site-header, .skip, .tile-fig, .range, .sheets-note, .section-note,
+  .site-header, .skip, .tile-fig, .range, .guide, .nav-sheet, .sheets-note, .section-note,
   .contact-links, .contact-line, .lab, .sheet-nav, .theme-toggle, .foot-meta, .section-title,
   .hero-links a:not([data-print]) { display: none !important; }
   .reveal, .js .reveal { opacity: 1 !important; transform: none !important; }
