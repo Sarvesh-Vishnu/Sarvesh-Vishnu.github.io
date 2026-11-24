@@ -641,32 +641,67 @@
     return (_spEdges = [...seen.values()]);
   }
 
-  const SP_CH = 6.65;                                    // width of one 11px mono character
-  const SP_WIDE = 840;                                   // below this the map becomes a trace
-  /** Where each label sits on the wide map. */
+  const SP_CH = 6.65;                                   // width of one 11px mono character
+  const SP_LH = 13;                                     // line height when a label wraps
+  const SP_GAP = 26;                                    // the least room between two columns
+  const SP_PAD = 22;
+  /** A label broken into lines of at most `max` characters, on word boundaries. */
+  function spWrap(label, max) {
+    const out = [];
+    label.split(' ').forEach((word) => {
+      const last = out[out.length - 1];
+      if (last && last.length + 1 + word.length <= max) out[out.length - 1] = last + ' ' + word;
+      else out.push(word);
+    });
+    return out;
+  }
+  /** The widest line budget at which all five columns fit in w, or 0 when none does.
+      Labels wrap as the figure narrows, so the whole map holds from tablet width up. */
+  const SP_MIN = 12;
+  function spineMeasure(max) {
+    const lines = {};
+    Object.keys(SP_NODES).forEach((id) => { lines[id] = spWrap(SP_NODES[id].label, max); });
+    const widths = SP_COLS.map((_, c) => Math.max(...Object.keys(SP_NODES).filter((id) => SP_NODES[id].col === c)
+      .map((id) => Math.max(...lines[id].map((l) => l.length)) * SP_CH)));
+    return { lines, widths, need: widths.reduce((a, b) => a + b, 0) + 2 * SP_PAD + (SP_COLS.length - 1) * SP_GAP };
+  }
+  const _spFit = new Map();
+  function spineFit(w) {
+    const key = Math.round(w);
+    if (_spFit.has(key)) return _spFit.get(key);
+    let fit = 0;
+    for (let max = 24; max >= SP_MIN; max--) if (spineMeasure(max).need <= w) { fit = max; break; }
+    _spFit.set(key, fit);
+    return fit;
+  }
+  /** Below this the map becomes a trace of one decision. */
+  const SP_WIDE = spineMeasure(SP_MIN).need;
+  const spineMap = (w) => spineFit(w) > 0;
+  /** Where each label sits on the map. */
   function spineLayout(w, h, o) {
-    const padX = 22, padT = 62 + ((o && o.tagRoom) || 0) * 0.6, padB = 22;
+    const padX = SP_PAD, padT = 62 + ((o && o.tagRoom) || 0) * 0.6, padB = 22;
+    const m = spineMeasure(spineFit(w) || SP_MIN);
     const byCol = SP_COLS.map((_, c) => Object.keys(SP_NODES).filter((id) => SP_NODES[id].col === c));
-    const widths = byCol.map((ids) => Math.max(...ids.map((id) => SP_NODES[id].label.length)) * SP_CH);
-    const gap = (w - 2 * padX - widths.reduce((a, b) => a + b, 0)) / (SP_COLS.length - 1);
+    const gap = (w - 2 * padX - m.widths.reduce((a, b) => a + b, 0)) / (SP_COLS.length - 1);
     const pos = {};
     let x = padX;
     byCol.forEach((ids, c) => {
       ids.forEach((id, i) => {
         const y = padT + ((i + 0.5) / ids.length) * (h - padT - padB);
-        pos[id] = { x, y, w: SP_NODES[id].label.length * SP_CH, right: x + SP_NODES[id].label.length * SP_CH };
+        const lw = Math.max(...m.lines[id].map((l) => l.length)) * SP_CH;
+        pos[id] = { x, y, w: lw, right: x + lw, lines: m.lines[id] };
       });
-      x += widths[c] + gap;
+      x += m.widths[c] + gap;
     });
     const colX = []; x = padX;
-    widths.forEach((cw) => { colX.push(x); x += cw + gap; });
-    return { pos, colX, padT };
+    m.widths.forEach((cw) => { colX.push(x); x += cw + gap; });
+    return { pos, colX, padT, wrapped: Object.values(m.lines).some((l) => l.length > 1) };
   }
   function renderSpine(st, o) {
     const { w, h } = o;
     const f = spineFocus(st.focus);
     let s = open(w, h);
-    if (w < SP_WIDE) {
+    if (!spineMap(w)) {
       // the trace: one decision's path, read top to bottom
       const d = f.decisions.includes(f.focus) ? f.focus : f.decisions[0];
       const pth = SP_PATHS[d];
@@ -709,7 +744,10 @@
     Object.keys(SP_NODES).forEach((id) => {
       const q = L.pos[id], on = f.nodes.has(id), isFocus = id === f.focus;
       const cls = isFocus || (on && SP_NODES[id].col === 4) ? ' fig-lab-acc' : on ? ' sp-on' : ' sp-off';
-      s += `<text class="fig-lab sp-node${cls}" x="${q.x.toFixed(1)}" y="${q.y.toFixed(1)}">${SP_NODES[id].label}</text>`;
+      const y0 = q.y - ((q.lines.length - 1) * SP_LH) / 2;
+      const body = q.lines.length === 1 ? q.lines[0]
+        : q.lines.map((l, i) => `<tspan x="${q.x.toFixed(1)}" y="${(y0 + i * SP_LH).toFixed(1)}">${l}</tspan>`).join('');
+      s += `<text class="fig-lab sp-node${cls}" x="${q.x.toFixed(1)}" y="${y0.toFixed(1)}">${body}</text>`;
       if (SP_NODES[id].col > 0) s += `<circle class="sp-dot${on ? ' is-on' : ''}" cx="${(q.x - 10).toFixed(1)}" cy="${(q.y - 3.5).toFixed(1)}" r="2.5"/>`;
       if (SP_NODES[id].col < 4) s += `<circle class="sp-dot${on ? ' is-on' : ''}" cx="${(q.right + 8).toFixed(1)}" cy="${(q.y - 3.5).toFixed(1)}" r="2.5"/>`;
     });
@@ -736,7 +774,7 @@
     return {
       now,
       always: `${viaSpine} of the ${SP_DECISIONS.length} decisions run on one spine. The sixth, the market brief, is kept apart on purpose: nothing internal goes into it.`,
-      tag: o && o.w && o.w < SP_WIDE ? 'Schematic' : `Schematic · ${SP_NODES[f.focus].label}`,
+      tag: o && o.w && !spineMap(o.w) ? 'Schematic' : `Schematic · ${SP_NODES[f.focus].label}`,
     };
   }
 
@@ -1695,7 +1733,7 @@
       unit: (st) => Math.max(0, SP_DECISIONS.indexOf(st.focus)) / (SP_DECISIONS.length - 1),
       // with one, the nearest label takes the focus
       point: (st, x, y, w, h, o) => {
-        if (w < SP_WIDE) return;
+        if (!spineMap(w)) return;
         const L = spineLayout(w, h, o);
         let best = null, bd = 1e9;
         Object.keys(L.pos).forEach((id) => {
@@ -1818,7 +1856,7 @@
     const draw = () => {
       raf = 0;
       if (!w) return;
-      const h = kind.height ? kind.height(st, w) : name === 'committee' ? Math.round(clamp(w * 0.5, 310, 430)) : name === 'spine' ? (w < SP_WIDE ? 250 : Math.round(clamp(w * 0.4, 360, 440))) : Math.round(clamp(w * 0.46, 260, 400));
+      const h = kind.height ? kind.height(st, w) : name === 'committee' ? Math.round(clamp(w * 0.5, 310, 430)) : name === 'spine' ? (!spineMap(w) ? 250 : Math.round(clamp(w * 0.4, 360, 440))) : Math.round(clamp(w * 0.46, 260, 400));
       figH = h;
       const sig = JSON.stringify(st) + w;
       if (sig === drawn) return;
@@ -2019,7 +2057,7 @@
     rng, ols, wape, wilson, series, monthLabel, MODELS, C, L, S, record,
     committee, backtest, mains, list, facilities, sample, nFromUnit, unitFromN,
     renderCommittee, renderRecord, renderList, renderField, renderSample, renderSpine,
-    SP_NODES, SP_PATHS, SP_DECISIONS, spinePath, spineFocus, saySpine,
+    SP_NODES, SP_PATHS, SP_DECISIONS, SP_WIDE, spineLayout, spinePath, spineFocus, saySpine,
     PL, plan, renderPlan, sayPlan, planNearest, share, place,
     OB, RT, rtGeom, renderRoute, sayRoute,
     NM, GL, globe, globeView, renderGlobe, sayGlobe, globeNearest, globeStep, globeTravel,

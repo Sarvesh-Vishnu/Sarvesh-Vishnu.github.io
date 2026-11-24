@@ -564,3 +564,15 @@ test('the brief: each step adds to the last, and the sentence follows the drawin
   Lab.KINDS.brief.travel(st, 0.5); assert.equal(st.step, 5);
   Lab.KINDS.brief.travel(st, 0); assert.equal(st.step, 0);
 });
+
+test('the spine: the whole map holds from tablet width up, labels wrapping instead of colliding', () => {
+  for (let w = Math.ceil(Lab.SP_WIDE); w <= 1400; w += 7) {
+    const L = Lab.spineLayout(w, 380);
+    const ids = Object.keys(Lab.SP_NODES);
+    for (const id of ids) {
+      const q = L.pos[id], c = Lab.SP_NODES[id].col;
+      assert.ok(q.right <= w - 10, `${id} clips at ${w}`);
+      if (c < 4) assert.ok(L.colX[c + 1] - q.right >= 20, `${id} crowds the next column at ${w}`);
+    }
+  }
+});
