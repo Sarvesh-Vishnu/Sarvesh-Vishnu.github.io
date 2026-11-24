@@ -13,7 +13,7 @@ const only = (args.find((a) => a.startsWith('--only=')) || '').slice(7).split(',
 const modes = (args.find((a) => a.startsWith('--modes=')) || '').slice(8).split(',').filter(Boolean);
 const puppeteer = require(path.join(tools, 'node_modules', 'puppeteer-core'));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const PAGES = ['/', '/work/commercial-analytics.html', '/work/nlp.html', '/work/wv-water.html', '/work/obscure.html', '/work/numit.html', '/resume.html'];
+const PAGES = ['/', '/work/commercial-analytics.html', '/work/research-companion.html', '/work/esg-causal.html', '/work/nlp.html', '/work/wv-water.html', '/work/obscure.html', '/work/numit.html', '/resume.html'];
 
 (async () => {
   const browser = await puppeteer.launch({ executablePath: process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: 'new' });
