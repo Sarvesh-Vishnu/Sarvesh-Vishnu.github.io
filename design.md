@@ -1430,3 +1430,26 @@ in a "Sheet 1 of 5" counter. The idea now does the navigation.
 Considered and rejected: a stage above the list (the figure leaves the screen when pointing at
 the last rows); a stage at half width (the spine and route fall back to their phone forms);
 hiding figures on phones (the home page would have no picture at all).
+
+### 14.31 Range: subjects by methods (Nov 24, 2026; `blueprint`)
+
+The owner asked to show the range their interests follow. Chosen over a question-led home page
+(B) and a drawing-set title sheet (C, built on branch `title-sheet` and kept there: title block in
+the hero, discipline codes B/H/P/C on every sheet, the grid as a "key plan").
+
+- A section after `Selected work`: a real `<table>`, rows = what the work is about (Business,
+  Health, Public and civic, Culture), columns = the method it leans on (forecasting and risk,
+  experiments, language models, ranking and recommending, maps and events, products and essays).
+- Owner-chosen contents: the six sheets (numbered, linking to their case studies), On Paper
+  (live, links out), Grid and Palette marked "in progress" with no link. Nothing else is listed.
+- Below 768px each subject becomes a short list with its method beside each item. Hidden in print.
+- Nav gains `Range`. All wording is a draft in COPY.md.
+
+### 14.32 The sheet figure sticks beside the list (Nov 24, 2026; `blueprint`)
+
+The figure was absolutely placed at the top of the index, so scrolling the list left it behind.
+At ≥1024px `.sheets` is now a two-column grid; `.sheet-list` and `.sheet` are `display: contents`;
+every figure shares one cell spanning all six rows and is `position: sticky` under the header,
+so it travels with the list and lets go where the list ends. Height is the screen less the header
+(max 600px). main.js listens on `.sheet-link` (a `display: contents` box has no geometry for the
+IntersectionObserver). Below 1024px nothing changed.

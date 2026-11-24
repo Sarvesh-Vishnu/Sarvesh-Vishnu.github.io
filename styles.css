@@ -652,20 +652,30 @@ body {
 /* a laptop and up: a narrow list on the left; the figure of the active sheet beside it,
    running out to the page's right margin so a wide drawing keeps its wide form */
 @media (min-width: 1024px) {
-  .sheets { --list: calc((100% - var(--gutter)) * 4 / 12); }
-  .sheet-list { width: var(--list); }
-  .sheet-link { grid-template-columns: 2.25rem minmax(0, 1fr); padding: var(--space-4) 0; }
+  /* The list and the figure are one grid (§14.32): the rows are the sheets, and every
+     figure shares one cell that spans them all, so it sticks under the header for the
+     whole length of the list and lets go only when the list ends. */
+  .sheets {
+    --list: calc((100% - var(--gutter)) * 4 / 12);
+    display: grid;
+    grid-template-columns: var(--list) minmax(0, 1fr);
+    column-gap: calc(2 * var(--gutter));
+  }
+  .sheet-list, .sheet { display: contents; }
+  .sheet-link { grid-column: 1; grid-template-columns: 2.25rem minmax(0, 1fr); padding: var(--space-4) 0; border-bottom: 1px solid var(--line); }
+  .sheet:first-child .sheet-link { border-top: 1px solid var(--line); }
   .sheet-result { grid-column: 2; justify-items: start; text-align: left; max-width: none; grid-auto-flow: column; align-items: baseline; justify-content: start; gap: var(--space-3); margin-top: var(--space-2); }
   .sheet-result b { font-size: var(--text-2xl); }
   .sheet-fig {
-    position: absolute;
-    top: 0;
-    left: calc(var(--list) + 2 * var(--gutter));
-    right: min(0px, calc((100% - 100vw) / 2 + var(--gutter)));
+    grid-column: 2;
+    grid-row: 1 / span 6;
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-6));
+    align-self: start;
+    margin: 0 calc(-1 * max(0px, (100vw - var(--content-max)) / 2)) 0 0;   /* out to the page margin on a wide screen */
     width: auto;
-    height: clamp(420px, 70vh, 600px);
+    height: min(600px, calc(100vh - var(--header-h) - var(--space-12)));
     aspect-ratio: auto;
-    margin: 0;
     opacity: 0;
     visibility: hidden;
     transition: opacity var(--duration-base) var(--ease-out), visibility 0s linear var(--duration-base);

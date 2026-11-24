@@ -72,16 +72,18 @@
     const sheets = Array.from(box.querySelectorAll('.sheet'));
     let pointed = 0;
     const show = (sh) => sheets.forEach((x) => x.classList.toggle('is-active', x === sh));
+    // on a wide screen the sheet itself has no box (display: contents), so its link stands for it
+    const link = (sh) => sh.querySelector('.sheet-link') || sh;
     sheets.forEach((sh) => {
-      sh.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') { pointed = Date.now(); show(sh); } });
+      link(sh).addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') { pointed = Date.now(); show(sh); } });
       sh.addEventListener('focusin', () => show(sh));
     });
     if ('IntersectionObserver' in window) {
       const read = new IntersectionObserver((entries) => {
         if (Date.now() - pointed < 1500) return;           // the pointer has the say while it is moving
-        entries.forEach((e) => { if (e.isIntersecting) show(e.target); });
+        entries.forEach((e) => { if (e.isIntersecting) show(e.target.closest('.sheet')); });
       }, { rootMargin: '-45% 0px -55% 0px' });
-      sheets.forEach((sh) => read.observe(sh));
+      sheets.forEach((sh) => read.observe(link(sh)));
     }
     box.classList.add('is-live');
   });
