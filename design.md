@@ -1509,3 +1509,18 @@ hero rewrapped and pushed the index down. Two causes, two fixes:
   Courier New / Liberation Mono / Cousine with Plex's size, ascent and descent, placed second in
   both stacks (Lighthouse runs on Linux, where Helvetica Neue is absent).
 Measured at 1350×940: `#work` top 506px under Plex and under the fallback (was 506 vs 540).
+
+### 14.36 A private visit counter (Nov 24, 2026; `blueprint`)
+
+Owner asked to know whether recruiters or interviewers visit. Chosen: an own counter on
+Cloudflare (Munnetrum/portfolio-visits: Worker + D1, dashboard behind a password) over
+GoatCounter, because Cloudflare names the network a visit came from.
+- `count.js` on every page (not the two redirect pages): after `load`, one `sendBeacon` with
+  page, referrer, `?via=` tag (kept in sessionStorage for the visit) and viewport width.
+  Skipped off the live host, under `navigator.webdriver`, and in browsers opened once with
+  `?nocount`. No cookie, no third party, under 1KB.
+- The Worker stores no IP, no full user agent, no full referrer; a daily-salted hash groups a
+  visit's pages within one day. Bots and other origins are dropped. Request logs are off.
+- The résumé's site link is `?via=resume`. Footer line: "Visits are counted without cookies or
+  stored IP addresses." Nothing about the counter is visible otherwise (job search stays private).
+Rejected: visitor-to-company identification services (Leadfeeder, Clearbit Reveal): invasive.
